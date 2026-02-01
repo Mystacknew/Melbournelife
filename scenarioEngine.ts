@@ -112,43 +112,111 @@ function determineNextScenario(
   return getRandomScenario(profileClass as any);
 }
 
-// Generate scene image using placeholder service (no AI)
-export const generateSceneImage = async (prompt: string): Promise<string> => {
-  // Simulate loading delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-
-  // Use a placeholder image service with scene-appropriate images
-  // We'll use Unsplash Source API for relevant Melbourne images
-  const keywords = extractKeywords(prompt);
-  const query = keywords.join(',') || 'melbourne,australia';
+// Fixed image database for reliable, consistent visuals
+const SCENE_IMAGES: Record<string, string> = {
+  // Airport & Travel
+  airport: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=600&fit=crop',
+  luggage: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=800&h=600&fit=crop',
   
-  // Return Unsplash image URL
-  return `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}`;
+  // Luxury (Minister Son)
+  luxury_hotel: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop',
+  luxury_car: 'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=600&fit=crop',
+  casino: 'https://images.unsplash.com/photo-1596838132731-3301c3fd4317?w=800&h=600&fit=crop',
+  shopping: 'https://images.unsplash.com/photo-1555421689-d68471e189f2?w=800&h=600&fit=crop',
+  fine_dining: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop',
+  
+  // Housing
+  apartment: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop',
+  shared_room: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop',
+  hostel: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop',
+  
+  // Work
+  office: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop',
+  warehouse: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&h=600&fit=crop',
+  delivery: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?w=800&h=600&fit=crop',
+  cleaning: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=600&fit=crop',
+  restaurant: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop',
+  retail: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+  
+  // Transport
+  bicycle: 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&h=600&fit=crop',
+  tram: 'https://images.unsplash.com/photo-1494515843206-f3117d3f51b7?w=800&h=600&fit=crop',
+  bus: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800&h=600&fit=crop',
+  
+  // City & Melbourne
+  melbourne_city: 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=800&h=600&fit=crop',
+  melbourne_skyline: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=600&fit=crop',
+  federation_square: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=800&h=600&fit=crop',
+  
+  // Food & Shopping
+  grocery_store: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&h=600&fit=crop',
+  srilankan_food: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&h=600&fit=crop',
+  market: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=800&h=600&fit=crop',
+  
+  // University & Education
+  university: 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=600&fit=crop',
+  library: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop',
+  
+  // Success & Celebration
+  celebration: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&h=600&fit=crop',
+  success: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop',
+  
+  // Struggle
+  worried: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&h=600&fit=crop',
+  help: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop',
+  
+  // Default
+  default: 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=800&h=600&fit=crop'
 };
 
-// Extract keywords from image prompt for better placeholder images
-function extractKeywords(prompt: string): string[] {
-  const keywords: string[] = [];
+// Generate scene image using fixed database
+export const generateSceneImage = async (prompt: string): Promise<string> => {
+  // Simulate loading delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  const promptLower = prompt.toLowerCase();
   
-  if (prompt.toLowerCase().includes('luxury') || prompt.toLowerCase().includes('hotel')) {
-    keywords.push('luxury', 'hotel', 'melbourne');
-  } else if (prompt.toLowerCase().includes('airport')) {
-    keywords.push('airport', 'travel', 'melbourne');
-  } else if (prompt.toLowerCase().includes('apartment') || prompt.toLowerCase().includes('room')) {
-    keywords.push('apartment', 'interior', 'modern');
-  } else if (prompt.toLowerCase().includes('job') || prompt.toLowerCase().includes('work')) {
-    keywords.push('work', 'office', 'business');
-  } else if (prompt.toLowerCase().includes('food') || prompt.toLowerCase().includes('delivery')) {
-    keywords.push('food', 'delivery', 'bicycle');
-  } else if (prompt.toLowerCase().includes('university') || prompt.toLowerCase().includes('campus')) {
-    keywords.push('university', 'campus', 'melbourne');
-  } else if (prompt.toLowerCase().includes('city') || prompt.toLowerCase().includes('melbourne')) {
-    keywords.push('melbourne', 'city', 'skyline');
-  } else if (prompt.toLowerCase().includes('cleaning')) {
-    keywords.push('cleaning', 'work', 'building');
-  } else {
-    keywords.push('melbourne', 'australia');
-  }
+  // Match prompt to specific images
+  if (promptLower.includes('airport')) return SCENE_IMAGES.airport;
+  if (promptLower.includes('luggage')) return SCENE_IMAGES.luggage;
+  if (promptLower.includes('bmw') || promptLower.includes('luxury car')) return SCENE_IMAGES.luxury_car;
+  if (promptLower.includes('five star') || promptLower.includes('luxury') && promptLower.includes('hotel')) return SCENE_IMAGES.luxury_hotel;
+  if (promptLower.includes('casino') || promptLower.includes('poker')) return SCENE_IMAGES.casino;
+  if (promptLower.includes('shopping') || promptLower.includes('mall')) return SCENE_IMAGES.shopping;
+  if (promptLower.includes('fine dining') || promptLower.includes('restaurant') && promptLower.includes('elegant')) return SCENE_IMAGES.fine_dining;
   
-  return keywords.slice(0, 3);
-}
+  if (promptLower.includes('apartment') || promptLower.includes('docklands')) return SCENE_IMAGES.apartment;
+  if (promptLower.includes('shared') && (promptLower.includes('room') || promptLower.includes('house'))) return SCENE_IMAGES.shared_room;
+  if (promptLower.includes('hostel') || promptLower.includes('shelter')) return SCENE_IMAGES.hostel;
+  
+  if (promptLower.includes('warehouse') || promptLower.includes('amazon')) return SCENE_IMAGES.warehouse;
+  if (promptLower.includes('delivery') || promptLower.includes('uber eats')) return SCENE_IMAGES.delivery;
+  if (promptLower.includes('bicycle') || promptLower.includes('bike')) return SCENE_IMAGES.bicycle;
+  if (promptLower.includes('cleaning') || promptLower.includes('clean')) return SCENE_IMAGES.cleaning;
+  if (promptLower.includes('office') || promptLower.includes('business meeting')) return SCENE_IMAGES.office;
+  if (promptLower.includes('restaurant') || promptLower.includes('cafe')) return SCENE_IMAGES.restaurant;
+  if (promptLower.includes('retail') || promptLower.includes('grocery') && promptLower.includes('work')) return SCENE_IMAGES.retail;
+  
+  if (promptLower.includes('tram') || promptLower.includes('melbourne tram')) return SCENE_IMAGES.tram;
+  if (promptLower.includes('bus')) return SCENE_IMAGES.bus;
+  
+  if (promptLower.includes('federation square')) return SCENE_IMAGES.federation_square;
+  if (promptLower.includes('melbourne') && promptLower.includes('skyline')) return SCENE_IMAGES.melbourne_skyline;
+  if (promptLower.includes('city') || promptLower.includes('cbd')) return SCENE_IMAGES.melbourne_city;
+  
+  if (promptLower.includes('grocery') || promptLower.includes('coles') || promptLower.includes('woolworths')) return SCENE_IMAGES.grocery_store;
+  if (promptLower.includes('sri lankan') && promptLower.includes('food')) return SCENE_IMAGES.srilankan_food;
+  if (promptLower.includes('market')) return SCENE_IMAGES.market;
+  
+  if (promptLower.includes('university') || promptLower.includes('campus')) return SCENE_IMAGES.university;
+  if (promptLower.includes('library')) return SCENE_IMAGES.library;
+  
+  if (promptLower.includes('celebrat')) return SCENE_IMAGES.celebration;
+  if (promptLower.includes('success') || promptLower.includes('settled')) return SCENE_IMAGES.success;
+  
+  if (promptLower.includes('worried') || promptLower.includes('stressed') || promptLower.includes('scam')) return SCENE_IMAGES.worried;
+  if (promptLower.includes('help') || promptLower.includes('community')) return SCENE_IMAGES.help;
+  
+  // Default Melbourne city image
+  return SCENE_IMAGES.default;
+};
