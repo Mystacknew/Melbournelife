@@ -827,10 +827,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
   // Contractor Scam Scenarios
   contractor_scam_start: {
     id: "contractor_scam_start",
-    title: "Cleaning Contractor කතාව",
-    description: "ඔයාගේ cleaning job වල, contractor අයියා සතියක් වැඩ කරලා ඉන්න මුදල් ගෙවන්නේ නෑ. 'මචං දැන් cash flow issue එකක් තියෙනවා, අනිද්දා දෙන්නම්' කියලා දෙන්නේ විතරක් තමා කතා.",
-    image_url: "cleaning_struggles",
-    profile_class: "Middle Class",
+    story_text: "ඔයාගේ cleaning job වල, contractor අයියා සතියක් වැඩ කරලා ඉන්න මුදල් ගෙවන්නේ නෑ. 'මචං දැන් cash flow issue එකක් තියෙනවා, අනිද්දා දෙන්නම්' කියලා දෙන්නේ විතරක් තමා කතා.",
+    image_prompt: "cleaning_struggles",
     choices: [
       { id: "c1", text: "කොහොමහරි wait කරමු, රස්සාව නැති වෙන්න ඕනේ නෑනේ", next_scenario: "contractor_payment_delay_1" },
       { id: "c2", text: "කෙලින්ම අහමු කොහොමද මේ, මට මුදල් ඕන", next_scenario: "contractor_confrontation" },
@@ -843,10 +841,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_payment_delay_1: {
     id: "contractor_payment_delay_1",
-    title: "පළවෙනි Delay",
-    description: "සතියක් බලාගෙන ඉදලා අහපු විට contractor අයියා කියනවා 'මචං ඒ client එක තාම pay කරේ නෑ, ඔයා මොකක්ද කරන්නේ බලපං, මං හදාගන්නම්'. තව සතියක් wait කරන්න වෙනවා.",
-    image_url: "financial_stress",
-    profile_class: "Middle Class",
+    story_text: "සතියක් බලාගෙන ඉදලා අහපු විට contractor අයියා කියනවා 'මචං ඒ client එක තාම pay කරේ නෑ, ඔයා මොකක්ද කරන්නේ බලපං, මං හදාගන්නම්'. තව සතියක් wait කරන්න වෙනවා.",
+    image_prompt: "financial_stress",
     choices: [
       { id: "c1", text: "තව සතියක් wait කරමු, අනික් job එකක් හොයාගමු මේ අතරෙ", next_scenario: "contractor_payment_delay_2" },
       { id: "c2", text: "Fair Work Ombudsman එකට complaint එකක් දාමු", next_scenario: "contractor_legal_action" },
@@ -859,10 +855,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_payment_delay_2: {
     id: "contractor_payment_delay_2",
-    title: "දෙවෙනි Delay - The Trap",
-    description: "දෙවෙනි සතියේත් මුදල් නෑ. Contractor අයියා කියනවා 'මචං ඔයා හොඳ කොල්ලෙක්, මට විශ්වාසයි. මේ weekend එක extra shift එකක් කරලා දෙන්නද? මං හොඳටම pay කරන්නම් හැමදේම එකතු කරලා'. Trap එකක්ද මේ?",
-    image_url: "difficult_decision",
-    profile_class: "Middle Class",
+    story_text: "දෙවෙනි සතියේත් මුදල් නෑ. Contractor අයියා කියනවා 'මචං ඔයා හොඳ කොල්ලෙක්, මට විශ්වාසයි. මේ weekend එක extra shift එකක් කරලා දෙන්නද? මං හොඳටම pay කරන්නම් හැමදේම එකතු කරලා'. Trap එකක්ද මේ?",
+    image_prompt: "difficult_decision",
     choices: [
       { id: "c1", text: "එපා, මුලින්ම තියන මුදල් දෙන්න කියමු", next_scenario: "contractor_confrontation" },
       { id: "c2", text: "Extra shift කරලා බලමු, maybe ඇත්තටම pay කරයි", next_scenario: "contractor_extra_work_scam" },
@@ -875,10 +869,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_extra_work_scam: {
     id: "contractor_extra_work_scam",
-    title: "Extra Work කළාට...",
-    description: "Weekend එකේ 16 hours වැඩ කළා. දැන් contractor අයියා කියනවා 'අනේ මචං, ඔය weekend rate එක ඔයාට කිව්වේ නෑනේ, weekday rate එකේ තමා calculate කරේ. ඒකත් මට තාම client payment එක ආවේ නෑ'. ඔයාට දැන් 3 weeks pay නෑ.",
-    image_url: "exhausted_worker",
-    profile_class: "Middle Class",
+    story_text: "Weekend එකේ 16 hours වැඩ කළා. දැන් contractor අයියා කියනවා 'අනේ මචං, ඔය weekend rate එක ඔයාට කිව්වේ නෑනේ, weekday rate එකේ තමා calculate කරේ. ඒකත් මට තාම client payment එක ආවේ නෑ'. ඔයාට දැන් 3 weeks pay නෑ.",
+    image_prompt: "exhausted_worker",
     choices: [
       { id: "c1", text: "Fair Work කෙලින්ම contact කරමු, මේක illegal", next_scenario: "contractor_legal_action" },
       { id: "c2", text: "අනික් cleaners එක්ක එකතු වෙලා group එකක් හදමු", next_scenario: "contractor_group_action" },
@@ -891,10 +883,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_motivational_talk: {
     id: "contractor_motivational_talk",
-    title: "Contractor Aiya's 'Motivation'",
-    description: "Contractor අයියා හැමදාම කතා කරන්නේ ගේන්න මුදල් ගැන නෙමෙයි. 'මචං ඔයාලා අලුතෙන් ආපු අයට hard work කරන්න ඕන. මම වගේ කෙනෙක් වෙන්න ඕන නම් sacrifice කරන්න වෙනවා. මං පළවෙනි දවසේ ඉඳන් දවසට 18 hours වැඩ කළා'. එත් මුදල් ගෙවන්නේ නෑ.",
-    image_url: "mentor_talk",
-    profile_class: "Middle Class",
+    story_text: "Contractor අයියා හැමදාම කතා කරන්නේ ගේන්න මුදල් ගැන නෙමෙයි. 'මචං ඔයාලා අලුතෙන් ආපු අයට hard work කරන්න ඕන. මම වගේ කෙනෙක් වෙන්න ඕන නම් sacrifice කරන්න වෙනවා. මං පළවෙනි දවසේ ඉඳන් දවසට 18 hours වැඩ කළා'. එත් මුදල් ගෙවන්නේ නෑ.",
+    image_prompt: "mentor_talk",
     choices: [
       { id: "c1", text: "ඔව් අයියේ, hard work කරන්නම් (වහලුන් වගේ වැඩ කරනවා)", next_scenario: "contractor_exploitation_continues" },
       { id: "c2", text: "අයියේ motivation එක හොඳයි, ඒත් pay කරන්න ඕන තියෙන දේ", next_scenario: "contractor_confrontation" },
@@ -907,10 +897,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_female_favoritism: {
     id: "contractor_female_favoritism",
-    title: "Single කෙල්ලෝ Special",
-    description: "Contractor අයියා single girls ට extra shifts, good locations, හොඳ pay කරනවා. ඔයාලගේ වගේ boys ට බාරදෙනවා hard, dirty jobs. Rashmi නම් කෙල්ල payment වලට කිසිම delay එකක් නෑ, extra bonuses තියෙනවා. 'අදයි හෙටයි කියලා boy කෙනෙක් girl කෙනෙක් වෙන්නේ, මං fair විතරයි වෙන්නේ' කියලා contractor අයියා ගොන්නු.",
-    image_url: "workplace_inequality",
-    profile_class: "Middle Class",
+    story_text: "Contractor අයියා single girls ට extra shifts, good locations, හොඳ pay කරනවා. ඔයාලගේ වගේ boys ට බාරදෙනවා hard, dirty jobs. Rashmi නම් කෙල්ල payment වලට කිසිම delay එකක් නෑ, extra bonuses තියෙනවා. 'අදයි හෙටයි කියලා boy කෙනෙක් girl කෙනෙක් වෙන්නේ, මං fair විතරයි වෙන්නේ' කියලා contractor අයියා ගොන්නු.",
+    image_prompt: "workplace_inequality",
     choices: [
       { id: "c1", text: "Silent වෙලා ඉන්නවා, රස්සාව තිබ්බොත් හරි", next_scenario: "contractor_exploitation_continues" },
       { id: "c2", text: "මේක discrimination, Fair Work එකට කියමු", next_scenario: "contractor_legal_action" },
@@ -923,10 +911,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_confrontation: {
     id: "contractor_confrontation",
-    title: "Confrontation",
-    description: "ඔයා කෙලින්ම contractor අයියාට කතා කරනවා pay ගැන. ඔහු කියනවා 'අනේ මචං, ඔයා මාර demanding විශාලයි. අනිත් අය complaint නැතිව වැඩ කරනවා, ඔයා විතරක්ද මේ රටට ආවේ? හෙට ඉඳන් වැඩට එන්න එපා, මං call කරන්නම්'. Job එක ගියා වගේ.",
-    image_url: "job_loss",
-    profile_class: "Middle Class",
+    story_text: "ඔයා කෙලින්ම contractor අයියාට කතා කරනවා pay ගැන. ඔහු කියනවා 'අනේ මචං, ඔයා මාර demanding විශාලයි. අනිත් අය complaint නැතිව වැඩ කරනවා, ඔයා විතරක්ද මේ රටට ආවේ? හෙට ඉඳන් වැඩට එන්න එපා, මං call කරන්නම්'. Job එක ගියා වගේ.",
+    image_prompt: "job_loss",
     choices: [
       { id: "c1", text: "Sorry අයියේ කියලා job එක save කරගමු", next_scenario: "contractor_exploitation_continues" },
       { id: "c2", text: "Fair Work Ombudsman එකට යමු proper complaints දාගෙන", next_scenario: "contractor_legal_action" },
@@ -939,10 +925,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_group_action: {
     id: "contractor_group_action",
-    title: "එකට වැඩ කරමු",
-    description: "ඔයා අනික් Lankan cleaners 5දෙනෙක් එක්ක කතා කරනවා. හැමෝටම pay issues තියනවා. එකතු වෙලා contractor අයියාට කියනවා හැමෝම එකතු වෙලා, මුදල් ගෙවන්න නැත්නම් හැමෝම එකට leave කරනවා කියලා. ඔහුට බයයි වෙනවා.",
-    image_url: "team_unity",
-    profile_class: "Middle Class",
+    story_text: "ඔයා අනික් Lankan cleaners 5දෙනෙක් එක්ක කතා කරනවා. හැමෝටම pay issues තියනවා. එකතු වෙලා contractor අයියාට කියනවා හැමෝම එකතු වෙලා, මුදල් ගෙවන්න නැත්නම් හැමෝම එකට leave කරනවා කියලා. ඔහුට බයයි වෙනවා.",
+    image_prompt: "team_unity",
     choices: [
       { id: "c1", text: "දැන් හරියට pay කරනවා, ඒත් හැමෝම එකට බලාගෙන ඉන්නවා", next_scenario: "contractor_group_victory" },
       { id: "c2", text: "Fair Work complaint එකක් දාලා legal protection ගමු", next_scenario: "contractor_legal_victory" },
@@ -955,10 +939,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_group_victory: {
     id: "contractor_group_victory",
-    title: "Unity is Strength",
-    description: "Contractor අයියා හැමෝගේම payment හරියට කරනවා. ඔහු දන්නවා group එකක් එකට කතා කරන කොට ඔහුට power නෑ කියලා. දැන් ඔයාලට හරියට weekly pay, proper shifts, හොඳ locations තියනවා. Lankan community power!",
-    image_url: "celebration",
-    profile_class: "Middle Class",
+    story_text: "Contractor අයියා හැමෝගේම payment හරියට කරනවා. ඔහු දන්නවා group එකක් එකට කතා කරන කොට ඔහුට power නෑ කියලා. දැන් ඔයාලට හරියට weekly pay, proper shifts, හොඳ locations තියනවා. Lankan community power!",
+    image_prompt: "celebration",
     choices: [
       { id: "c1", text: "මේ job එකේ දිගටම හරි conditions වලින් වැඩ කරමු", next_scenario: "middle_stable_work" },
       { id: "c2", text: "වෙන opportunities හොයමු දැන් stable base එකක් තියෙන නිසා", next_scenario: "middle_job_hunt" },
@@ -971,10 +953,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_legal_action: {
     id: "contractor_legal_action",
-    title: "Fair Work Ombudsman",
-    description: "ඔයා Fair Work Ombudsman එකට complaint එකක් දානවා. ඔවුන් investigation එකක් කරනවා. Pay slips නැතිව, cash payments කරපු එක හින්දා contractor අයියාට හොඳ trouble එකක් වෙනවා. ඔයාට back pay හම්බ වෙනවා, ඒත් job එක නැතිවෙනවා.",
-    image_url: "legal_justice",
-    profile_class: "Middle Class",
+    story_text: "ඔයා Fair Work Ombudsman එකට complaint එකක් දානවා. ඔවුන් investigation එකක් කරනවා. Pay slips නැතිව, cash payments කරපු එක හින්දා contractor අයියාට හොඳ trouble එකක් වෙනවා. ඔයාට back pay හම්බ වෙනවා, ඒත් job එක නැතිවෙනවා.",
+    image_prompt: "legal_justice",
     choices: [
       { id: "c1", text: "දැන් වෙන honest employer කෙනෙක් ලගට යමු", next_scenario: "contractor_legal_victory" },
       { id: "c2", text: "මේ experience එකෙන් ඉගෙනගත්ත දේවල් share කරමු community එකට", next_scenario: "middle_community_leader" },
@@ -987,10 +967,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_legal_victory: {
     id: "contractor_legal_victory",
-    title: "Justice Served",
-    description: "Fair Work investigation එකෙන් ඔයාට 3 weeks back pay + penalty rates හම්බවෙනවා. Contractor අයියාට fine එකක් දෙනවා. ඔයාගේ story අනික් Lankan workers ලට inspiration එකක් වෙනවා. දැන් proper rights දන්න කෙනෙක් විදියට ඔයා Melbourne Lankan community එකේ respected වෙනවා.",
-    image_url: "success_celebration",
-    profile_class: "Middle Class",
+    story_text: "Fair Work investigation එකෙන් ඔයාට 3 weeks back pay + penalty rates හම්බවෙනවා. Contractor අයියාට fine එකක් දෙනවා. ඔයාගේ story අනික් Lankan workers ලට inspiration එකක් වෙනවා. දැන් proper rights දන්න කෙනෙක් විදියට ඔයා Melbourne Lankan community එකේ respected වෙනවා.",
+    image_prompt: "success_celebration",
     choices: [
       { id: "c1", text: "වෙන good cleaning company එකකට join වෙමු", next_scenario: "middle_stable_work" },
       { id: "c2", text: "Community එකේ workers rights ගැන awareness කරමු", next_scenario: "middle_community_leader" },
@@ -1003,10 +981,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_exploitation_continues: {
     id: "contractor_exploitation_continues",
-    title: "Cycle එක දිගටම",
-    description: "ඔයා silent වෙලා වැඩ කරනවා. Contractor අයියා දිගටම exploit කරනවා - late payments, extra work, poor conditions. ඔයාගේ stress වැඩිවෙනවා, health එක පහළ යනවා. Melbourne dream එක nightmare එකක් වෙලා යනවා.",
-    image_url: "burnout",
-    profile_class: "Middle Class",
+    story_text: "ඔයා silent වෙලා වැඩ කරනවා. Contractor අයියා දිගටම exploit කරනවා - late payments, extra work, poor conditions. ඔයාගේ stress වැඩිවෙනවා, health එක පහළ යනවා. Melbourne dream එක nightmare එකක් වෙලා යනවා.",
+    image_prompt: "burnout",
     choices: [
       { id: "c1", text: "තව කොච්චර කාලයක්ද මෙහෙම? Job එක leave කරමු", next_scenario: "middle_job_hunt" },
       { id: "c2", text: "Lankan community support group එකකට යමු help එකක් ගන්න", next_scenario: "lower_community" },
@@ -1019,10 +995,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_family_loan: {
     id: "contractor_family_loan",
-    title: "ගෙදර අයට කියන්න වෙනවා",
-    description: "Sri Lanka එකේ parents ලට call කරලා $500ක් විදියක් කරගන්න කියනවා. ඔවුන් disappointed, worried. 'අපි හිතුවේ Melbourne වල සල්ලි හොයාගෙන ඉන්නවා කියලා' කියලා අම්මා කියනවා. Guilt + Stress maximum.",
-    image_url: "family_call",
-    profile_class: "Middle Class",
+    story_text: "Sri Lanka එකේ parents ලට call කරලා $500ක් විදියක් කරගන්න කියනවා. ඔවුන් disappointed, worried. 'අපි හිතුවේ Melbourne වල සල්ලි හොයාගෙන ඉන්නවා කියලා' කියලා අම්මා කියනවා. Guilt + Stress maximum.",
+    image_prompt: "family_call",
     choices: [
       { id: "c1", text: "මුදල් ගන්නවා, වැඩේ හරි කරගෙන ආපහු එවන්නම් කියලා promise කරනවා", next_scenario: "middle_comeback_attempt" },
       { id: "c2", text: "නෑ, මං විදියක් හදාගන්නම්, Uber Eats වැඩ කරමු", next_scenario: "business_uber_eats" },
@@ -1035,10 +1009,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   contractor_quit: {
     id: "contractor_quit",
-    title: "Enough is Enough",
-    description: "ඔයා contractor අයියාට කෙලින්ම කියනවා 'මට වැඩ කරන්න බෑ මෙහෙම conditions වලින්, මං යනවා'. ඔහු උත්සාහ කරනවා convince කරන්න, threats දෙනවා, ඒත් ඔයා determined. දැන් ඔයාට income එකක් නෑ, ඒත් mental peace තියනවා.",
-    image_url: "new_beginning",
-    profile_class: "Middle Class",
+    story_text: "ඔයා contractor අයියාට කෙලින්ම කියනවා 'මට වැඩ කරන්න බෑ මෙහෙම conditions වලින්, මං යනවා'. ඔහු උත්සාහ කරනවා convince කරන්න, threats දෙනවා, ඒත් ඔයා determined. දැන් ඔයාට income එකක් නෑ, ඒත් mental peace තියනවා.",
+    image_prompt: "new_beginning",
     choices: [
       { id: "c1", text: "වෙන honest cleaning company එකක් හොයමු", next_scenario: "middle_cleaning_job" },
       { id: "c2", text: "Uber Eats, Doordash වගේ delivery jobs බලමු", next_scenario: "business_uber_eats" },
@@ -1052,10 +1024,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
   // AusPost Scam Scenarios
   auspost_scam_start: {
     id: "auspost_scam_start",
-    title: "AusPost 'Job Opportunity'",
-    description: "Facebook Lankan group එකේ post එකක් - 'AusPost parcel sorting, $35/hour, cash job, anyone interested message me'. ඔයා message කරනවා. ගොල්ලෝ කියනවා '$200 training fee + $150 uniform deposit, refundable after first month'.",
-    image_url: "job_opportunity",
-    profile_class: "Middle Class",
+    story_text: "Facebook Lankan group එකේ post එකක් - 'AusPost parcel sorting, $35/hour, cash job, anyone interested message me'. ඔයා message කරනවා. ගොල්ලෝ කියනවා '$200 training fee + $150 uniform deposit, refundable after first month'.",
+    image_prompt: "job_opportunity",
     choices: [
       { id: "c1", text: "$350 දෙලා බලමු, good job එකක් නම් හොඳයි", next_scenario: "auspost_scam_trap" },
       { id: "c2", text: "Suspicious නේ, AusPost website එකෙන් verify කරමු", next_scenario: "auspost_verify" },
@@ -1068,10 +1038,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   auspost_scam_trap: {
     id: "auspost_scam_trap",
-    title: "Scammed!",
-    description: "$350 bank transfer කළා. එයාලා kiyනවා 'හෙට training, address එක SMS එකක් එන්නම්'. SMS එකක් ආවේ නෑ. Call කරනවා - number blocked. Facebook profile deleted. ගල් ගහනවා. Scam එකක් හම්බ වෙලා.",
-    image_url: "scam_realization",
-    profile_class: "Middle Class",
+    story_text: "$350 bank transfer කළා. එයාලා kiyනවා 'හෙට training, address එක SMS එකක් එන්නම්'. SMS එකක් ආවේ නෑ. Call කරනවා - number blocked. Facebook profile deleted. ගල් ගහනවා. Scam එකක් හම්බ වෙලා.",
+    image_prompt: "scam_realization",
     choices: [
       { id: "c1", text: "Police complaint එකක් දාමු, bank එකට කියමු", next_scenario: "auspost_police_report" },
       { id: "c2", text: "Lankan community එකට warn කරමු මේ scam එක ගැන", next_scenario: "middle_community_leader" },
@@ -1084,10 +1052,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   auspost_verify: {
     id: "auspost_verify",
-    title: "Smart Move",
-    description: "ඔයා AusPost official website එකෙන් check කරනවා. Direct recruitment එකෙන් විතරයි apply කරන්න පුළුවන්, කවදාවත් cash fees ඉල්ලන්නේ නෑ. මේක clear scam එකක්. ඔයාගේ smart thinking හින්දා $350 save වුනා.",
-    image_url: "smart_decision",
-    profile_class: "Middle Class",
+    story_text: "ඔයා AusPost official website එකෙන් check කරනවා. Direct recruitment එකෙන් විතරයි apply කරන්න පුළුවන්, කවදාවත් cash fees ඉල්ලන්නේ නෑ. මේක clear scam එකක්. ඔයාගේ smart thinking හින්දා $350 save වුනා.",
+    image_prompt: "smart_decision",
     choices: [
       { id: "c1", text: "Lankan community එකට warn කරමු මේ scam එක ගැන", next_scenario: "middle_community_leader" },
       { id: "c2", text: "AusPost official website එකෙන් apply කරමු properly", next_scenario: "auspost_proper_application" },
@@ -1100,10 +1066,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   auspost_saved: {
     id: "auspost_saved",
-    title: "Community Wisdom",
-    description: "ඔයා Lankan community එකේ uncle කෙනෙක්ට කතා කරනවා. ඔහු කියනවා 'පුතේ මේ scam එකක්, මං මාස 3කට කලින් මේ එකම post එක දැක්කා, හැමදාම එනවා මේ වගේ'. Community wisdom එක හින්දා ඔයා save වුනා.",
-    image_url: "community_support",
-    profile_class: "Middle Class",
+    story_text: "ඔයා Lankan community එකේ uncle කෙනෙක්ට කතා කරනවා. ඔහු කියනවා 'පුතේ මේ scam එකක්, මං මාස 3කට කලින් මේ එකම post එක දැක්කා, හැමදාම එනවා මේ වගේ'. Community wisdom එක හින්දා ඔයා save වුනා.",
+    image_prompt: "community_support",
     choices: [
       { id: "c1", text: "Uncle ට thanks කියලා legitimate job leads අහමු", next_scenario: "middle_job_hunt" },
       { id: "c2", text: "Facebook group එකේ scam එක report කරමු", next_scenario: "middle_community_leader" },
@@ -1116,10 +1080,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   auspost_police_report: {
     id: "auspost_police_report",
-    title: "Police Report",
-    description: "Police station එකට report කරනවා. Officer කියනවා 'Unfortunately these scams are very common, we'll add it to the file but recovery is unlikely'. Bank එකත් කියනවා voluntary transfer එකක් නිසා refund කරන්න බෑ. මුදල් ගියා, lesson එකක් ඉගෙන ගත්තා.",
-    image_url: "police_station",
-    profile_class: "Middle Class",
+    story_text: "Police station එකට report කරනවා. Officer කියනවා 'Unfortunately these scams are very common, we'll add it to the file but recovery is unlikely'. Bank එකත් කියනවා voluntary transfer එකක් නිසා refund කරන්න බෑ. මුදල් ගියා, lesson එකක් ඉගෙන ගත්තා.",
+    image_prompt: "police_station",
     choices: [
       { id: "c1", text: "Lankan community එකට warn කරලා අනිත් අය save කරමු", next_scenario: "middle_community_leader" },
       { id: "c2", text: "වැඩේ හරි කරගෙන extra shifts වලින් cover කරමු", next_scenario: "middle_cleaning_job" },
@@ -1132,10 +1094,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   auspost_proper_application: {
     id: "auspost_proper_application",
-    title: "Proper Application",
-    description: "AusPost official career portal එකෙන් apply කරනවා. දැන් හරියට interview process, background checks හැම දෙයක්ම legitimate විදියට වෙනවා. ටිකක් කල් යයි, ඒත් proper job එකක්.",
-    image_url: "job_interview",
-    profile_class: "Middle Class",
+    story_text: "AusPost official career portal එකෙන් apply කරනවා. දැන් හරියට interview process, background checks හැම දෙයක්ම legitimate විදියට වෙනවා. ටිකක් කල් යයි, ඒත් proper job එකක්.",
+    image_prompt: "job_interview",
     choices: [
       { id: "c1", text: "Interview එකට හොඳට prepare වෙමු", next_scenario: "auspost_interview_success" },
       { id: "c2", text: "මේ අතරෙ වෙන job එකකුත් හොයමු backup එකක් විදියට", next_scenario: "middle_job_hunt" },
@@ -1148,10 +1108,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   auspost_interview_success: {
     id: "auspost_interview_success",
-    title: "AusPost Job Success!",
-    description: "Interview එක success! Casual position එකක් හම්බ වෙනවා $32/hour. Proper pay slips, superannuation, penalty rates හැම දෙයක්ම හරියට. මේක ඔයාගේ Melbourne life එකේ turning point එකක් වෙන්න පුළුවන්.",
-    image_url: "success_celebration",
-    profile_class: "Middle Class",
+    story_text: "Interview එක success! Casual position එකක් හම්බ වෙනවා $32/hour. Proper pay slips, superannuation, penalty rates හැම දෙයක්ම හරියට. මේක ඔයාගේ Melbourne life එකේ turning point එකක් වෙන්න පුළුවන්.",
+    image_prompt: "success_celebration",
     choices: [
       { id: "c1", text: "මේ job එකෙන් stable වෙලා permanent බලමු", next_scenario: "middle_stable_work" },
       { id: "c2", text: "දැන් student visa එකකට යන්න හිතමු", next_scenario: "minister_university" },
@@ -1165,10 +1123,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
   // PR Pathway Scenarios
   pr_consultation_start: {
     id: "pr_consultation_start",
-    title: "PR Pathway හොයමු",
-    description: "Australia එකේ permanent resident වෙන්න හිතනවා. Migration agent කෙනෙක් ලගට consultation එකකට යන්න ඕන. ඔවුන්ගේ fees $200-500 විතරයි consultation එකකට. ඔයාගේ social class එක මත depend වෙනවා ඔයාගේ options.",
-    image_url: "professional_meeting",
-    profile_class: "Middle Class",
+    story_text: "Australia එකේ permanent resident වෙන්න හිතනවා. Migration agent කෙනෙක් ලගට consultation එකකට යන්න ඕන. ඔවුන්ගේ fees $200-500 විතරයි consultation එකකට. ඔයාගේ social class එක මත depend වෙනවා ඔයාගේ options.",
+    image_prompt: "Professional migration agent office in Melbourne, consultation meeting",
     choices: [
       { id: "c1", text: "$200 දෙලා basic consultation එකක් ගමු", next_scenario: "pr_consultation_middle" },
       { id: "c2", text: "$500 premium agent එකක් try කරමු", next_scenario: "pr_consultation_premium" },
@@ -1181,10 +1137,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   pr_consultation_minister: {
     id: "pr_consultation_minister",
-    title: "ඇමති පුතාට Special Treatment",
-    description: "Migration agent ඔයාගේ background එක අහලා VIP treatment දෙනවා. 'Sir, ඔබට business visa, investment visa හැම දෙයක්ම qualify වෙනවා. $50,000 business investment එකකින් PR එක guaranteed'. ඔබේ family connections + money = easy pathway.",
-    image_url: "luxury_consultation",
-    profile_class: "ඇමති පුතා",
+    story_text: "Migration agent ඔයාගේ background එක අහලා VIP treatment දෙනවා. 'Sir, ඔබට business visa, investment visa හැම දෙයක්ම qualify වෙනවා. $50,000 business investment එකකින් PR එක guaranteed'. ඔබේ family connections + money = easy pathway.",
+    image_prompt: "Luxury migration consultation office, VIP client meeting",
     choices: [
       { id: "c1", text: "Business visa pathway එකට යමු - family money use කරලා", next_scenario: "pr_minister_business_visa" },
       { id: "c2", text: "Student → Work → PR pathway easy කරගමු university වලින්", next_scenario: "minister_university" },
@@ -1197,10 +1151,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   pr_consultation_business: {
     id: "pr_consultation_business",
-    title: "Business Family Options",
-    description: "Agent කියනවා 'ඔබේ family business background එකක් තියනවා, 186/482 Employer Sponsored visa වලට try කරන්න පුළුවන්. හෝ business visa pathway එකකුත් තියනවා moderate investment එකකින්'.",
-    image_url: "business_meeting",
-    profile_class: "Business Family",
+    story_text: "Agent කියනවා 'ඔබේ family business background එකක් තියනවා, 186/482 Employer Sponsored visa වලට try කරන්න පුළුවන්. හෝ business visa pathway එකකුත් තියනවා moderate investment එකකින්'.",
+    image_prompt: "Business migration consultation, professional office setting",
     choices: [
       { id: "c1", text: "Employer sponsored pathway - job offer එකක් හොයමු", next_scenario: "pr_business_employer_sponsored" },
       { id: "c2", text: "Business Innovation visa - $100k invest කරමු", next_scenario: "pr_business_innovation" },
@@ -1213,10 +1165,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   pr_consultation_middle: {
     id: "pr_consultation_middle",
-    title: "Middle Class Reality Check",
-    description: "Agent කියනවා 'ඔබට skilled migration pathway එක තමා realistic. ඒකට professional job experience + English test + points 65+ ඕන. හෝ employer sponsored visa එකක් හොයන්න ඕන. මාර hard pathway එකක්, 3-5 years යයි'.",
-    image_url: "realistic_discussion",
-    profile_class: "Middle Class",
+    story_text: "Agent කියනවා 'ඔබට skilled migration pathway එක තමා realistic. ඒකට professional job experience + English test + points 65+ ඕන. හෝ employer sponsored visa එකක් හොයන්න ඕන. මාර hard pathway එකක්, 3-5 years යයි'.",
+    image_prompt: "Serious migration consultation, middle class client looking stressed",
     choices: [
       { id: "c1", text: "Skilled pathway - IELTS කරලා points හදාගමු (hard way)", next_scenario: "pr_middle_skilled_grind" },
       { id: "c2", text: "Regional sponsorship හොයමු - එහෙම ටිකක් easy", next_scenario: "pr_middle_regional" },
@@ -1229,10 +1179,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   pr_consultation_lower: {
     id: "pr_consultation_lower",
-    title: "Lower Class හිරවීම",
-    description: "Agent honestly කියනවා 'ඔබේ current situation එකෙන් PR එක මාරම hard. Skilled pathway එකට qualifications නෑ, employer sponsored එකට stable job නෑ. Best option - partner visa හෝ 5+ years wait කරලා humanitarian grounds'. බොහොම අමාරුයි.",
-    image_url: "difficult_news",
-    profile_class: "Lower Class",
+    story_text: "Agent honestly කියනවා 'ඔබේ current situation එකෙන් PR එක මාරම hard. Skilled pathway එකට qualifications නෑ, employer sponsored එකට stable job නෑ. Best option - partner visa හෝ 5+ years wait කරලා humanitarian grounds'. බොහොම අමාරුයි.",
+    image_prompt: "Difficult migration consultation, agent delivering bad news",
     choices: [
       { id: "c1", text: "දිගටම කරගෙන ඉන්නවා, දවසක හරි වෙයි", next_scenario: "lower_survival_mode" },
       { id: "c2", text: "Skills develop කරලා qualify වෙන්න try කරමු (long shot)", next_scenario: "pr_lower_upskill" },
@@ -1246,10 +1194,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
   // Driver's License Scenarios
   drivers_license_test: {
     id: "drivers_license_test",
-    title: "Victoria Driver's License Test",
-    description: "Australian driver's license එකක් ගන්න VicRoads test එකට යනවා. Sri Lankan license එකෙන් 3 months විතරයි drive කරන්න පුළුවන්. Computer test + driving test pass කරන්න ඕන. ඔයාගේ class එක මත experience එක වෙනස් වෙනවා.",
-    image_url: "driving_test",
-    profile_class: "Middle Class",
+    story_text: "Australian driver's license එකක් ගන්න VicRoads test එකට යනවා. Sri Lankan license එකෙන් 3 months විතරයි drive කරන්න පුළුවන්. Computer test + driving test pass කරන්න ඕන. ඔයාගේ class එක මත experience එක වෙනස් වෙනවා.",
+    image_prompt: "VicRoads testing center, driving test in progress",
     choices: [
       { id: "c1", text: "VicRoads කෙලින්ම test book කරමු - minister son advantage", next_scenario: "license_minister_easy" },
       { id: "c2", text: "Driving school classes + test - business/middle class way", next_scenario: "license_proper_preparation" },
@@ -1262,10 +1208,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   license_minister_easy: {
     id: "license_minister_easy",
-    title: "ඇමති පුතාට Easy Mode",
-    description: "ඔයාට car එකක් තියනවා, driving instructor premium එකක් hire කරනවා. Test එකේදී instructor හරියට train කරපු නිසා pass. දවසකට license එකත් අතට. Easy! Professional photo shoot එකක් කරලා license photo එකත් perfect.",
-    image_url: "success_celebration",
-    profile_class: "ඇමති පුතා",
+    story_text: "ඔයාට car එකක් තියනවා, driving instructor premium එකක් hire කරනවා. Test එකේදී instructor හරියට train කරපු නිසා pass. දවසකට license එකත් අතට. Easy! Professional photo shoot එකක් කරලා license photo එකත් perfect.",
+    image_prompt: "Young professional with new driver's license, luxury car in background",
     choices: [
       { id: "c1", text: "දැන් Melbourne එක පුරා freely drive කරමු", next_scenario: "minister_leisure" },
       { id: "c2", text: "Car upgrade එකක් කරමු - BMW/Mercedes", next_scenario: "minister_car_upgrade" },
@@ -1278,10 +1222,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   license_proper_preparation: {
     id: "license_proper_preparation",
-    title: "හරියට Prepare වෙමු",
-    description: "Driving school classes $400, VicRoads test fees $150. Theory test pass කළා, ඒත් driving test 1st attempt fail - parallel parking අමාරුයි. 2nd attempt $150 more. Pass කළාම license $50. Total investment ~$750. Worth it!",
-    image_url: "driving_lessons",
-    profile_class: "Middle Class",
+    story_text: "Driving school classes $400, VicRoads test fees $150. Theory test pass කළා, ඒත් driving test 1st attempt fail - parallel parking අමාරුයි. 2nd attempt $150 more. Pass කළාම license $50. Total investment ~$750. Worth it!",
+    image_prompt: "Driving school lesson, learner driver practicing parallel parking",
     choices: [
       { id: "c1", text: "දැන් license තියනවා, second hand car එකක් බලමු", next_scenario: "middle_car_purchase" },
       { id: "c2", text: "Public transport save කරලා මාසෙකට $200+ save වෙනවා", next_scenario: "middle_stable_work" },
@@ -1294,10 +1236,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   license_illegal_driving: {
     id: "license_illegal_driving",
-    title: "පරණ License එකෙන් Risk",
-    description: "ටික සල්ලි save කරන්න, Sri Lankan license එකෙන් drive කරනවා (3 months පසුව illegal). දවසක් police check point එකක හම්බ වෙනවා. 'Your international license is expired, this is illegal' - Fine $500 + court summons.",
-    image_url: "police_stop",
-    profile_class: "Lower Class",
+    story_text: "ටික සල්ලි save කරන්න, Sri Lankan license එකෙන් drive කරනවා (3 months පසුව illegal). දවසක් police check point එකක හම්බ වෙනවා. 'Your international license is expired, this is illegal' - Fine $500 + court summons.",
+    image_prompt: "Police checkpoint, officer checking driver's license",
     choices: [
       { id: "c1", text: "Fine එක ගෙවලා කෙලින්ම license test book කරමු", next_scenario: "license_lower_struggle" },
       { id: "c2", text: "Court එකට යලා mercy අයද යන්න පුළුවන් - lower class sympathy", next_scenario: "license_court_mercy" },
@@ -1311,10 +1251,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
   // Cash-in-Hand Restaurant Job
   cash_job_restaurant: {
     id: "cash_job_restaurant",
-    title: "Cash-in-Hand Restaurant Job",
-    description: "Burwood/Box Hill එකේ Asian restaurant එකක් offer කරනවා cash job එකක්. $15/hour (legal minimum $23), no super, no pay slips. 'We pay cash, you work hard, no questions asked'. Exploitation clear ඇති, ඒත් desperate times...",
-    image_url: "restaurant_kitchen",
-    profile_class: "Middle Class",
+    story_text: "Burwood/Box Hill එකේ Asian restaurant එකක් offer කරනවා cash job එකක්. $15/hour (legal minimum $23), no super, no pay slips. 'We pay cash, you work hard, no questions asked'. Exploitation clear ඇති, ඒත් desperate times...",
+    image_prompt: "Busy Asian restaurant kitchen, workers cooking",
     choices: [
       { id: "c1", text: "Minister son - 'No way, මම legal jobs විතරයි'", next_scenario: "cash_job_minister_reject" },
       { id: "c2", text: "Business/Middle - 'Temporary විතරයි, better job හොයනකම්'", next_scenario: "cash_job_accept_temporary" },
@@ -1327,10 +1265,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   cash_job_minister_reject: {
     id: "cash_job_minister_reject",
-    title: "Privilege = Choice",
-    description: "ඔයාට මේ වගේ exploitation accept කරන්න ඕන නෑ. Family support තියනවා, legal job එකක් හොයගන්න time තියනවා. Lankan community එකේ uncle කෙනෙක් හරහා proper restaurant management trainee job එකක් හොයාගන්නවා $28/hour.",
-    image_url: "professional_success",
-    profile_class: "ඇමති පුතා",
+    story_text: "ඔයාට මේ වගේ exploitation accept කරන්න ඕන නෑ. Family support තියනවා, legal job එකක් හොයගන්න time තියනවා. Lankan community එකේ uncle කෙනෙක් හරහා proper restaurant management trainee job එකක් හොයාගන්නවා $28/hour.",
+    image_prompt: "Professional restaurant management role, well-dressed trainee",
     choices: [
       { id: "c1", text: "Proper hospitality career එකක් develop කරමු", next_scenario: "minister_career_path" },
       { id: "c2", text: "මේක side income විතරයි, main focus university/business", next_scenario: "minister_university" },
@@ -1343,10 +1279,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   cash_job_accept_temporary: {
     id: "cash_job_accept_temporary",
-    title: "Temporary Compromise",
-    description: "3 months temporary විතරයි කරමු කියලා start කරනවා. $15/hour × 40 hours = $600/week cash. Boss මාර කතා, 'Good boy, you work hard'. ඒත් secretly better jobs apply කරනවා. වැඩේ hard, stress වැඩි, ඒත් survive වෙන්න පුළුවන්.",
-    image_url: "kitchen_work",
-    profile_class: "Middle Class",
+    story_text: "3 months temporary විතරයි කරමු කියලා start කරනවා. $15/hour × 40 hours = $600/week cash. Boss මාර කතා, 'Good boy, you work hard'. ඒත් secretly better jobs apply කරනවා. වැඩේ hard, stress වැඩි, ඒත් survive වෙන්න පුළුවන්.",
+    image_prompt: "Restaurant kitchen worker, tired but determined",
     choices: [
       { id: "c1", text: "දිගටම කරලා better job හම්බ වෙනකම් බලාගෙන ඉන්නවා", next_scenario: "cash_job_exit_success" },
       { id: "c2", text: "Fair Work කියලා legal pathway ගමු - risky but right", next_scenario: "cash_job_legal_action" },
@@ -1359,10 +1293,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   cash_job_exploitation: {
     id: "cash_job_exploitation",
-    title: "Exploitation Cycle",
-    description: "Options නැති නිසා accept කරනවා. Boss දන්නවා ඔයාට alternatives නෑ කියලා. $15/hour → $12/hour drop කරනවා. 'Business slow, you take or leave'. දවසට 12 hours වැඩ, rest නෑ, breaks නෑ. Health පහළ යනවා.",
-    image_url: "exhausted_worker",
-    profile_class: "Lower Class",
+    story_text: "Options නැති නිසා accept කරනවා. Boss දන්නවා ඔයාට alternatives නෑ කියලා. $15/hour → $12/hour drop කරනවා. 'Business slow, you take or leave'. දවසට 12 hours වැඩ, rest නෑ, breaks නෑ. Health පහළ යනවා.",
+    image_prompt: "Exhausted restaurant worker, long hours in hot kitchen",
     choices: [
       { id: "c1", text: "දිගටම කරනවා, මොකද කරන්නද වෙන මොකක්?", next_scenario: "cash_job_burnout" },
       { id: "c2", text: "Lankan community help desk එකට යලා බලමු", next_scenario: "lower_community" },
@@ -1376,10 +1308,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
   // Myki Inspector Scenarios
   myki_inspector_encounter: {
     id: "myki_inspector_encounter",
-    title: "Myki Inspector හම්බවීම",
-    description: "Tram එකේ යද්දී inspectors නැගලා 'Myki please'. ඔයාගේ Myki card එක tap කරන්න අමතක වුනා (හෝ balance නෑ). $250 fine එක issue කරනවා. ඔයාගේ response එක class එකෙන් වෙනස් වෙනවා.",
-    image_url: "tram_inspection",
-    profile_class: "Middle Class",
+    story_text: "Tram එකේ යද්දී inspectors නැගලා 'Myki please'. ඔයාගේ Myki card එක tap කරන්න අමතක වුනා (හෝ balance නෑ). $250 fine එක issue කරනවා. ඔයාගේ response එක class එකෙන් වෙනස් වෙනවා.",
+    image_prompt: "Myki inspectors on Melbourne tram checking tickets",
     choices: [
       { id: "c1", text: "Minister son - 'Sorry sir, genuine mistake' + pay කෙලින්ම", next_scenario: "myki_minister_pay" },
       { id: "c2", text: "Business/Middle - 'Can I explain?' + appeal එකක් try කරනවා", next_scenario: "myki_appeal_attempt" },
@@ -1392,10 +1322,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   myki_minister_pay: {
     id: "myki_minister_pay",
-    title: "ටික සල්ලි කුඩා ප්‍රශ්නයක්",
-    description: "ඔයා $250 card එකෙන් කෙලින්ම ගෙවනවා. Inspector කියනවා 'Thank you sir, make sure to touch on next time'. ඔයාට මේක විශාල issue එකක් නෙමෙයි - එක coffee date එකක වියදම විතරයි. Lesson learned.",
-    image_url: "casual_payment",
-    profile_class: "ඇමති පුතා",
+    story_text: "ඔයා $250 card එකෙන් කෙලින්ම ගෙවනවා. Inspector කියනවා 'Thank you sir, make sure to touch on next time'. ඔයාට මේක විශාල issue එකක් නෙමෙයි - එක coffee date එකක වියදම විතරයි. Lesson learned.",
+    image_prompt: "Casual payment with credit card on tram",
     choices: [
       { id: "c1", text: "Auto top-up Myki එකක් setup කරලා මේ වගේ නැවත නොවෙන්න", next_scenario: "minister_leisure" },
       { id: "c2", text: "දැන් Uber විතරක් යමු, public transport අපිට සුදුසු නෑ", next_scenario: "minister_hotel" },
@@ -1408,10 +1336,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   myki_appeal_attempt: {
     id: "myki_appeal_attempt",
-    title: "Appeal කරන්න Try කරමු",
-    description: "ඔයා politely explain කරනවා 'This is my first offense, I'm genuinely sorry, I'm a student/worker'. Inspector කියනවා 'You can appeal online'. Appeal letter එකක් ලියනවා. 50/50 chance - එක්කෝ fine waive වෙනවා, නැත්නම් pay කරන්න වෙනවා.",
-    image_url: "formal_letter",
-    profile_class: "Middle Class",
+    story_text: "ඔයා politely explain කරනවා 'This is my first offense, I'm genuinely sorry, I'm a student/worker'. Inspector කියනවා 'You can appeal online'. Appeal letter එකක් ලියනවා. 50/50 chance - එක්කෝ fine waive වෙනවා, නැත්නම් pay කරන්න වෙනවා.",
+    image_prompt: "Person writing formal appeal letter at computer",
     choices: [
       { id: "c1", text: "Appeal accept වෙලා fine waive! Lucky!", next_scenario: "myki_appeal_success" },
       { id: "c2", text: "Appeal reject, $250 installments වලින් ගෙවමු", next_scenario: "myki_payment_plan" },
@@ -1424,10 +1350,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   myki_lower_desperation: {
     id: "myki_lower_desperation",
-    title: "දුප්පත්කම කතා කරනවා",
-    description: "ඔයා honestly කියනවා 'Sir මට $250 pay කරන්න බෑ, මං cleaning jobs කරගෙන යනවා, rent ගෙවන්න අමාරුයි'. Inspector කියනවා 'Sorry mate, it's the law, you can apply for payment plan'. Desperate situation එකක්.",
-    image_url: "financial_stress",
-    profile_class: "Lower Class",
+    story_text: "ඔයා honestly කියනවා 'Sir මට $250 pay කරන්න බෑ, මං cleaning jobs කරගෙන යනවා, rent ගෙවන්න අමාරුයි'. Inspector කියනවා 'Sorry mate, it's the law, you can apply for payment plan'. Desperate situation එකක්.",
+    image_prompt: "financial_stress",
     choices: [
       { id: "c1", text: "Payment plan apply කරලා මාසෙකට $50 ගෙවමු", next_scenario: "myki_payment_plan_struggle" },
       { id: "c2", text: "Fine ignore කරලා දිගටම risk කරමු (bad idea)", next_scenario: "myki_ignore_consequences" },
@@ -1441,10 +1365,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
   // Car Accident with Sri Lankan License
   car_accident_srilankan_license: {
     id: "car_accident_srilankan_license",
-    title: "Accident - Sri Lankan License වලින්",
-    description: "Roundabout එකක හිටිය අනික් car එකකට හැපුණා. කුඩා accident එකක්. Police ආවා, ඔවුන් අහනවා license එක. ඔයා Sri Lankan license එක + international permit දානවා. ඔයාගේ class එක මත මේ situation එක හැසිරෙන විදිය වෙනස් වෙනවා.",
-    image_url: "car_accident",
-    profile_class: "Middle Class",
+    story_text: "Roundabout එකක හිටිය අනික් car එකකට හැපුණා. කුඩා accident එකක්. Police ආවා, ඔවුන් අහනවා license එක. ඔයා Sri Lankan license එක + international permit දානවා. ඔයාගේ class එක මත මේ situation එක හැසිරෙන විදිය වෙනස් වෙනවා.",
+    image_prompt: "car_accident",
     choices: [
       { id: "c1", text: "Minister son - lawyer කෙලින්ම call කරනවා + insurance හරි", next_scenario: "accident_minister_protected" },
       { id: "c2", text: "Business - Insurance තියනවා, claim process කරමු", next_scenario: "accident_business_insurance" },
@@ -1457,10 +1379,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   accident_minister_protected: {
     id: "accident_minister_protected",
-    title: "Privilege වලින් Protected",
-    description: "ඔයා කෙලින්ම family lawyer call කරනවා. ඔහු police එක්ක කතා කරනවා, insurance company handle කරනවා. Full comprehensive insurance තිබ්බ නිසා හැම දෙයක්ම cover. ඔයාට කිසිම financial hit එකක් නෑ. Car repair/replace හැම දෙයක්ම insurance එකෙන්.",
-    image_url: "lawyer_consultation",
-    profile_class: "ඇමති පුතා",
+    story_text: "ඔයා කෙලින්ම family lawyer call කරනවා. ඔහු police එක්ක කතා කරනවා, insurance company handle කරනවා. Full comprehensive insurance තිබ්බ නිසා හැම දෙයක්ම cover. ඔයාට කිසිම financial hit එකක් නෑ. Car repair/replace හැම දෙයක්ම insurance එකෙන්.",
+    image_prompt: "Lawyer handling car accident case, insurance documentation",
     choices: [
       { id: "c1", text: "දැන් VIC license එක ගෙන වැඩේ හරි කරගමු", next_scenario: "license_minister_easy" },
       { id: "c2", text: "Car upgrade එකක් කරලා safer vehicle එකක් ගමු", next_scenario: "minister_car_upgrade" },
@@ -1473,10 +1393,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   accident_business_insurance: {
     id: "accident_business_insurance",
-    title: "Insurance Claims Process",
-    description: "Third party insurance එක තියනවා (basic). Claim කරනවා. ඒත් no-claim bonus නැති වෙනවා, next year premium වැඩි වෙනවා. Own car repairs $2000 own pocket එකෙන්. Lesson expensive ඇති ඒත් manage කරන්න පුළුවන්.",
-    image_url: "insurance_claim",
-    profile_class: "Business Family",
+    story_text: "Third party insurance එක තියනවා (basic). Claim කරනවා. ඒත් no-claim bonus නැති වෙනවා, next year premium වැඩි වෙනවා. Own car repairs $2000 own pocket එකෙන්. Lesson expensive ඇති ඒත් manage කරන්න පුළුවන්.",
+    image_prompt: "Car insurance claim paperwork, damaged vehicle",
     choices: [
       { id: "c1", text: "Repairs කරලා careful driving පටන්ගමු", next_scenario: "business_stable_life" },
       { id: "c2", text: "දැන් VIC license proper එකක් ගෙන legal වෙමු", next_scenario: "license_proper_preparation" },
@@ -1489,10 +1407,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   accident_no_insurance: {
     id: "accident_no_insurance",
-    title: "අර්බුදයක්",
-    description: "Insurance නෑ. අනික් party damage $3500. ඔයාගේ car damage $2000. Police report හින්දා Sri Lankan license validity check කරනවා - expired! Driving without valid license charge එකක්. Fine $800. Court date එකක්. Total disaster - $6300+.",
-    image_url: "financial_crisis",
-    profile_class: "Lower Class",
+    story_text: "Insurance නෑ. අනික් party damage $3500. ඔයාගේ car damage $2000. Police report හින්දා Sri Lankan license validity check කරනවා - expired! Driving without valid license charge එකක්. Fine $800. Court date එකක්. Total disaster - $6300+.",
+    image_prompt: "Serious car accident aftermath, police report, financial crisis",
     choices: [
       { id: "c1", text: "Payment plan එකක් negotiate කරන්න try කරමු", next_scenario: "accident_payment_plan" },
       { id: "c2", text: "Legal aid එකක් හොයමු, community support ගමු", next_scenario: "accident_legal_aid" },
@@ -1505,10 +1421,8 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
   accident_payment_plan: {
     id: "accident_payment_plan",
-    title: "Debt Trap",
-    description: "අනික් party එක්ක payment plan එකක් - මාසෙකට $300 × 12 months. Court fine එක $800 වරාවටම. Car sell කරලා $1500 හම්බ කරගෙන partially ගෙවනවා. දැන් car නෑ, debt තියනවා, stress maximum.",
-    image_url: "debt_burden",
-    profile_class: "Lower Class",
+    story_text: "අනික් party එක්ක payment plan එකක් - මාසෙකට $300 × 12 months. Court fine එක $800 වරාවටම. Car sell කරලා $1500 හම්බ කරගෙන partially ගෙවනවා. දැන් car නෑ, debt තියනවා, stress maximum.",
+    image_prompt: "Debt collection notice, payment plan documents, stress",
     choices: [
       { id: "c1", text: "Extra shifts හොයලා debt cover කරන්න කැපකරමු", next_scenario: "lower_survival_mode" },
       { id: "c2", text: "Lankan community support group වලින් help ගමු", next_scenario: "lower_community" },
