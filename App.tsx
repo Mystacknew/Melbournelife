@@ -444,11 +444,20 @@ const App: React.FC = () => {
       <div className="flex-grow p-4 space-y-6 pb-28 overflow-y-auto custom-scrollbar relative z-10">
         <div className="relative w-full aspect-video bg-slate-900 rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl group">
           {sceneImage ? (
-            <img src={sceneImage} className={`w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 ${stats.stress > 80 ? 'saturate-[1.5] contrast-[1.2]' : ''}`} />
+            <img 
+              src={sceneImage} 
+              alt="Scene illustration" 
+              className={`w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 ${stats.stress > 80 ? 'saturate-[1.5] contrast-[1.2]' : ''}`}
+              loading="lazy"
+              onError={(e) => {
+                // Fallback to a default Melbourne image if comic generation fails
+                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=1024&h=768&fit=crop';
+              }}
+            />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center gap-3">
+            <div className="w-full h-full flex flex-col items-center justify-center gap-3 animate-pulse">
               <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin"></div>
-              <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Rendering Scene...</p>
+              <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Generating Comic Scene...</p>
             </div>
           )}
           {isProcessing && <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center z-20"><div className="w-16 h-16 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin"></div></div>}

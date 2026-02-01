@@ -118,7 +118,8 @@ Return ONLY valid JSON, no markdown formatting.
 }
 
 export async function generateImagePrompt(sceneDescription: string): Promise<string> {
-  // For AI mode, we can use the image_prompt from the AI response
-  // This is a fallback that generates a clean prompt
-  return sceneDescription;
+  // Generate comic-style image using Pollinations AI
+  const comicPrompt = `digital illustration, comic book style, vibrant colors, ${sceneDescription}, Sri Lankan immigrant in Melbourne, cinematic lighting, detailed faces, emotional storytelling, high quality, 4k`;
+  const encodedPrompt = encodeURIComponent(comicPrompt);
+  return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=768&nologo=true&enhance=true`;
 }

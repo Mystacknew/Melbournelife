@@ -169,54 +169,95 @@ const SCENE_IMAGES: Record<string, string> = {
   default: 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=800&h=600&fit=crop'
 };
 
-// Generate scene image using fixed database
+// Generate scene image using AI image generation
 export const generateSceneImage = async (prompt: string): Promise<string> => {
   // Simulate loading delay
   await new Promise(resolve => setTimeout(resolve, 300));
 
-  const promptLower = prompt.toLowerCase();
+  // Create comic-style prompt for better visuals
+  const comicPrompt = enhancePromptForComicStyle(prompt);
   
-  // Match prompt to specific images
-  if (promptLower.includes('airport')) return SCENE_IMAGES.airport;
-  if (promptLower.includes('luggage')) return SCENE_IMAGES.luggage;
-  if (promptLower.includes('bmw') || promptLower.includes('luxury car')) return SCENE_IMAGES.luxury_car;
-  if (promptLower.includes('five star') || promptLower.includes('luxury') && promptLower.includes('hotel')) return SCENE_IMAGES.luxury_hotel;
-  if (promptLower.includes('casino') || promptLower.includes('poker')) return SCENE_IMAGES.casino;
-  if (promptLower.includes('shopping') || promptLower.includes('mall')) return SCENE_IMAGES.shopping;
-  if (promptLower.includes('fine dining') || promptLower.includes('restaurant') && promptLower.includes('elegant')) return SCENE_IMAGES.fine_dining;
+  // Use Pollinations AI - free, no API key needed, generates relevant images
+  // Format: https://image.pollinations.ai/prompt/{encoded_prompt}
+  const encodedPrompt = encodeURIComponent(comicPrompt);
+  const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=768&nologo=true&enhance=true`;
   
-  if (promptLower.includes('apartment') || promptLower.includes('docklands')) return SCENE_IMAGES.apartment;
-  if (promptLower.includes('shared') && (promptLower.includes('room') || promptLower.includes('house'))) return SCENE_IMAGES.shared_room;
-  if (promptLower.includes('hostel') || promptLower.includes('shelter')) return SCENE_IMAGES.hostel;
-  
-  if (promptLower.includes('warehouse') || promptLower.includes('amazon')) return SCENE_IMAGES.warehouse;
-  if (promptLower.includes('delivery') || promptLower.includes('uber eats')) return SCENE_IMAGES.delivery;
-  if (promptLower.includes('bicycle') || promptLower.includes('bike')) return SCENE_IMAGES.bicycle;
-  if (promptLower.includes('cleaning') || promptLower.includes('clean')) return SCENE_IMAGES.cleaning;
-  if (promptLower.includes('office') || promptLower.includes('business meeting')) return SCENE_IMAGES.office;
-  if (promptLower.includes('restaurant') || promptLower.includes('cafe')) return SCENE_IMAGES.restaurant;
-  if (promptLower.includes('retail') || promptLower.includes('grocery') && promptLower.includes('work')) return SCENE_IMAGES.retail;
-  
-  if (promptLower.includes('tram') || promptLower.includes('melbourne tram')) return SCENE_IMAGES.tram;
-  if (promptLower.includes('bus')) return SCENE_IMAGES.bus;
-  
-  if (promptLower.includes('federation square')) return SCENE_IMAGES.federation_square;
-  if (promptLower.includes('melbourne') && promptLower.includes('skyline')) return SCENE_IMAGES.melbourne_skyline;
-  if (promptLower.includes('city') || promptLower.includes('cbd')) return SCENE_IMAGES.melbourne_city;
-  
-  if (promptLower.includes('grocery') || promptLower.includes('coles') || promptLower.includes('woolworths')) return SCENE_IMAGES.grocery_store;
-  if (promptLower.includes('sri lankan') && promptLower.includes('food')) return SCENE_IMAGES.srilankan_food;
-  if (promptLower.includes('market')) return SCENE_IMAGES.market;
-  
-  if (promptLower.includes('university') || promptLower.includes('campus')) return SCENE_IMAGES.university;
-  if (promptLower.includes('library')) return SCENE_IMAGES.library;
-  
-  if (promptLower.includes('celebrat')) return SCENE_IMAGES.celebration;
-  if (promptLower.includes('success') || promptLower.includes('settled')) return SCENE_IMAGES.success;
-  
-  if (promptLower.includes('worried') || promptLower.includes('stressed') || promptLower.includes('scam')) return SCENE_IMAGES.worried;
-  if (promptLower.includes('help') || promptLower.includes('community')) return SCENE_IMAGES.help;
-  
-  // Default Melbourne city image
-  return SCENE_IMAGES.default;
+  return pollinationsUrl;
 };
+
+// Enhance prompts to create better comic-style images
+function enhancePromptForComicStyle(originalPrompt: string): string {
+  const promptLower = originalPrompt.toLowerCase();
+  
+  // Base style for all images
+  const baseStyle = "digital illustration, comic book style, vibrant colors, detailed, cinematic lighting, ";
+  
+  // Detect scene type and enhance accordingly
+  let enhancedPrompt = baseStyle;
+  
+  if (promptLower.includes('airport')) {
+    enhancedPrompt += "Melbourne Tullamarine Airport arrival terminal, Sri Lankan traveler with luggage, busy terminal, modern architecture, excited expression";
+  } else if (promptLower.includes('bmw') || promptLower.includes('luxury car')) {
+    enhancedPrompt += "black BMW luxury sedan, chauffeur holding door open, Sri Lankan businessman arriving, Melbourne cityscape background";
+  } else if (promptLower.includes('five star') || (promptLower.includes('luxury') && promptLower.includes('hotel'))) {
+    enhancedPrompt += "luxurious five-star hotel lobby in Melbourne, marble floors, grand chandelier, elegant reception desk, young Sri Lankan man checking in";
+  } else if (promptLower.includes('casino')) {
+    enhancedPrompt += "Crown Casino Melbourne interior, poker tables, bright lights, excited young people, city lights through windows";
+  } else if (promptLower.includes('shopping') || promptLower.includes('mall')) {
+    enhancedPrompt += "modern shopping mall in Melbourne, luxury stores, young Sri Lankan shopper with bags, bright storefronts";
+  } else if (promptLower.includes('apartment') || promptLower.includes('docklands')) {
+    enhancedPrompt += "modern apartment in Melbourne Docklands, city view through windows, minimalist furniture, young professional unpacking";
+  } else if (promptLower.includes('shared') && (promptLower.includes('room') || promptLower.includes('house'))) {
+    enhancedPrompt += "shared house bedroom in Melbourne suburbs, bunk beds, personal belongings, modest furnishing, Sri Lankan student settling in";
+  } else if (promptLower.includes('hostel') || promptLower.includes('shelter')) {
+    enhancedPrompt += "budget hostel dormitory, multiple beds, backpackers, tired Sri Lankan immigrant with minimal belongings";
+  } else if (promptLower.includes('warehouse') || promptLower.includes('amazon')) {
+    enhancedPrompt += "large warehouse interior, boxes and shelves, workers in high-vis vests, Sri Lankan worker carrying packages";
+  } else if (promptLower.includes('uber eats') || promptLower.includes('delivery')) {
+    enhancedPrompt += "delivery rider on bicycle in Melbourne streets, Uber Eats bag on back, city buildings, busy traffic, determined expression";
+  } else if (promptLower.includes('cleaning')) {
+    enhancedPrompt += "office cleaning scene at night, Sri Lankan cleaner with equipment, empty office, fluorescent lights, working hard";
+  } else if (promptLower.includes('contractor') && promptLower.includes('scam')) {
+    enhancedPrompt += "frustrated Sri Lankan worker talking to contractor, unpaid wages discussion, tense atmosphere, office setting";
+  } else if (promptLower.includes('restaurant') && promptLower.includes('kitchen')) {
+    enhancedPrompt += "busy Asian restaurant kitchen, Sri Lankan cook working, steam and heat, intense work environment";
+  } else if (promptLower.includes('tram') || promptLower.includes('melbourne tram')) {
+    enhancedPrompt += "iconic Melbourne tram on city street, passengers inside, Sri Lankan commuter, CBD buildings in background";
+  } else if (promptLower.includes('myki') && promptLower.includes('inspector')) {
+    enhancedPrompt += "myki inspector checking tickets on Melbourne tram, worried Sri Lankan passenger, other commuters watching";
+  } else if (promptLower.includes('university') || promptLower.includes('campus')) {
+    enhancedPrompt += "Melbourne university campus, modern buildings, diverse students walking, Sri Lankan student with backpack, hopeful expression";
+  } else if (promptLower.includes('job interview') || promptLower.includes('professional meeting')) {
+    enhancedPrompt += "professional office interview setting, Sri Lankan candidate sitting across from interviewer, resume on desk, nervous but confident";
+  } else if (promptLower.includes('pr') && promptLower.includes('consultation')) {
+    enhancedPrompt += "migration agent office, professional consultation, Sri Lankan client reviewing documents, hope and determination";
+  } else if (promptLower.includes('driver') && (promptLower.includes('test') || promptLower.includes('license'))) {
+    enhancedPrompt += "VicRoads testing center, Sri Lankan learner driver in car, driving instructor beside them, Melbourne suburban street";
+  } else if (promptLower.includes('car accident')) {
+    enhancedPrompt += "minor car accident scene in Melbourne, damaged vehicles, police attending, worried Sri Lankan driver, suburban roundabout";
+  } else if (promptLower.includes('celebration') || promptLower.includes('success')) {
+    enhancedPrompt += "joyful celebration scene, Sri Lankan immigrant smiling with visa approval letter, Melbourne skyline background, achievement moment";
+  } else if (promptLower.includes('community') && promptLower.includes('lankan')) {
+    enhancedPrompt += "Sri Lankan community gathering in Melbourne, people sharing food, temple or community center, supportive atmosphere";
+  } else if (promptLower.includes('footscray') || promptLower.includes('suburbs')) {
+    enhancedPrompt += "Footscray Melbourne street scene, diverse community, shops with different languages, Sri Lankan newcomer exploring";
+  } else if (promptLower.includes('grocery') || promptLower.includes('coles') || promptLower.includes('woolworths')) {
+    enhancedPrompt += "Australian supermarket interior, shelves with products, Sri Lankan shopper checking prices, shopping cart";
+  } else if (promptLower.includes('stressed') || promptLower.includes('worried') || promptLower.includes('burnout')) {
+    enhancedPrompt += "exhausted Sri Lankan immigrant worker, tired expression, late at night, Melbourne city lights, showing fatigue";
+  } else if (promptLower.includes('legal') || promptLower.includes('fair work')) {
+    enhancedPrompt += "Fair Work office, legal documents, Sri Lankan worker filing complaint, professional legal environment";
+  } else if (promptLower.includes('rent') && promptLower.includes('late')) {
+    enhancedPrompt += "worried Sri Lankan tenant with landlord, unpaid rent notice, apartment setting, financial stress visible";
+  } else if (promptLower.includes('visa') && promptLower.includes('expired')) {
+    enhancedPrompt += "immigration office, expiring visa document, stressed Sri Lankan person, official government building";
+  } else {
+    // Generic Melbourne immigrant experience
+    enhancedPrompt += originalPrompt + ", Sri Lankan immigrant in Melbourne, realistic, emotional, story-driven scene";
+  }
+  
+  // Add quality enhancers
+  enhancedPrompt += ", high quality, professional, 4k, detailed faces, atmospheric";
+  
+  return enhancedPrompt;
+}
