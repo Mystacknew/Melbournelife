@@ -324,7 +324,17 @@ const App: React.FC = () => {
   const resetGame = () => {
     if (!session) localStorage.removeItem('mlife_guest_save');
     setScreen('start');
-    setStats({ money: 0, stress: 0, energy: 0, day: 1 });
+    setStats({ 
+      money: 0, 
+      stress: 0, 
+      energy: 0, 
+      day: 1,
+      health: 100,
+      visaDaysLeft: 90,
+      weeklyRent: 0,
+      lastRentDay: 1,
+      consecutiveWorkDays: 0
+    });
     setInventory([]);
     setHistory([]);
     setHasExistingSave(false);
