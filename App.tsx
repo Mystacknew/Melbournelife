@@ -11,10 +11,10 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const INITIAL_STATS: Record<ProfileClass, GameStats> = {
-  "ඇමති පුතා": { money: 25000, stress: 0, energy: 100, day: 1 },
-  "Business Family": { money: 8000, stress: 10, energy: 100, day: 1 },
-  "Middle Class": { money: 3000, stress: 30, energy: 90, day: 1 },
-  "Lower Class": { money: 1000, stress: 60, energy: 80, day: 1 }
+  "ඇමති පුතා": { money: 25000, stress: 0, energy: 100, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 0, lastRentDay: 1, consecutiveWorkDays: 0 },
+  "Business Family": { money: 8000, stress: 10, energy: 100, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 300, lastRentDay: 1, consecutiveWorkDays: 0 },
+  "Middle Class": { money: 3000, stress: 30, energy: 90, day: 1, health: 90, visaDaysLeft: 90, weeklyRent: 200, lastRentDay: 1, consecutiveWorkDays: 0 },
+  "Lower Class": { money: 1000, stress: 60, energy: 80, day: 1, health: 80, visaDaysLeft: 90, weeklyRent: 150, lastRentDay: 1, consecutiveWorkDays: 0 }
 };
 
 interface ItemData {
@@ -76,7 +76,7 @@ const App: React.FC = () => {
     name: '', age: 22, gender: 'Male', status: 'Single'
   });
   const [profileClass, setProfileClass] = useState<ProfileClass | null>(null);
-  const [stats, setStats] = useState<GameStats>({ money: 0, stress: 0, energy: 0, day: 1 });
+  const [stats, setStats] = useState<GameStats>({ money: 0, stress: 0, energy: 0, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 0, lastRentDay: 1, consecutiveWorkDays: 0 });
   const [inventory, setInventory] = useState<string[]>([]);
   const [currentScene, setCurrentScene] = useState<GameResponse | null>(null);
   const [sceneImage, setSceneImage] = useState<string | null>(null);
@@ -237,12 +237,51 @@ const App: React.FC = () => {
       setStatChanges((prev) => [...prev, ...changes]);
       setTimeout(() => setStatChanges((prev) => prev.filter(c => !changes.some(nc => nc.id === c.id))), 2000);
 
+      // Calculate burnout if working
+      const isWorkAction = choice.text.toLowerCase().includes('වැඩ') || choice.text.toLowerCase().includes('shift') || choice.text.toLowerCase().includes('work');
+      const newConsecutiveWorkDays = isWorkAction ? stats.consecutiveWorkDays + (day_change > 0 ? 1 : 0) : 0;
+      
+      // Burnout penalty
+      let burnoutStress = 0;
+      let burnoutEnergy = 0;
+      if (newConsecutiveWorkDays >= 7) {
+        burnoutStress = 30;
+        burnoutEnergy = -40;
+        changes.push({ id: ++changeIdCounter.current, text: 'BURNOUT!', color: 'text-orange-500' });
+      }
+
+      // Weekly rent deduction
+      const newDay = stats.day + day_change;
+      const weeksPassed = Math.floor((newDay - stats.lastRentDay) / 7);
+      let rentDeduction = 0;
+      let newLastRentDay = stats.lastRentDay;
+      
+      if (weeksPassed > 0 && stats.weeklyRent > 0) {
+        rentDeduction = stats.weeklyRent * weeksPassed;
+        newLastRentDay = stats.lastRentDay + (weeksPassed * 7);
+        changes.push({ id: ++changeIdCounter.current, text: `-$${rentDeduction} Rent`, color: 'text-purple-400' });
+      }
+
+      // Health degradation from low energy or high stress
+      let healthChange = 0;
+      if (stats.energy < 30) healthChange -= 5;
+      if (stats.stress > 70) healthChange -= 5;
+      if (healthChange < 0) {
+        changes.push({ id: ++changeIdCounter.current, text: `${healthChange} Health`, color: 'text-red-500' });
+      }
+
       const newStats = {
-        money: Math.max(stats.money + money_change, 0),
-        stress: Math.min(Math.max(stats.stress + stress_change, 0), 100),
-        energy: Math.min(Math.max(stats.energy + energy_change, 0), 100),
-        day: stats.day + day_change
+        money: Math.max(stats.money + money_change - rentDeduction, 0),
+        stress: Math.min(Math.max(stats.stress + stress_change + burnoutStress, 0), 100),
+        energy: Math.min(Math.max(stats.energy + energy_change + burnoutEnergy, 0), 100),
+        health: Math.min(Math.max(stats.health + healthChange, 0), 100),
+        day: newDay,
+        visaDaysLeft: Math.max(stats.visaDaysLeft - day_change, 0),
+        weeklyRent: stats.weeklyRent,
+        lastRentDay: newLastRentDay,
+        consecutiveWorkDays: newConsecutiveWorkDays
       };
+      
       setStats(newStats);
 
       let updatedInventory = inventory;
@@ -251,9 +290,21 @@ const App: React.FC = () => {
         setInventory(updatedInventory);
       }
 
-      if (newStats.energy <= 0 || newStats.stress >= 100) {
+      // Game over conditions
+      if (newStats.energy <= 0 || newStats.stress >= 100 || newStats.health <= 0) {
         setScreen('gameover');
         return;
+      }
+
+      // Visa expired
+      if (newStats.visaDaysLeft <= 0) {
+        setScreen('gameover');
+        return;
+      }
+
+      // Eviction if can't pay rent for 2 weeks
+      if (rentDeduction > 0 && newStats.money < stats.weeklyRent) {
+        // Trigger eviction scenario if it exists, otherwise continue
       }
 
       setCurrentScene(nextScene);
@@ -347,6 +398,13 @@ const App: React.FC = () => {
           <StatBar label="සල්ලි" value={stats.money} max={10000} icon="fa-solid fa-wallet" color="text-green-400" />
           <StatBar label="Stress" value={stats.stress} max={100} icon="fa-solid fa-brain" color="text-red-400" />
           <StatBar label="පණ" value={stats.energy} max={100} icon="fa-solid fa-bolt-lightning" color="text-blue-400" />
+        </div>
+        <div className="grid grid-cols-2 gap-3 mt-3">
+          <StatBar label="Health" value={stats.health} max={100} icon="fa-solid fa-heart-pulse" color="text-pink-400" />
+          <div className="bg-slate-800/50 px-3 py-2 rounded-xl border border-white/5 flex flex-col">
+            <span className="text-[9px] text-slate-500 font-black uppercase leading-none">Visa Days</span>
+            <span className={`text-sm font-black leading-none mt-1 ${stats.visaDaysLeft < 30 ? 'text-red-400 animate-pulse' : 'text-blue-400'}`}>{stats.visaDaysLeft} days</span>
+          </div>
         </div>
       </div>
 

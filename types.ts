@@ -16,6 +16,11 @@ export interface GameStats {
   stress: number;
   energy: number;
   day: number;
+  health: number;
+  visaDaysLeft: number;
+  weeklyRent: number;
+  lastRentDay: number;
+  consecutiveWorkDays: number;
 }
 
 export interface Choice {

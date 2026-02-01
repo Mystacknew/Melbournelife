@@ -822,6 +822,344 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
     stats_update: { money_change: 0, stress_change: -20, energy_change: 15, day_change: 1 },
     new_items: [],
     game_state: "ongoing"
+  },
+
+  // Contractor Scam Scenarios
+  contractor_scam_start: {
+    id: "contractor_scam_start",
+    title: "Cleaning Contractor කතාව",
+    description: "ඔයාගේ cleaning job වල, contractor අයියා සතියක් වැඩ කරලා ඉන්න මුදල් ගෙවන්නේ නෑ. 'මචං දැන් cash flow issue එකක් තියෙනවා, අනිද්දා දෙන්නම්' කියලා දෙන්නේ විතරක් තමා කතා.",
+    image_url: "cleaning_struggles",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "කොහොමහරි wait කරමු, රස්සාව නැති වෙන්න ඕනේ නෑනේ", next_scenario: "contractor_payment_delay_1" },
+      { id: "c2", text: "කෙලින්ම අහමු කොහොමද මේ, මට මුදල් ඕන", next_scenario: "contractor_confrontation" },
+      { id: "c3", text: "අනිත් cleaners ලගට කතා කරලා බලමු මොකද වෙන්නේ කියලා", next_scenario: "contractor_group_action" }
+    ],
+    stats_update: { money_change: 0, stress_change: 25, energy_change: -10, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  contractor_payment_delay_1: {
+    id: "contractor_payment_delay_1",
+    title: "පළවෙනි Delay",
+    description: "සතියක් බලාගෙන ඉදලා අහපු විට contractor අයියා කියනවා 'මචං ඒ client එක තාම pay කරේ නෑ, ඔයා මොකක්ද කරන්නේ බලපං, මං හදාගන්නම්'. තව සතියක් wait කරන්න වෙනවා.",
+    image_url: "financial_stress",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "තව සතියක් wait කරමු, අනික් job එකක් හොයාගමු මේ අතරෙ", next_scenario: "contractor_payment_delay_2" },
+      { id: "c2", text: "Fair Work Ombudsman එකට complaint එකක් දාමු", next_scenario: "contractor_legal_action" },
+      { id: "c3", text: "ගෙදර අයට කතා කරලා මුදල් විදියක් කරගන්න ඕන වෙයි", next_scenario: "contractor_family_loan" }
+    ],
+    stats_update: { money_change: -50, stress_change: 30, energy_change: -15, day_change: 7 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  contractor_payment_delay_2: {
+    id: "contractor_payment_delay_2",
+    title: "දෙවෙනි Delay - The Trap",
+    description: "දෙවෙනි සතියේත් මුදල් නෑ. Contractor අයියා කියනවා 'මචං ඔයා හොඳ කොල්ලෙක්, මට විශ්වාසයි. මේ weekend එක extra shift එකක් කරලා දෙන්නද? මං හොඳටම pay කරන්නම් හැමදේම එකතු කරලා'. Trap එකක්ද මේ?",
+    image_url: "difficult_decision",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "එපා, මුලින්ම තියන මුදල් දෙන්න කියමු", next_scenario: "contractor_confrontation" },
+      { id: "c2", text: "Extra shift කරලා බලමු, maybe ඇත්තටම pay කරයි", next_scenario: "contractor_extra_work_scam" },
+      { id: "c3", text: "අනික් Lankan cleaners ලගට කතා කරලා advice එකක් ගමු", next_scenario: "contractor_group_action" }
+    ],
+    stats_update: { money_change: -80, stress_change: 40, energy_change: -20, day_change: 7 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  contractor_extra_work_scam: {
+    id: "contractor_extra_work_scam",
+    title: "Extra Work කළාට...",
+    description: "Weekend එකේ 16 hours වැඩ කළා. දැන් contractor අයියා කියනවා 'අනේ මචං, ඔය weekend rate එක ඔයාට කිව්වේ නෑනේ, weekday rate එකේ තමා calculate කරේ. ඒකත් මට තාම client payment එක ආවේ නෑ'. ඔයාට දැන් 3 weeks pay නෑ.",
+    image_url: "exhausted_worker",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Fair Work කෙලින්ම contact කරමු, මේක illegal", next_scenario: "contractor_legal_action" },
+      { id: "c2", text: "අනික් cleaners එක්ක එකතු වෙලා group එකක් හදමු", next_scenario: "contractor_group_action" },
+      { id: "c3", text: "Job එක leave කරලා හරි honest workplace එකක් හොයමු", next_scenario: "contractor_quit" }
+    ],
+    stats_update: { money_change: -30, stress_change: 50, energy_change: -35, day_change: 2 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  contractor_motivational_talk: {
+    id: "contractor_motivational_talk",
+    title: "Contractor Aiya's 'Motivation'",
+    description: "Contractor අයියා හැමදාම කතා කරන්නේ ගේන්න මුදල් ගැන නෙමෙයි. 'මචං ඔයාලා අලුතෙන් ආපු අයට hard work කරන්න ඕන. මම වගේ කෙනෙක් වෙන්න ඕන නම් sacrifice කරන්න වෙනවා. මං පළවෙනි දවසේ ඉඳන් දවසට 18 hours වැඩ කළා'. එත් මුදල් ගෙවන්නේ නෑ.",
+    image_url: "mentor_talk",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "ඔව් අයියේ, hard work කරන්නම් (වහලුන් වගේ වැඩ කරනවා)", next_scenario: "contractor_exploitation_continues" },
+      { id: "c2", text: "අයියේ motivation එක හොඳයි, ඒත් pay කරන්න ඕන තියෙන දේ", next_scenario: "contractor_confrontation" },
+      { id: "c3", text: "මේ manipulation එකක් විතරයි, වෙන job එකක් හොයමු", next_scenario: "middle_job_hunt" }
+    ],
+    stats_update: { money_change: 0, stress_change: 20, energy_change: -10, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  contractor_female_favoritism: {
+    id: "contractor_female_favoritism",
+    title: "Single කෙල්ලෝ Special",
+    description: "Contractor අයියා single girls ට extra shifts, good locations, හොඳ pay කරනවා. ඔයාලගේ වගේ boys ට බාරදෙනවා hard, dirty jobs. Rashmi නම් කෙල්ල payment වලට කිසිම delay එකක් නෑ, extra bonuses තියෙනවා. 'අදයි හෙටයි කියලා boy කෙනෙක් girl කෙනෙක් වෙන්නේ, මං fair විතරයි වෙන්නේ' කියලා contractor අයියා ගොන්නු.",
+    image_url: "workplace_inequality",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Silent වෙලා ඉන්නවා, රස්සාව තිබ්බොත් හරි", next_scenario: "contractor_exploitation_continues" },
+      { id: "c2", text: "මේක discrimination, Fair Work එකට කියමු", next_scenario: "contractor_legal_action" },
+      { id: "c3", text: "Lankan community එකේ අනිත් boys එක්ක කතා කරලා action ගමු", next_scenario: "contractor_group_action" }
+    ],
+    stats_update: { money_change: -20, stress_change: 35, energy_change: -15, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  contractor_confrontation: {
+    id: "contractor_confrontation",
+    title: "Confrontation",
+    description: "ඔයා කෙලින්ම contractor අයියාට කතා කරනවා pay ගැන. ඔහු කියනවා 'අනේ මචං, ඔයා මාර demanding විශාලයි. අනිත් අය complaint නැතිව වැඩ කරනවා, ඔයා විතරක්ද මේ රටට ආවේ? හෙට ඉඳන් වැඩට එන්න එපා, මං call කරන්නම්'. Job එක ගියා වගේ.",
+    image_url: "job_loss",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Sorry අයියේ කියලා job එක save කරගමු", next_scenario: "contractor_exploitation_continues" },
+      { id: "c2", text: "Fair Work Ombudsman එකට යමු proper complaints දාගෙන", next_scenario: "contractor_legal_action" },
+      { id: "c3", text: "වෙන cleaning company එකක් හොයමු, Melbourne වල තව ඕන තරම් තියනවා", next_scenario: "middle_cleaning_job" }
+    ],
+    stats_update: { money_change: 0, stress_change: 45, energy_change: -25, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  contractor_group_action: {
+    id: "contractor_group_action",
+    title: "එකට වැඩ කරමු",
+    description: "ඔයා අනික් Lankan cleaners 5දෙනෙක් එක්ක කතා කරනවා. හැමෝටම pay issues තියනවා. එකතු වෙලා contractor අයියාට කියනවා හැමෝම එකතු වෙලා, මුදල් ගෙවන්න නැත්නම් හැමෝම එකට leave කරනවා කියලා. ඔහුට බයයි වෙනවා.",
+    image_url: "team_unity",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "දැන් හරියට pay කරනවා, ඒත් හැමෝම එකට බලාගෙන ඉන්නවා", next_scenario: "contractor_group_victory" },
+      { id: "c2", text: "Fair Work complaint එකක් දාලා legal protection ගමු", next_scenario: "contractor_legal_victory" },
+      { id: "c3", text: "මුලු group එකම වෙන company එකකට join වෙමු", next_scenario: "middle_cleaning_job" }
+    ],
+    stats_update: { money_change: 350, stress_change: -30, energy_change: 10, day_change: 3 },
+    new_items: ["Group Support"],
+    game_state: "ongoing"
+  },
+
+  contractor_group_victory: {
+    id: "contractor_group_victory",
+    title: "Unity is Strength",
+    description: "Contractor අයියා හැමෝගේම payment හරියට කරනවා. ඔහු දන්නවා group එකක් එකට කතා කරන කොට ඔහුට power නෑ කියලා. දැන් ඔයාලට හරියට weekly pay, proper shifts, හොඳ locations තියනවා. Lankan community power!",
+    image_url: "celebration",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "මේ job එකේ දිගටම හරි conditions වලින් වැඩ කරමු", next_scenario: "middle_stable_work" },
+      { id: "c2", text: "වෙන opportunities හොයමු දැන් stable base එකක් තියෙන නිසා", next_scenario: "middle_job_hunt" },
+      { id: "c3", text: "අපේම cleaning business එකක් start කරන්න plan කරමු", next_scenario: "middle_entrepreneurship" }
+    ],
+    stats_update: { money_change: 200, stress_change: -40, energy_change: 20, day_change: 7 },
+    new_items: ["Fair Work Rights Knowledge"],
+    game_state: "ongoing"
+  },
+
+  contractor_legal_action: {
+    id: "contractor_legal_action",
+    title: "Fair Work Ombudsman",
+    description: "ඔයා Fair Work Ombudsman එකට complaint එකක් දානවා. ඔවුන් investigation එකක් කරනවා. Pay slips නැතිව, cash payments කරපු එක හින්දා contractor අයියාට හොඳ trouble එකක් වෙනවා. ඔයාට back pay හම්බ වෙනවා, ඒත් job එක නැතිවෙනවා.",
+    image_url: "legal_justice",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "දැන් වෙන honest employer කෙනෙක් ලගට යමු", next_scenario: "contractor_legal_victory" },
+      { id: "c2", text: "මේ experience එකෙන් ඉගෙනගත්ත දේවල් share කරමු community එකට", next_scenario: "middle_community_leader" },
+      { id: "c3", text: "Uber Eats වගේ වෙන income source එකක් හොයමු", next_scenario: "business_uber_eats" }
+    ],
+    stats_update: { money_change: 800, stress_change: -20, energy_change: -10, day_change: 21 },
+    new_items: ["Legal Victory", "Fair Work Knowledge"],
+    game_state: "ongoing"
+  },
+
+  contractor_legal_victory: {
+    id: "contractor_legal_victory",
+    title: "Justice Served",
+    description: "Fair Work investigation එකෙන් ඔයාට 3 weeks back pay + penalty rates හම්බවෙනවා. Contractor අයියාට fine එකක් දෙනවා. ඔයාගේ story අනික් Lankan workers ලට inspiration එකක් වෙනවා. දැන් proper rights දන්න කෙනෙක් විදියට ඔයා Melbourne Lankan community එකේ respected වෙනවා.",
+    image_url: "success_celebration",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "වෙන good cleaning company එකකට join වෙමු", next_scenario: "middle_stable_work" },
+      { id: "c2", text: "Community එකේ workers rights ගැන awareness කරමු", next_scenario: "middle_community_leader" },
+      { id: "c3", text: "University studies පටන්ගමු දැන් stable income එකක් තියෙන නිසා", next_scenario: "minister_university" }
+    ],
+    stats_update: { money_change: 1200, stress_change: -50, energy_change: 30, day_change: 30 },
+    new_items: ["Fair Work Victory", "Community Respect"],
+    game_state: "ongoing"
+  },
+
+  contractor_exploitation_continues: {
+    id: "contractor_exploitation_continues",
+    title: "Cycle එක දිගටම",
+    description: "ඔයා silent වෙලා වැඩ කරනවා. Contractor අයියා දිගටම exploit කරනවා - late payments, extra work, poor conditions. ඔයාගේ stress වැඩිවෙනවා, health එක පහළ යනවා. Melbourne dream එක nightmare එකක් වෙලා යනවා.",
+    image_url: "burnout",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "තව කොච්චර කාලයක්ද මෙහෙම? Job එක leave කරමු", next_scenario: "middle_job_hunt" },
+      { id: "c2", text: "Lankan community support group එකකට යමු help එකක් ගන්න", next_scenario: "lower_community" },
+      { id: "c3", text: "දිගටම කරමු, options නෑනේ", next_scenario: "lower_survival_mode" }
+    ],
+    stats_update: { money_change: 150, stress_change: 60, energy_change: -40, day_change: 14 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  contractor_family_loan: {
+    id: "contractor_family_loan",
+    title: "ගෙදර අයට කියන්න වෙනවා",
+    description: "Sri Lanka එකේ parents ලට call කරලා $500ක් විදියක් කරගන්න කියනවා. ඔවුන් disappointed, worried. 'අපි හිතුවේ Melbourne වල සල්ලි හොයාගෙන ඉන්නවා කියලා' කියලා අම්මා කියනවා. Guilt + Stress maximum.",
+    image_url: "family_call",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "මුදල් ගන්නවා, වැඩේ හරි කරගෙන ආපහු එවන්නම් කියලා promise කරනවා", next_scenario: "middle_comeback_attempt" },
+      { id: "c2", text: "නෑ, මං විදියක් හදාගන්නම්, Uber Eats වැඩ කරමු", next_scenario: "business_uber_eats" },
+      { id: "c3", text: "Sri Lanka එකට ආපහු යන්න හිතනවා, failure එකක් විදියට", next_scenario: "game_over_return_home" }
+    ],
+    stats_update: { money_change: 500, stress_change: 70, energy_change: -30, day_change: 3 },
+    new_items: ["Family Debt"],
+    game_state: "ongoing"
+  },
+
+  contractor_quit: {
+    id: "contractor_quit",
+    title: "Enough is Enough",
+    description: "ඔයා contractor අයියාට කෙලින්ම කියනවා 'මට වැඩ කරන්න බෑ මෙහෙම conditions වලින්, මං යනවා'. ඔහු උත්සාහ කරනවා convince කරන්න, threats දෙනවා, ඒත් ඔයා determined. දැන් ඔයාට income එකක් නෑ, ඒත් mental peace තියනවා.",
+    image_url: "new_beginning",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "වෙන honest cleaning company එකක් හොයමු", next_scenario: "middle_cleaning_job" },
+      { id: "c2", text: "Uber Eats, Doordash වගේ delivery jobs බලමු", next_scenario: "business_uber_eats" },
+      { id: "c3", text: "Lankan community එකෙන් job leads අහලා බලමු", next_scenario: "lower_community" }
+    ],
+    stats_update: { money_change: -100, stress_change: -30, energy_change: 10, day_change: 1 },
+    new_items: ["Self Respect"],
+    game_state: "ongoing"
+  },
+
+  // AusPost Scam Scenarios
+  auspost_scam_start: {
+    id: "auspost_scam_start",
+    title: "AusPost 'Job Opportunity'",
+    description: "Facebook Lankan group එකේ post එකක් - 'AusPost parcel sorting, $35/hour, cash job, anyone interested message me'. ඔයා message කරනවා. ගොල්ලෝ කියනවා '$200 training fee + $150 uniform deposit, refundable after first month'.",
+    image_url: "job_opportunity",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "$350 දෙලා බලමු, good job එකක් නම් හොඳයි", next_scenario: "auspost_scam_trap" },
+      { id: "c2", text: "Suspicious නේ, AusPost website එකෙන් verify කරමු", next_scenario: "auspost_verify" },
+      { id: "c3", text: "Lankan community එකේ elders ලගට අහලා බලමු legitimate ද කියලා", next_scenario: "auspost_saved" }
+    ],
+    stats_update: { money_change: 0, stress_change: 15, energy_change: -5, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  auspost_scam_trap: {
+    id: "auspost_scam_trap",
+    title: "Scammed!",
+    description: "$350 bank transfer කළා. එයාලා kiyනවා 'හෙට training, address එක SMS එකක් එන්නම්'. SMS එකක් ආවේ නෑ. Call කරනවා - number blocked. Facebook profile deleted. ගල් ගහනවා. Scam එකක් හම්බ වෙලා.",
+    image_url: "scam_realization",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Police complaint එකක් දාමු, bank එකට කියමු", next_scenario: "auspost_police_report" },
+      { id: "c2", text: "Lankan community එකට warn කරමු මේ scam එක ගැන", next_scenario: "middle_community_leader" },
+      { id: "c3", text: "අඬනවා නවත්වලා වෙන job එකක් හොයමු", next_scenario: "middle_job_hunt" }
+    ],
+    stats_update: { money_change: -350, stress_change: 80, energy_change: -40, day_change: 2 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  auspost_verify: {
+    id: "auspost_verify",
+    title: "Smart Move",
+    description: "ඔයා AusPost official website එකෙන් check කරනවා. Direct recruitment එකෙන් විතරයි apply කරන්න පුළුවන්, කවදාවත් cash fees ඉල්ලන්නේ නෑ. මේක clear scam එකක්. ඔයාගේ smart thinking හින්දා $350 save වුනා.",
+    image_url: "smart_decision",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Lankan community එකට warn කරමු මේ scam එක ගැන", next_scenario: "middle_community_leader" },
+      { id: "c2", text: "AusPost official website එකෙන් apply කරමු properly", next_scenario: "auspost_proper_application" },
+      { id: "c3", text: "වෙන legitimate jobs හොයමු", next_scenario: "middle_job_hunt" }
+    ],
+    stats_update: { money_change: 0, stress_change: -20, energy_change: 5, day_change: 1 },
+    new_items: ["Scam Awareness"],
+    game_state: "ongoing"
+  },
+
+  auspost_saved: {
+    id: "auspost_saved",
+    title: "Community Wisdom",
+    description: "ඔයා Lankan community එකේ uncle කෙනෙක්ට කතා කරනවා. ඔහු කියනවා 'පුතේ මේ scam එකක්, මං මාස 3කට කලින් මේ එකම post එක දැක්කා, හැමදාම එනවා මේ වගේ'. Community wisdom එක හින්දා ඔයා save වුනා.",
+    image_url: "community_support",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Uncle ට thanks කියලා legitimate job leads අහමු", next_scenario: "middle_job_hunt" },
+      { id: "c2", text: "Facebook group එකේ scam එක report කරමු", next_scenario: "middle_community_leader" },
+      { id: "c3", text: "Lankan community events වලට active වෙලා network කරමු", next_scenario: "middle_community_integration" }
+    ],
+    stats_update: { money_change: 0, stress_change: -25, energy_change: 10, day_change: 1 },
+    new_items: ["Community Trust"],
+    game_state: "ongoing"
+  },
+
+  auspost_police_report: {
+    id: "auspost_police_report",
+    title: "Police Report",
+    description: "Police station එකට report කරනවා. Officer කියනවා 'Unfortunately these scams are very common, we'll add it to the file but recovery is unlikely'. Bank එකත් කියනවා voluntary transfer එකක් නිසා refund කරන්න බෑ. මුදල් ගියා, lesson එකක් ඉගෙන ගත්තා.",
+    image_url: "police_station",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Lankan community එකට warn කරලා අනිත් අය save කරමු", next_scenario: "middle_community_leader" },
+      { id: "c2", text: "වැඩේ හරි කරගෙන extra shifts වලින් cover කරමු", next_scenario: "middle_cleaning_job" },
+      { id: "c3", text: "මේ experience එකෙන් ඉගෙනගෙන careful වෙමු", next_scenario: "middle_job_hunt" }
+    ],
+    stats_update: { money_change: -50, stress_change: -30, energy_change: -20, day_change: 3 },
+    new_items: ["Hard Lesson"],
+    game_state: "ongoing"
+  },
+
+  auspost_proper_application: {
+    id: "auspost_proper_application",
+    title: "Proper Application",
+    description: "AusPost official career portal එකෙන් apply කරනවා. දැන් හරියට interview process, background checks හැම දෙයක්ම legitimate විදියට වෙනවා. ටිකක් කල් යයි, ඒත් proper job එකක්.",
+    image_url: "job_interview",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Interview එකට හොඳට prepare වෙමු", next_scenario: "auspost_interview_success" },
+      { id: "c2", text: "මේ අතරෙ වෙන job එකකුත් හොයමු backup එකක් විදියට", next_scenario: "middle_job_hunt" },
+      { id: "c3", text: "Lankan community එකෙන් AusPost experience තියන අය ලග tips අහමු", next_scenario: "middle_community_integration" }
+    ],
+    stats_update: { money_change: 0, stress_change: -10, energy_change: -5, day_change: 7 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  auspost_interview_success: {
+    id: "auspost_interview_success",
+    title: "AusPost Job Success!",
+    description: "Interview එක success! Casual position එකක් හම්බ වෙනවා $32/hour. Proper pay slips, superannuation, penalty rates හැම දෙයක්ම හරියට. මේක ඔයාගේ Melbourne life එකේ turning point එකක් වෙන්න පුළුවන්.",
+    image_url: "success_celebration",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "මේ job එකෙන් stable වෙලා permanent බලමු", next_scenario: "middle_stable_work" },
+      { id: "c2", text: "දැන් student visa එකකට යන්න හිතමු", next_scenario: "minister_university" },
+      { id: "c3", text: "Future planning කරමු, savings, PR pathway", next_scenario: "middle_future_planning" }
+    ],
+    stats_update: { money_change: 600, stress_change: -50, energy_change: 20, day_change: 14 },
+    new_items: ["AusPost Job", "Proper Employment"],
+    game_state: "ongoing"
   }
 };
 
