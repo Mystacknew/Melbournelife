@@ -136,11 +136,11 @@ const App: React.FC = () => {
       profile: { ...character, class: profileClass! } as CharacterProfile,
       inventory: updatedInventory,
       history: updatedHistory,
-      // We also save current scene to resume exactly where left
       currentScene: updatedScene
     };
 
-    if (sessionsaves').upsert({ 
+    if (session) {
+      await supabase.from('saves').upsert({ 
         user_id: session.user.id, 
         data: state,
         updated_at: new Date()
