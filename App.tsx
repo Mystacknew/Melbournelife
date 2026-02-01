@@ -7,7 +7,7 @@ import { StatBar } from './components/StatBar';
 
 // Supabase Initialization - No more API keys needed!
 const supabaseUrl = 'https://mggcjyfnagjttezrqdwx.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1nZ2NqeWZuYWdqdHRlenJxZHd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg0MTUyMDAsImV4cCI6MjA1Mzk5MTIwMH0.9PFvIEaCeRcP3wTcWNw8Q_StI9GOJC';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1nZ2NqeWZuYWdqdHRlenJxZHd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5MzcwMDYsImV4cCI6MjA4NTUxMzAwNn0.jgmYz6jpp3jJltJC0GlTkB0x0zEf93zkr5GYv1iuPus';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const INITIAL_STATS: Record<ProfileClass, GameStats> = {

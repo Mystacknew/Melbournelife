@@ -261,7 +261,291 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
     game_state: "ongoing"
   },
 
-  // Day 30 success scenarios
+  // Minister son paths - continued
+  "minister_casino": {
+    id: "minister_casino",
+    story_text: "Crown Casino එකට ගියාම VIP entrance එක දුන්නා. Poker table එකේ $1000 bet කරන්න පුළුවන්. පවුලේ connections නිසා everyone knows you. Risky but fun!",
+    image_prompt: "Luxury casino interior Melbourne Crown, VIP poker table with well-dressed players",
+    choices: [
+      { id: "c1", text: "Poker game එකක් ගහමු, skills test කරමු", is_risky: true, next_scenario: "minister_poker_win" },
+      { id: "c2", text: "Bar එකේ ඉදලා networking කරමු", next_scenario: "minister_networking" },
+      { id: "c3", text: "දැන් හොඳයි hotel එකට යමු, හෙට fresh වෙලා", next_scenario: "minister_hotel" }
+    ],
+    stats_update: { money_change: -100, stress_change: 5, energy_change: -10, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "minister_poker_win": {
+    id: "minister_poker_win",
+    story_text: "අම්මෝ බං! Poker hand එක royal flush! $5000 හම්බුනා! Table එකේ හිටිය businessman කෙනෙක් impressed වෙලා business card එක දුන්නා. Life එක මාර easy!",
+    image_prompt: "Winning poker hand on casino table, celebration with champagne",
+    choices: [
+      { id: "c1", text: "තව rounds play කරමු, momentum එක තියනවා", is_risky: true, next_scenario: "minister_gambling_addiction" },
+      { id: "c2", text: "Businessman එක්ක කතා කරලා connections හදමු", next_scenario: "minister_business_connection" },
+      { id: "c3", text: "ජයගහණ celebrate කරලා hotel එකට යමු", next_scenario: "minister_hotel" }
+    ],
+    stats_update: { money_change: 5000, stress_change: -15, energy_change: -5, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "minister_shopping": {
+    id: "minister_shopping",
+    story_text: "Melbourne Central shopping complex එකේ premium brands. Gucci, Louis Vuitton සේරම. Winter collection එක ගත්තා - jacket $800, boots $400. Instagram story එකක් දාලා.",
+    image_prompt: "Luxury shopping bags from premium brands in Melbourne shopping center",
+    choices: [
+      { id: "c1", text: "තව පොඩි කඩ වලත් බලමු, souvenirs ගනිමු", next_scenario: "minister_lifestyle" },
+      { id: "c2", text: "කෑම කන්න හොඳ restaurant එකකට යමු", next_scenario: "minister_fine_dining" },
+      { id: "c3", text: "University එකට යන්න වෙලාව, enrollment කරමු", next_scenario: "minister_university" }
+    ],
+    stats_update: { money_change: -1200, stress_change: -10, energy_change: -5, day_change: 0 },
+    new_items: ["Winter Jacket", "Designer Boots"],
+    game_state: "ongoing"
+  },
+
+  "minister_business_connection": {
+    id: "minister_business_connection",
+    story_text: "Businessman මිනිහා තමයි real estate developer කෙනෙක්. Internship offer එකක් කළා - $30/hour. එයාගේ office එක CBD එකේ premium tower එකක. Connection එකක් හම්බුණා!",
+    image_prompt: "Business meeting in modern Melbourne office tower, city view from window",
+    choices: [
+      { id: "c1", text: "Internship එක accept කරලා start කරමු", next_scenario: "minister_internship" },
+      { id: "c2", text: "පොඩ්ඩක් හිතලා university work balance කරලා decide කරමු", next_scenario: "minister_university" },
+      { id: "c3", text: "තව networking කරලා options බලමු", next_scenario: "minister_social" }
+    ],
+    stats_update: { money_change: 0, stress_change: 5, energy_change: -10, day_change: 1 },
+    new_items: ["Business Card"],
+    game_state: "ongoing"
+  },
+
+  "minister_internship": {
+    id: "minister_internship",
+    story_text: "Real estate office එකේ වැඩ පටන් ගත්තා. Property valuations, client meetings, market research. මාර professional environment එකක්. Weekly $1200 හම්බවෙනවා!",
+    image_prompt: "Young professional working in modern Melbourne real estate office",
+    choices: [
+      { id: "c1", text: "Work hard කරලා full-time offer එකක් හොයමු", next_scenario: "minister_career_path" },
+      { id: "c2", text: "Study + work balance කරමු", next_scenario: "minister_balanced_life" },
+      { id: "c3", text: "Connections use කරලා own business start කරමු", is_risky: true, next_scenario: "minister_startup" }
+    ],
+    stats_update: { money_change: 1200, stress_change: 15, energy_change: -25, day_change: 5 },
+    new_items: ["Laptop", "Work Portfolio"],
+    game_state: "ongoing"
+  },
+
+  // Business family expanded paths
+  "business_groceries": {
+    id: "business_groceries",
+    story_text: "Coles එකේ shopping කරද්දී prices බලලා shock! Milk $4, Rice $15! Budget manage කරන්න ඕනේ. Roommates tips දුන්නා - ALDI cheaper කියලා.",
+    image_prompt: "Shopping in Australian supermarket, comparing prices on shelves",
+    choices: [
+      { id: "c1", text: "Meal prep කරලා week එකට හදාගනිමු", next_scenario: "business_meal_prep" },
+      { id: "c2", text: "ALDI එකට යමු, savings කරමු", next_scenario: "business_smart_shopping" },
+      { id: "c3", text: "Sri Lankan කඩ එකක් හොයමු, අපේ කෑම ගනිමු", next_scenario: "business_srilankan_shop" }
+    ],
+    stats_update: { money_change: -80, stress_change: 10, energy_change: -10, day_change: 0 },
+    new_items: ["Groceries"],
+    game_state: "ongoing"
+  },
+
+  "business_srilankan_shop": {
+    id: "business_srilankan_shop",
+    story_text: "Footscray එකේ Sri Lankan කඩයක් හම්බුනා! අච්චාරු, පාපඩම්, තේ කොළ සේරම තියනවා. කඩේ uncle කෙනෙක් job එකක් ගැන කිව්වා - warehouse helper.",
+    image_prompt: "Sri Lankan grocery store in Footscray Melbourne, shelves with familiar products",
+    choices: [
+      { id: "c1", text: "Uncle ට කතා කරලා job details අහමු", next_scenario: "business_warehouse_job" },
+      { id: "c2", text: "සාමාන් ගෙන දැන් apartment එකට යමු", next_scenario: "business_apartment" },
+      { id: "c3", text: "Community එක්ක connect වෙමු, contacts හදමු", next_scenario: "business_community_network" }
+    ],
+    stats_update: { money_change: -50, stress_change: -15, energy_change: -5, day_change: 0 },
+    new_items: ["Rice", "Spices"],
+    game_state: "ongoing"
+  },
+
+  "business_warehouse_job": {
+    id: "business_warehouse_job",
+    story_text: "Warehouse job interview ගියා. Amazon fulfillment center එක. Night shift 10PM-6AM, $27/hour. Physical work වැඩියි but මුදල් හොඳයි.",
+    image_prompt: "Large warehouse interior with boxes and forklifts, workers in high-vis vests",
+    choices: [
+      { id: "c1", text: "Job එක accept කරලා පළවෙනි shift එකට යමු", next_scenario: "business_warehouse_first_day" },
+      { id: "c2", text: "තව options බලලා decide කරමු", next_scenario: "business_job_search" },
+      { id: "c3", text: "Part-time කරලා study එක්ක balance කරමු", next_scenario: "business_part_time_warehouse" }
+    ],
+    stats_update: { money_change: 0, stress_change: 10, energy_change: -10, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "business_warehouse_first_day": {
+    id: "business_warehouse_first_day",
+    story_text: "පළවෙනි shift එක මාර hard! 8 hours non-stop boxes lift කරනවා. Supervisor strict. ඒත් team එක friendly. $216 හම්බුනා පළවෙනි දවසට!",
+    image_prompt: "Tired warehouse worker after first night shift, satisfied with paycheck",
+    choices: [
+      { id: "c1", text: "දිගටම කරමු, මුදල් save කරමු", next_scenario: "business_warehouse_grind" },
+      { id: "c2", text: "Forklift license එකක් ගෙන promotion බලමු", next_scenario: "business_forklift_training" },
+      { id: "c3", text: "වැඩිය hard, easy job එකක් බලමු", next_scenario: "business_job_search" }
+    ],
+    stats_update: { money_change: 216, stress_change: 20, energy_change: -40, day_change: 1 },
+    new_items: ["High-Vis Vest", "Work Boots"],
+    game_state: "ongoing"
+  },
+
+  "business_myki": {
+    id: "business_myki",
+    story_text: "Myki card top up කරලා tram journey එකක් try කළා. Melbourne tram system එක පට්ට! Free tram zone CBD එකේ. City explore කරන්න පුළුවන්.",
+    image_prompt: "Melbourne tram on city street, iconic green and yellow colors",
+    choices: [
+      { id: "c1", text: "City එක explore කරමු, landmarks බලමු", next_scenario: "business_explore_melbourne" },
+      { id: "c2", text: "Apartment එකට direct යමු", next_scenario: "business_apartment" },
+      { id: "c3", text: "University campus එක බලලා එමු", next_scenario: "business_university_visit" }
+    ],
+    stats_update: { money_change: -10, stress_change: -10, energy_change: -5, day_change: 0 },
+    new_items: ["Myki Card"],
+    game_state: "ongoing"
+  },
+
+  // Middle class expanded scenarios
+  "middle_bus": {
+    id: "middle_bus",
+    story_text: "Public bus එක slow but cheap. 2 hours journey ඇතුළේ Footscray එකට ගියා. Luggage එක carry කරනවා අමාරු වුණත් $15 save කළා!",
+    image_prompt: "Public bus journey in Melbourne suburbs, passenger with luggage looking tired",
+    choices: [
+      { id: "c1", text: "Shared house එකට finally ගිහින් rest එකක් ගනිමු", next_scenario: "middle_footscray" },
+      { id: "c2", text: "පළවෙනි day area එක පොඩ්ඩක් explore කරමු", next_scenario: "middle_explore_footscray" },
+      { id: "c3", text: "Sri Lankan කඩයක් හොයමු, කන්න එකක් කාලා යමු", next_scenario: "middle_srilankan_food" }
+    ],
+    stats_update: { money_change: -5, stress_change: 15, energy_change: -25, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "middle_shared_taxi": {
+    id: "middle_shared_taxi",
+    story_text: "Facebook group එකේ post කළා shared taxi එකක්. 3 දෙනෙක් එක්ක $15/person. එක journey එකේම contacts 3ක් හම්බුනා - හැමෝම students!",
+    image_prompt: "Shared taxi with international students, friendly conversation during ride",
+    choices: [
+      { id: "c1", text: "New friends එක්ක WhatsApp group එකක් හදමු", next_scenario: "middle_student_network" },
+      { id: "c2", text: "Shared house එකට ගිහින් settle වෙමු", next_scenario: "middle_footscray" },
+      { id: "c3", text: "අනික් students එක්ක job tips අහමු", next_scenario: "middle_job_tips" }
+    ],
+    stats_update: { money_change: -15, stress_change: -10, energy_change: -15, day_change: 0 },
+    new_items: ["Phone Contacts"],
+    game_state: "ongoing"
+  },
+
+  "middle_explore_city": {
+    id: "middle_explore_city",
+    story_text: "Melbourne CBD එක explore කළා - Federation Square, Flinders Street Station, Yarra River. Photo ගණනක් ගත්තා Instagram එකට. City එක පට්ට beautiful!",
+    image_prompt: "Federation Square Melbourne with tourists, iconic architecture and city skyline",
+    choices: [
+      { id: "c1", text: "තව පොඩ්ඩක් බලලා enjoy කරමු", next_scenario: "middle_melbourne_tourism" },
+      { id: "c2", text: "දැන් වැඩ බලන්න පටන් ගමු", next_scenario: "middle_job_hunt" },
+      { id: "c3", text: "Shared house එකට යන්න වෙලාව වෙලා", next_scenario: "middle_footscray" }
+    ],
+    stats_update: { money_change: -20, stress_change: -15, energy_change: -10, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "middle_srilankan_food": {
+    id: "middle_srilankan_food",
+    story_text: "Sri Lankan කෑම කඩයක් හම්බුනා Footscray එකේ! Rice & curry $12. Taste එක හරියට අපේ ගෙදර වගේ. Aunty කතා කරලා job පැත්තෙ help කරනවා කිව්වා.",
+    image_prompt: "Sri Lankan restaurant in Footscray, plate of rice and curry, friendly aunty serving",
+    choices: [
+      { id: "c1", text: "Aunty එක්ක job opportunities ගැන කතා කරමු", next_scenario: "middle_aunty_help" },
+      { id: "c2", text: "Restaurant එකේම වැඩක් අහලා බලමු", next_scenario: "middle_restaurant_job" },
+      { id: "c3", text: "කාලා දැන් house එකට යමු", next_scenario: "middle_footscray" }
+    ],
+    stats_update: { money_change: -12, stress_change: -20, energy_change: 10, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "middle_direct_apply": {
+    id: "middle_direct_apply",
+    story_text: "Market වල කඩ වලට resume දුන්නා. Vietnamese grocery එකක් interview call එකක් දුන්නා same day! $22/hour retail assistant. පොඩි start එකක්.",
+    image_prompt: "Small Vietnamese grocery store in Footscray, shopkeeper interviewing candidate",
+    choices: [
+      { id: "c1", text: "Interview එකට හොඳටම prepare වෙලා යමු", next_scenario: "middle_retail_interview" },
+      { id: "c2", text: "තව options බලලා compare කරමු", next_scenario: "middle_job_hunt" },
+      { id: "c3", text: "Accept කරලා පළවෙනි shift start කරමු", next_scenario: "middle_retail_work" }
+    ],
+    stats_update: { money_change: 0, stress_change: 10, energy_change: -10, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "middle_retail_online": {
+    id: "middle_retail_online",
+    story_text: "Coles online application submit කළා. Automated response එකක් ආවා - screening process කියලා. 2-3 weeks wait කරන්න වෙනවා. Slow process!",
+    image_prompt: "Person filling online job application on laptop, waiting for response",
+    choices: [
+      { id: "c1", text: "Wait කරද්දී වෙන jobs apply කරමු", next_scenario: "middle_job_hunt" },
+      { id: "c2", text: "Direct කඩ වලට යලා fast results ගනිමු", next_scenario: "middle_direct_apply" },
+      { id: "c3", text: "Cleaning agency එකක් try කරමු", next_scenario: "middle_cleaning_job" }
+    ],
+    stats_update: { money_change: 0, stress_change: 15, energy_change: -5, day_change: 2 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  // Lower class expanded with more struggle
+  "lower_emergency_hostel": {
+    id: "lower_emergency_hostel",
+    story_text: "Emergency hostel එකට ගියා - shared room 8 people එක්ක. Bunk bed එකක්. Safe ඒත් privacy නෑ. $15/night. මුදල් ඉක්මනට ඉවර වෙයි!",
+    image_prompt: "Budget hostel dormitory room with bunk beds, backpackers settling in",
+    choices: [
+      { id: "c1", text: "ඉක්මනින්ම job හොයන්න පටන් ගනිමු", next_scenario: "lower_desperate_job_hunt" },
+      { id: "c2", text: "Hostel එකේ අය එක්ක network කරමු", next_scenario: "lower_hostel_friends" },
+      { id: "c3", text: "Cheaper option එකක් හොයමු - homeless shelter", is_risky: true, next_scenario: "lower_shelter" }
+    ],
+    stats_update: { money_change: -15, stress_change: 30, energy_change: -20, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "lower_community": {
+    id: "lower_community",
+    story_text: "Sri Lankan community help line call කළා. Uncle කෙනෙක් pick up කළා - Dandenong area එකේ shared room එකක් $80/week. එයා එන්න කිව්වා.",
+    image_prompt: "Helpful Sri Lankan community volunteer on phone, offering assistance",
+    choices: [
+      { id: "c1", text: "Uncle එක්ක meet වෙලා room එක බලමු", next_scenario: "lower_dandenong_room" },
+      { id: "c2", text: "තව options ටිකක් compare කරලා decide කරමු", next_scenario: "lower_compare_options" },
+      { id: "c3", text: "Community center එකට ගිහින් help අහමු", next_scenario: "lower_community_center" }
+    ],
+    stats_update: { money_change: 0, stress_change: -15, energy_change: -10, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "lower_facebook_help": {
+    id: "lower_facebook_help",
+    story_text: "Facebook post එක දැම්මට පස්සේ messages 15ක් ආවා! Some helpful, some scams. Akka කෙනෙක් genuine help offer කළා - Sunshine area එකේ spare room.",
+    image_prompt: "Phone screen showing Facebook messages, mix of helpful and suspicious offers",
+    choices: [
+      { id: "c1", text: "Genuine looking akka message එකට reply කරමු", next_scenario: "lower_sunshine_room" },
+      { id: "c2", text: "පොලිසියට scam messages report කරමු", next_scenario: "lower_report_scams" },
+      { id: "c3", text: "Community organization එකකට යමු safe option එකට", next_scenario: "lower_community" }
+    ],
+    stats_update: { money_change: 0, stress_change: 10, energy_change: -15, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "lower_desperate_job_hunt": {
+    id: "lower_desperate_job_hunt",
+    story_text: "Jobs desperate වෙලා හොයද්දී Facebook group එකේ කෙනෙක් farm work offer කළා. Rural Victoria - $15/hour picking fruits. Accommodation free ඒත් remote.",
+    image_prompt: "Rural farm work opportunity advertisement, fruit picking in Victorian countryside",
+    choices: [
+      { id: "c1", text: "Farm job එක accept කරලා country side යමු", next_scenario: "lower_farm_work" },
+      { id: "c2", text: "Melbourne එකේම රැඳිලා city jobs හොයමු", next_scenario: "lower_city_jobs" },
+      { id: "c3", text: "Cash jobs එහෙම හොයමු - fast money", is_risky: true, next_scenario: "lower_cash_jobs" }
+    ],
+    stats_update: { money_change: 0, stress_change: 35, energy_change: -20, day_change: 2 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  // Success and milestone scenarios
   "success_settled": {
     id: "success_settled",
     story_text: "මචං! Day 30 වෙනවා Melbourne එකේ. ඔයා survive කළා! Part-time job එකක් හම්බුනා, apartment එක stable, routine එකක් හැදිලා. දැන් PR pathway එක plan කරන්න පුළුවන්. Congratulations!",
@@ -340,6 +624,203 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
     ],
     stats_update: { money_change: 800, stress_change: -10, energy_change: 20, day_change: 10 },
     new_items: ["Tax File Number"],
+    game_state: "ongoing"
+  },
+
+  // Additional diverse scenarios
+  "minister_leisure": {
+    id: "minister_leisure",
+    story_text: "University classes start වෙන්න සති 2ක් තියනවා. මේ කාලේ Great Ocean Road trip එකක්, Melbourne Cup racing, nightlife explore කරන්න පුළුවන්. VIP lifestyle මචං!",
+    image_prompt: "Luxury lifestyle in Melbourne, Great Ocean Road scenic drive with expensive car",
+    choices: [
+      { id: "c1", text: "Great Ocean Road road trip යමු, Instagram worthy!", next_scenario: "minister_road_trip" },
+      { id: "c2", text: "Melbourne Cup racing event එකට යමු VIP box එකෙන්", next_scenario: "minister_racing" },
+      { id: "c3", text: "St Kilda beach clubs එකක් try කරමු", next_scenario: "minister_nightlife" }
+    ],
+    stats_update: { money_change: -800, stress_change: -20, energy_change: 10, day_change: 3 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "minister_social": {
+    id: "minister_social",
+    story_text: "University social clubs වලට join වෙලා international students meet කරනවා. Leadership positions වලට apply කරන්න පුළුවන්. Network එක build වෙනවා.",
+    image_prompt: "University social club event, diverse international students networking",
+    choices: [
+      { id: "c1", text: "Sri Lankan students club එකක් start කරමු", next_scenario: "minister_sri_lankan_club" },
+      { id: "c2", text: "Business club එකක් join වෙලා CEO paths explore කරමු", next_scenario: "minister_business_club" },
+      { id: "c3", text: "Sports club එකක් try කරමු - cricket/rugby", next_scenario: "minister_sports" }
+    ],
+    stats_update: { money_change: -100, stress_change: -10, energy_change: -10, day_change: 2 },
+    new_items: ["Club Membership"],
+    game_state: "ongoing"
+  },
+
+  "business_practice_routes": {
+    id: "business_practice_routes",
+    story_text: "City එකේ bike routes practice කරනවා. Bike lanes හොයාගන්න, traffic patterns learn කරන්න. Safe ව වැඩ කරන්න මේව දැනගන්න ඕනේ.",
+    image_prompt: "Cyclist practicing delivery routes in Melbourne CBD, learning bike lanes",
+    choices: [
+      { id: "c1", text: "දැන් confident, first delivery shift එකට යමු", next_scenario: "business_first_delivery" },
+      { id: "c2", text: "තව දවසක් practice කරලා perfect කරමු", next_scenario: "business_more_practice" },
+      { id: "c3", text: "Evening shift එක try කරමු", next_scenario: "business_evening_delivery" }
+    ],
+    stats_update: { money_change: 0, stress_change: -5, energy_change: -15, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "business_evening_delivery": {
+    id: "business_evening_delivery",
+    story_text: "Evening 6PM-10PM shift එක busy වැඩියි! Orders non-stop එනවා. Tips හොඳයි customers ල generous. 4 hours වලට $120 හම්බුනා!",
+    image_prompt: "Night delivery cyclist in Melbourne, lit streets with restaurants and customers",
+    choices: [
+      { id: "c1", text: "දිගටම evening shifts කරමු, money හොඳයි", next_scenario: "business_delivery_streak" },
+      { id: "c2", text: "Different time slots try කරලා best time හොයමු", next_scenario: "business_optimize_shifts" },
+      { id: "c3", text: "හෙට day shift එකක් try කරමු", next_scenario: "business_first_delivery" }
+    ],
+    stats_update: { money_change: 120, stress_change: 10, energy_change: -30, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "business_delivery_streak": {
+    id: "business_delivery_streak",
+    story_text: "මුදල් හොඳට හම්බවෙනවා delivery වලින්! සතියකට $600-800 collect වෙනවා. දැන් car එකක් ගන්න හිතනවා වැඩ easy කරන්න.",
+    image_prompt: "Successful delivery person counting weekly earnings, happy and motivated",
+    choices: [
+      { id: "c1", text: "Car license ගෙන vehicle delivery upgrade කරමු", next_scenario: "business_car_upgrade" },
+      { id: "c2", text: "Bicycle එකෙන්ම දිගටම, පොඩියෙන් පොඩියට save කරමු", next_scenario: "business_save_money" },
+      { id: "c3", text: "University classes start කරලා balance කරමු", next_scenario: "business_study_delivery_balance" }
+    ],
+    stats_update: { money_change: 700, stress_change: 5, energy_change: -20, day_change: 7 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "business_day_routine": {
+    id: "business_day_routine",
+    story_text: "Daily routine එකක් හැදිලා - morning delivery, afternoon rest, evening delivery or study. Life balance වෙලා එනවා slowly. Melbourne lifestyle එකට adjust වෙනවා.",
+    image_prompt: "Balanced daily routine in Melbourne, work-life balance visualization",
+    choices: [
+      { id: "c1", text: "දැන් stable, PR pathway plan කරමු", next_scenario: "success_settled" },
+      { id: "c2", text: "තව income sources හොයමු - second job", next_scenario: "business_second_job" },
+      { id: "c3", text: "Skills improve කරලා better job හොයමු", next_scenario: "business_upskill" }
+    ],
+    stats_update: { money_change: 400, stress_change: -15, energy_change: 10, day_change: 5 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "middle_learn_area": {
+    id: "middle_learn_area",
+    story_text: "Roommates එක්ක කතා කරලා Footscray area එක ගැන දැනගන්නවා. Cheap shops, libraries, parks, job opportunities. Vietnamese, African, Lankan communities එහෙම ගොඩක්.",
+    image_prompt: "Multicultural Footscray neighborhood, diverse shops and community centers",
+    choices: [
+      { id: "c1", text: "Area එක explore කරලා familiarize වෙමු", next_scenario: "middle_explore_footscray" },
+      { id: "c2", text: "දැන් job hunt එකට focus කරමු", next_scenario: "middle_job_hunt" },
+      { id: "c3", text: "Library card එකක් ගෙන resources use කරමු", next_scenario: "middle_library_resources" }
+    ],
+    stats_update: { money_change: 0, stress_change: -10, energy_change: -5, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "middle_rest_first_day": {
+    id: "middle_rest_first_day",
+    story_text: "පළවෙනි දවස rest ගන්නවා. Jet lag එක recover වෙනවා. Room එකේ settle වෙලා හෙට fresh mind එකෙන් plan කරන්න හිතනවා.",
+    image_prompt: "Person resting in shared room after long journey, recovering from travel",
+    choices: [
+      { id: "c1", text: "හෙට patan job hunt start කරමු", next_scenario: "middle_job_hunt" },
+      { id: "c2", text: "Area එක පොඩ්ඩක් explore කරලා familiarize වෙමු", next_scenario: "middle_explore_footscray" },
+      { id: "c3", text: "Roommates එක්ක bond කරලා tips ගනිමු", next_scenario: "middle_learn_area" }
+    ],
+    stats_update: { money_change: 0, stress_change: -20, energy_change: 50, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "middle_prepare_docs": {
+    id: "middle_prepare_docs",
+    story_text: "Police check, Tax File Number (TFN), ABN - මේව හදාගන්න applications submit කරනවා. Process එක 5-7 days. Wait කරන්න වෙනවා.",
+    image_prompt: "Person filling official documents for work in Australia, TFN and ABN applications",
+    choices: [
+      { id: "c1", text: "Wait කරද්දී වෙන job එකක් හොයමු", next_scenario: "middle_job_hunt" },
+      { id: "c2", text: "University ගිහින් student services use කරමු", next_scenario: "middle_student_services" },
+      { id: "c3", text: "Docs ready වෙනකන් area එක explore කරමු", next_scenario: "middle_explore_footscray" }
+    ],
+    stats_update: { money_change: -50, stress_change: 10, energy_change: -10, day_change: 2 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "middle_celebrate": {
+    id: "middle_celebrate",
+    story_text: "පළවෙනි paycheck celebrate කරන්න roommates එක්ක pizza order කරලා movie night එකක්. Small victories count! හෙට onwards positive mindset එකෙන්.",
+    image_prompt: "Group of roommates celebrating with pizza, happy multicultural gathering",
+    choices: [
+      { id: "c1", text: "දැන් regular work mode එකට යමු", next_scenario: "middle_regular_work" },
+      { id: "c2", text: "වෙන side hustle එකක් හොයමු extra money වලට", next_scenario: "middle_side_hustle" },
+      { id: "c3", text: "Study start කරන planning කරමු", next_scenario: "middle_study_planning" }
+    ],
+    stats_update: { money_change: -30, stress_change: -25, energy_change: 10, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "lower_report_scam": {
+    id: "lower_report_scam",
+    story_text: "Scam Watch Australia වෙබ්සයිට් එකට report කළා. Police station එකක්ට ගිහින් complaint එකක් දැම්මා. මුදල් එපා වුණත් system එකට report කරන එක වැදගත්.",
+    image_prompt: "Police station in Melbourne, person filing scam report, serious atmosphere",
+    choices: [
+      { id: "c1", text: "දැන් accommodation හොයන්න community help අහමු", next_scenario: "lower_community_help" },
+      { id: "c2", text: "Budget hostel එකක් හොයමු වෙන්න", next_scenario: "lower_emergency_hostel" },
+      { id: "c3", text: "Facebook group වල ආයෙ try කරමු carefully", next_scenario: "lower_facebook_help" }
+    ],
+    stats_update: { money_change: 0, stress_change: 10, energy_change: -15, day_change: 1 },
+    new_items: ["Police Report"],
+    game_state: "ongoing"
+  },
+
+  "lower_fraud_report": {
+    id: "lower_fraud_report",
+    story_text: "Bank එකට ගිහින් fraud dispute එකක් file කළා. Process එක long but bank එක investigate කරනවා කිව්වා. Reversal chance පොඩියි but try කළා.",
+    image_prompt: "Bank teller helping customer file fraud report, official banking environment",
+    choices: [
+      { id: "c1", text: "Wait කරද්දී emergency accommodation හොයමු", next_scenario: "lower_emergency_shelter" },
+      { id: "c2", text: "Community organizations වලින් help අහමු", next_scenario: "lower_community_help" },
+      { id: "c3", text: "දැන් ඉතිං වැඩ හොයලා recover වෙන්න පටන් ගනිමු", next_scenario: "lower_desperate_job_hunt" }
+    ],
+    stats_update: { money_change: 0, stress_change: 15, energy_change: -10, day_change: 1 },
+    new_items: ["Bank Dispute Number"],
+    game_state: "ongoing"
+  },
+
+  "lower_community_help": {
+    id: "lower_community_help",
+    story_text: "Sri Lankan community welfare organization එකක් help කළා! Temporary accommodation 1 week free, job connections, counselling services provide කරනවා. දැන් hope එකක් පෙන්නවා.",
+    image_prompt: "Community welfare center, volunteers helping new immigrants with support services",
+    choices: [
+      { id: "c1", text: "Organization එකේ help එකෙන් job interview එකකට යමු", next_scenario: "lower_community_job" },
+      { id: "c2", text: "Counselling sessions වලට යලා mental health එක බලාගනිමු", next_scenario: "lower_mental_health" },
+      { id: "c3", text: "Temp accommodation එකේ ඉඳලා permanent තැනක් හොයමු", next_scenario: "lower_find_permanent_room" }
+    ],
+    stats_update: { money_change: 0, stress_change: -30, energy_change: 20, day_change: 2 },
+    new_items: ["Community Support Card"],
+    game_state: "ongoing"
+  },
+
+  "lower_emergency_shelter": {
+    id: "lower_emergency_shelter",
+    story_text: "Salvation Army emergency shelter එකක් හම්බුනා. Basic bed, meals included, safe. 2 weeks දක්වා stay කරන්න පුළුවන්. Social workers job hunt එකට help කරනවා.",
+    image_prompt: "Emergency shelter facility, clean and safe basic accommodation",
+    choices: [
+      { id: "c1", text: "Social worker help එකෙන් job applications යවමු", next_scenario: "lower_social_worker_help" },
+      { id: "c2", text: "Shelter එකේ අය එක්ක network කරලා opportunities හොයමු", next_scenario: "lower_shelter_network" },
+      { id: "c3", text: "දිගටම survive කරමු, කොහොමහරි මේ phase එක pass වෙයි", next_scenario: "lower_survival_mode" }
+    ],
+    stats_update: { money_change: 0, stress_change: -20, energy_change: 15, day_change: 1 },
+    new_items: [],
     game_state: "ongoing"
   }
 };
