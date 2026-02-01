@@ -1160,6 +1160,363 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
     stats_update: { money_change: 600, stress_change: -50, energy_change: 20, day_change: 14 },
     new_items: ["AusPost Job", "Proper Employment"],
     game_state: "ongoing"
+  },
+
+  // PR Pathway Scenarios
+  pr_consultation_start: {
+    id: "pr_consultation_start",
+    title: "PR Pathway හොයමු",
+    description: "Australia එකේ permanent resident වෙන්න හිතනවා. Migration agent කෙනෙක් ලගට consultation එකකට යන්න ඕන. ඔවුන්ගේ fees $200-500 විතරයි consultation එකකට. ඔයාගේ social class එක මත depend වෙනවා ඔයාගේ options.",
+    image_url: "professional_meeting",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "$200 දෙලා basic consultation එකක් ගමු", next_scenario: "pr_consultation_middle" },
+      { id: "c2", text: "$500 premium agent එකක් try කරමු", next_scenario: "pr_consultation_premium" },
+      { id: "c3", text: "Free online resources බලලා විදියක් හදාගමු", next_scenario: "pr_diy_research" }
+    ],
+    stats_update: { money_change: 0, stress_change: 20, energy_change: -10, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  pr_consultation_minister: {
+    id: "pr_consultation_minister",
+    title: "ඇමති පුතාට Special Treatment",
+    description: "Migration agent ඔයාගේ background එක අහලා VIP treatment දෙනවා. 'Sir, ඔබට business visa, investment visa හැම දෙයක්ම qualify වෙනවා. $50,000 business investment එකකින් PR එක guaranteed'. ඔබේ family connections + money = easy pathway.",
+    image_url: "luxury_consultation",
+    profile_class: "ඇමති පුතා",
+    choices: [
+      { id: "c1", text: "Business visa pathway එකට යමු - family money use කරලා", next_scenario: "pr_minister_business_visa" },
+      { id: "c2", text: "Student → Work → PR pathway easy කරගමු university වලින්", next_scenario: "minister_university" },
+      { id: "c3", text: "Investment visa - $250,000 invest කරලා PR fast track", next_scenario: "pr_minister_investment" }
+    ],
+    stats_update: { money_change: -500, stress_change: -30, energy_change: 10, day_change: 2 },
+    new_items: ["VIP Migration Plan"],
+    game_state: "ongoing"
+  },
+
+  pr_consultation_business: {
+    id: "pr_consultation_business",
+    title: "Business Family Options",
+    description: "Agent කියනවා 'ඔබේ family business background එකක් තියනවා, 186/482 Employer Sponsored visa වලට try කරන්න පුළුවන්. හෝ business visa pathway එකකුත් තියනවා moderate investment එකකින්'.",
+    image_url: "business_meeting",
+    profile_class: "Business Family",
+    choices: [
+      { id: "c1", text: "Employer sponsored pathway - job offer එකක් හොයමු", next_scenario: "pr_business_employer_sponsored" },
+      { id: "c2", text: "Business Innovation visa - $100k invest කරමු", next_scenario: "pr_business_innovation" },
+      { id: "c3", text: "Skilled Independent pathway - points maximize කරමු", next_scenario: "pr_skilled_pathway" }
+    ],
+    stats_update: { money_change: -350, stress_change: -10, energy_change: -5, day_change: 2 },
+    new_items: ["Business PR Plan"],
+    game_state: "ongoing"
+  },
+
+  pr_consultation_middle: {
+    id: "pr_consultation_middle",
+    title: "Middle Class Reality Check",
+    description: "Agent කියනවා 'ඔබට skilled migration pathway එක තමා realistic. ඒකට professional job experience + English test + points 65+ ඕන. හෝ employer sponsored visa එකක් හොයන්න ඕන. මාර hard pathway එකක්, 3-5 years යයි'.",
+    image_url: "realistic_discussion",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Skilled pathway - IELTS කරලා points හදාගමු (hard way)", next_scenario: "pr_middle_skilled_grind" },
+      { id: "c2", text: "Regional sponsorship හොයමු - එහෙම ටිකක් easy", next_scenario: "pr_middle_regional" },
+      { id: "c3", text: "දැනට වැඩ කරමු, පස්සේ හිතමු PR ගැන", next_scenario: "middle_stable_work" }
+    ],
+    stats_update: { money_change: -200, stress_change: 30, energy_change: -15, day_change: 1 },
+    new_items: ["PR Reality Check"],
+    game_state: "ongoing"
+  },
+
+  pr_consultation_lower: {
+    id: "pr_consultation_lower",
+    title: "Lower Class හිරවීම",
+    description: "Agent honestly කියනවා 'ඔබේ current situation එකෙන් PR එක මාරම hard. Skilled pathway එකට qualifications නෑ, employer sponsored එකට stable job නෑ. Best option - partner visa හෝ 5+ years wait කරලා humanitarian grounds'. බොහොම අමාරුයි.",
+    image_url: "difficult_news",
+    profile_class: "Lower Class",
+    choices: [
+      { id: "c1", text: "දිගටම කරගෙන ඉන්නවා, දවසක හරි වෙයි", next_scenario: "lower_survival_mode" },
+      { id: "c2", text: "Skills develop කරලා qualify වෙන්න try කරමු (long shot)", next_scenario: "pr_lower_upskill" },
+      { id: "c3", text: "Partner හොයමු relationship visa එකක් හරි හදාගමු", next_scenario: "lower_relationship_pathway" }
+    ],
+    stats_update: { money_change: -200, stress_change: 60, energy_change: -25, day_change: 1 },
+    new_items: ["Harsh Reality"],
+    game_state: "ongoing"
+  },
+
+  // Driver's License Scenarios
+  drivers_license_test: {
+    id: "drivers_license_test",
+    title: "Victoria Driver's License Test",
+    description: "Australian driver's license එකක් ගන්න VicRoads test එකට යනවා. Sri Lankan license එකෙන් 3 months විතරයි drive කරන්න පුළුවන්. Computer test + driving test pass කරන්න ඕන. ඔයාගේ class එක මත experience එක වෙනස් වෙනවා.",
+    image_url: "driving_test",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "VicRoads කෙලින්ම test book කරමු - minister son advantage", next_scenario: "license_minister_easy" },
+      { id: "c2", text: "Driving school classes + test - business/middle class way", next_scenario: "license_proper_preparation" },
+      { id: "c3", text: "පරණ license එකෙන් drive කරගෙන ඉන්නවා - lower class risk", next_scenario: "license_illegal_driving" }
+    ],
+    stats_update: { money_change: 0, stress_change: 15, energy_change: -10, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  license_minister_easy: {
+    id: "license_minister_easy",
+    title: "ඇමති පුතාට Easy Mode",
+    description: "ඔයාට car එකක් තියනවා, driving instructor premium එකක් hire කරනවා. Test එකේදී instructor හරියට train කරපු නිසා pass. දවසකට license එකත් අතට. Easy! Professional photo shoot එකක් කරලා license photo එකත් perfect.",
+    image_url: "success_celebration",
+    profile_class: "ඇමති පුතා",
+    choices: [
+      { id: "c1", text: "දැන් Melbourne එක පුරා freely drive කරමු", next_scenario: "minister_leisure" },
+      { id: "c2", text: "Car upgrade එකක් කරමු - BMW/Mercedes", next_scenario: "minister_car_upgrade" },
+      { id: "c3", text: "Friends ලව අරගෙන road trips යමු", next_scenario: "minister_social_life" }
+    ],
+    stats_update: { money_change: -800, stress_change: -40, energy_change: 10, day_change: 14 },
+    new_items: ["VIC License", "Freedom"],
+    game_state: "ongoing"
+  },
+
+  license_proper_preparation: {
+    id: "license_proper_preparation",
+    title: "හරියට Prepare වෙමු",
+    description: "Driving school classes $400, VicRoads test fees $150. Theory test pass කළා, ඒත් driving test 1st attempt fail - parallel parking අමාරුයි. 2nd attempt $150 more. Pass කළාම license $50. Total investment ~$750. Worth it!",
+    image_url: "driving_lessons",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "දැන් license තියනවා, second hand car එකක් බලමු", next_scenario: "middle_car_purchase" },
+      { id: "c2", text: "Public transport save කරලා මාසෙකට $200+ save වෙනවා", next_scenario: "middle_stable_work" },
+      { id: "c3", text: "Uber/delivery jobs හොයමු දැන් license තියෙන නිසා", next_scenario: "business_uber_eats" }
+    ],
+    stats_update: { money_change: -750, stress_change: 20, energy_change: -30, day_change: 28 },
+    new_items: ["VIC License"],
+    game_state: "ongoing"
+  },
+
+  license_illegal_driving: {
+    id: "license_illegal_driving",
+    title: "පරණ License එකෙන් Risk",
+    description: "ටික සල්ලි save කරන්න, Sri Lankan license එකෙන් drive කරනවා (3 months පසුව illegal). දවසක් police check point එකක හම්බ වෙනවා. 'Your international license is expired, this is illegal' - Fine $500 + court summons.",
+    image_url: "police_stop",
+    profile_class: "Lower Class",
+    choices: [
+      { id: "c1", text: "Fine එක ගෙවලා කෙලින්ම license test book කරමු", next_scenario: "license_lower_struggle" },
+      { id: "c2", text: "Court එකට යලා mercy අයද යන්න පුළුවන් - lower class sympathy", next_scenario: "license_court_mercy" },
+      { id: "c3", text: "දැන් car නෑ, public transport බලාගෙන යමු", next_scenario: "lower_survival_mode" }
+    ],
+    stats_update: { money_change: -500, stress_change: 70, energy_change: -30, day_change: 3 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  // Cash-in-Hand Restaurant Job
+  cash_job_restaurant: {
+    id: "cash_job_restaurant",
+    title: "Cash-in-Hand Restaurant Job",
+    description: "Burwood/Box Hill එකේ Asian restaurant එකක් offer කරනවා cash job එකක්. $15/hour (legal minimum $23), no super, no pay slips. 'We pay cash, you work hard, no questions asked'. Exploitation clear ඇති, ඒත් desperate times...",
+    image_url: "restaurant_kitchen",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Minister son - 'No way, මම legal jobs විතරයි'", next_scenario: "cash_job_minister_reject" },
+      { id: "c2", text: "Business/Middle - 'Temporary විතරයි, better job හොයනකම්'", next_scenario: "cash_job_accept_temporary" },
+      { id: "c3", text: "Lower class - 'මට option නෑ, කරමු'", next_scenario: "cash_job_exploitation" }
+    ],
+    stats_update: { money_change: 0, stress_change: 25, energy_change: -10, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  cash_job_minister_reject: {
+    id: "cash_job_minister_reject",
+    title: "Privilege = Choice",
+    description: "ඔයාට මේ වගේ exploitation accept කරන්න ඕන නෑ. Family support තියනවා, legal job එකක් හොයගන්න time තියනවා. Lankan community එකේ uncle කෙනෙක් හරහා proper restaurant management trainee job එකක් හොයාගන්නවා $28/hour.",
+    image_url: "professional_success",
+    profile_class: "ඇමති පුතා",
+    choices: [
+      { id: "c1", text: "Proper hospitality career එකක් develop කරමු", next_scenario: "minister_career_path" },
+      { id: "c2", text: "මේක side income විතරයි, main focus university/business", next_scenario: "minister_university" },
+      { id: "c3", text: "Experience ගත්තම අපේම restaurant එකක් start කරමු", next_scenario: "minister_business_venture" }
+    ],
+    stats_update: { money_change: 500, stress_change: -30, energy_change: 10, day_change: 7 },
+    new_items: ["Proper Job", "Career Path"],
+    game_state: "ongoing"
+  },
+
+  cash_job_accept_temporary: {
+    id: "cash_job_accept_temporary",
+    title: "Temporary Compromise",
+    description: "3 months temporary විතරයි කරමු කියලා start කරනවා. $15/hour × 40 hours = $600/week cash. Boss මාර කතා, 'Good boy, you work hard'. ඒත් secretly better jobs apply කරනවා. වැඩේ hard, stress වැඩි, ඒත් survive වෙන්න පුළුවන්.",
+    image_url: "kitchen_work",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "දිගටම කරලා better job හම්බ වෙනකම් බලාගෙන ඉන්නවා", next_scenario: "cash_job_exit_success" },
+      { id: "c2", text: "Fair Work කියලා legal pathway ගමු - risky but right", next_scenario: "cash_job_legal_action" },
+      { id: "c3", text: "Boss ව දැන් trust කරනවා, promotion අහමු", next_scenario: "cash_job_promotion_trap" }
+    ],
+    stats_update: { money_change: 600, stress_change: 40, energy_change: -35, day_change: 7 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  cash_job_exploitation: {
+    id: "cash_job_exploitation",
+    title: "Exploitation Cycle",
+    description: "Options නැති නිසා accept කරනවා. Boss දන්නවා ඔයාට alternatives නෑ කියලා. $15/hour → $12/hour drop කරනවා. 'Business slow, you take or leave'. දවසට 12 hours වැඩ, rest නෑ, breaks නෑ. Health පහළ යනවා.",
+    image_url: "exhausted_worker",
+    profile_class: "Lower Class",
+    choices: [
+      { id: "c1", text: "දිගටම කරනවා, මොකද කරන්නද වෙන මොකක්?", next_scenario: "cash_job_burnout" },
+      { id: "c2", text: "Lankan community help desk එකට යලා බලමු", next_scenario: "lower_community" },
+      { id: "c3", text: "Fair Work අනිත් workers එක්ක එකතු වෙලා complaint", next_scenario: "cash_job_group_action" }
+    ],
+    stats_update: { money_change: 480, stress_change: 65, energy_change: -50, day_change: 7 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  // Myki Inspector Scenarios
+  myki_inspector_encounter: {
+    id: "myki_inspector_encounter",
+    title: "Myki Inspector හම්බවීම",
+    description: "Tram එකේ යද්දී inspectors නැගලා 'Myki please'. ඔයාගේ Myki card එක tap කරන්න අමතක වුනා (හෝ balance නෑ). $250 fine එක issue කරනවා. ඔයාගේ response එක class එකෙන් වෙනස් වෙනවා.",
+    image_url: "tram_inspection",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Minister son - 'Sorry sir, genuine mistake' + pay කෙලින්ම", next_scenario: "myki_minister_pay" },
+      { id: "c2", text: "Business/Middle - 'Can I explain?' + appeal එකක් try කරනවා", next_scenario: "myki_appeal_attempt" },
+      { id: "c3", text: "Lower class - 'මට $250 නෑ sir, please' + beg කරනවා", next_scenario: "myki_lower_desperation" }
+    ],
+    stats_update: { money_change: 0, stress_change: 40, energy_change: -15, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  myki_minister_pay: {
+    id: "myki_minister_pay",
+    title: "ටික සල්ලි කුඩා ප්‍රශ්නයක්",
+    description: "ඔයා $250 card එකෙන් කෙලින්ම ගෙවනවා. Inspector කියනවා 'Thank you sir, make sure to touch on next time'. ඔයාට මේක විශාල issue එකක් නෙමෙයි - එක coffee date එකක වියදම විතරයි. Lesson learned.",
+    image_url: "casual_payment",
+    profile_class: "ඇමති පුතා",
+    choices: [
+      { id: "c1", text: "Auto top-up Myki එකක් setup කරලා මේ වගේ නැවත නොවෙන්න", next_scenario: "minister_leisure" },
+      { id: "c2", text: "දැන් Uber විතරක් යමු, public transport අපිට සුදුසු නෑ", next_scenario: "minister_hotel" },
+      { id: "c3", text: "එපා වෙලා car එකක් මිලදී ගමු", next_scenario: "minister_car_upgrade" }
+    ],
+    stats_update: { money_change: -250, stress_change: -20, energy_change: 5, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  myki_appeal_attempt: {
+    id: "myki_appeal_attempt",
+    title: "Appeal කරන්න Try කරමු",
+    description: "ඔයා politely explain කරනවා 'This is my first offense, I'm genuinely sorry, I'm a student/worker'. Inspector කියනවා 'You can appeal online'. Appeal letter එකක් ලියනවා. 50/50 chance - එක්කෝ fine waive වෙනවා, නැත්නම් pay කරන්න වෙනවා.",
+    image_url: "formal_letter",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Appeal accept වෙලා fine waive! Lucky!", next_scenario: "myki_appeal_success" },
+      { id: "c2", text: "Appeal reject, $250 installments වලින් ගෙවමු", next_scenario: "myki_payment_plan" },
+      { id: "c3", text: "Ignore කරලා බලමු මොකද වෙන්නේ - risky", next_scenario: "myki_ignore_consequences" }
+    ],
+    stats_update: { money_change: 0, stress_change: 25, energy_change: -20, day_change: 14 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  myki_lower_desperation: {
+    id: "myki_lower_desperation",
+    title: "දුප්පත්කම කතා කරනවා",
+    description: "ඔයා honestly කියනවා 'Sir මට $250 pay කරන්න බෑ, මං cleaning jobs කරගෙන යනවා, rent ගෙවන්න අමාරුයි'. Inspector කියනවා 'Sorry mate, it's the law, you can apply for payment plan'. Desperate situation එකක්.",
+    image_url: "financial_stress",
+    profile_class: "Lower Class",
+    choices: [
+      { id: "c1", text: "Payment plan apply කරලා මාසෙකට $50 ගෙවමු", next_scenario: "myki_payment_plan_struggle" },
+      { id: "c2", text: "Fine ignore කරලා දිගටම risk කරමු (bad idea)", next_scenario: "myki_ignore_consequences" },
+      { id: "c3", text: "Lankan community help අහලා බලමු", next_scenario: "lower_community" }
+    ],
+    stats_update: { money_change: 0, stress_change: 80, energy_change: -30, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  // Car Accident with Sri Lankan License
+  car_accident_srilankan_license: {
+    id: "car_accident_srilankan_license",
+    title: "Accident - Sri Lankan License වලින්",
+    description: "Roundabout එකක හිටිය අනික් car එකකට හැපුණා. කුඩා accident එකක්. Police ආවා, ඔවුන් අහනවා license එක. ඔයා Sri Lankan license එක + international permit දානවා. ඔයාගේ class එක මත මේ situation එක හැසිරෙන විදිය වෙනස් වෙනවා.",
+    image_url: "car_accident",
+    profile_class: "Middle Class",
+    choices: [
+      { id: "c1", text: "Minister son - lawyer කෙලින්ම call කරනවා + insurance හරි", next_scenario: "accident_minister_protected" },
+      { id: "c2", text: "Business - Insurance තියනවා, claim process කරමු", next_scenario: "accident_business_insurance" },
+      { id: "c3", text: "Middle/Lower - Insurance නෑ, මහා problem එකක්", next_scenario: "accident_no_insurance" }
+    ],
+    stats_update: { money_change: 0, stress_change: 70, energy_change: -35, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  accident_minister_protected: {
+    id: "accident_minister_protected",
+    title: "Privilege වලින් Protected",
+    description: "ඔයා කෙලින්ම family lawyer call කරනවා. ඔහු police එක්ක කතා කරනවා, insurance company handle කරනවා. Full comprehensive insurance තිබ්බ නිසා හැම දෙයක්ම cover. ඔයාට කිසිම financial hit එකක් නෑ. Car repair/replace හැම දෙයක්ම insurance එකෙන්.",
+    image_url: "lawyer_consultation",
+    profile_class: "ඇමති පුතා",
+    choices: [
+      { id: "c1", text: "දැන් VIC license එක ගෙන වැඩේ හරි කරගමු", next_scenario: "license_minister_easy" },
+      { id: "c2", text: "Car upgrade එකක් කරලා safer vehicle එකක් ගමු", next_scenario: "minister_car_upgrade" },
+      { id: "c3", text: "දැන් driver කෙනෙක් hire කරමු, driving stress නෑ", next_scenario: "minister_leisure" }
+    ],
+    stats_update: { money_change: -1500, stress_change: -20, energy_change: -10, day_change: 7 },
+    new_items: ["Legal Protection"],
+    game_state: "ongoing"
+  },
+
+  accident_business_insurance: {
+    id: "accident_business_insurance",
+    title: "Insurance Claims Process",
+    description: "Third party insurance එක තියනවා (basic). Claim කරනවා. ඒත් no-claim bonus නැති වෙනවා, next year premium වැඩි වෙනවා. Own car repairs $2000 own pocket එකෙන්. Lesson expensive ඇති ඒත් manage කරන්න පුළුවන්.",
+    image_url: "insurance_claim",
+    profile_class: "Business Family",
+    choices: [
+      { id: "c1", text: "Repairs කරලා careful driving පටන්ගමු", next_scenario: "business_stable_life" },
+      { id: "c2", text: "දැන් VIC license proper එකක් ගෙන legal වෙමු", next_scenario: "license_proper_preparation" },
+      { id: "c3", text: "Public transport use කරලා මාස කිහිපයක් car නැතිව ඉන්නවා", next_scenario: "business_apartment" }
+    ],
+    stats_update: { money_change: -2000, stress_change: 30, energy_change: -25, day_change: 14 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  accident_no_insurance: {
+    id: "accident_no_insurance",
+    title: "අර්බුදයක්",
+    description: "Insurance නෑ. අනික් party damage $3500. ඔයාගේ car damage $2000. Police report හින්දා Sri Lankan license validity check කරනවා - expired! Driving without valid license charge එකක්. Fine $800. Court date එකක්. Total disaster - $6300+.",
+    image_url: "financial_crisis",
+    profile_class: "Lower Class",
+    choices: [
+      { id: "c1", text: "Payment plan එකක් negotiate කරන්න try කරමු", next_scenario: "accident_payment_plan" },
+      { id: "c2", text: "Legal aid එකක් හොයමු, community support ගමු", next_scenario: "accident_legal_aid" },
+      { id: "c3", text: "මේක handle කරන්න බෑ, Sri Lanka එකට යන්න හිතනවා", next_scenario: "game_over_return_home" }
+    ],
+    stats_update: { money_change: -800, stress_change: 95, energy_change: -60, day_change: 3 },
+    new_items: ["Court Summons"],
+    game_state: "ongoing"
+  },
+
+  accident_payment_plan: {
+    id: "accident_payment_plan",
+    title: "Debt Trap",
+    description: "අනික් party එක්ක payment plan එකක් - මාසෙකට $300 × 12 months. Court fine එක $800 වරාවටම. Car sell කරලා $1500 හම්බ කරගෙන partially ගෙවනවා. දැන් car නෑ, debt තියනවා, stress maximum.",
+    image_url: "debt_burden",
+    profile_class: "Lower Class",
+    choices: [
+      { id: "c1", text: "Extra shifts හොයලා debt cover කරන්න කැපකරමු", next_scenario: "lower_survival_mode" },
+      { id: "c2", text: "Lankan community support group වලින් help ගමු", next_scenario: "lower_community" },
+      { id: "c3", text: "දිගටම කරගෙන යමු, කොහොමහරි survive වෙමු", next_scenario: "lower_emergency_hostel" }
+    ],
+    stats_update: { money_change: -2300, stress_change: 40, energy_change: -30, day_change: 30 },
+    new_items: ["Heavy Debt"],
+    game_state: "ongoing"
   }
 };
 
