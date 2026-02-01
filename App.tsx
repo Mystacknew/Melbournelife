@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { getNextStep, generateSceneImage } from './scenarioEngine';
+import { generateScene } from './geminiService';
 import { ProfileClass, GameStats, GameResponse, Choice, StoryLog, CharacterProfile, Gender, RelationshipStatus, GameState } from './types';
 import { StatBar } from './components/StatBar';
 
@@ -85,6 +86,10 @@ const App: React.FC = () => {
   const [showInventory, setShowInventory] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasExistingSave, setHasExistingSave] = useState(false);
+  const [useAI, setUseAI] = useState(false);
+  const [apiKey, setApiKey] = useState('');
+  const [showApiSettings, setShowApiSettings] = useState(false);
+  const [showPrivacyNotice, setShowPrivacyNotice] = useState(false);
   
   const [inventorySearch, setInventorySearch] = useState("");
   const [inventorySort, setInventorySort] = useState<'newest' | 'alphabetical'>('newest');
@@ -94,6 +99,15 @@ const App: React.FC = () => {
 
   // Survival Progress logic: Target Day 30 for "PR/Settlement"
   const progressionPercent = useMemo(() => Math.min(Math.round(((stats.day - 1) / 30) * 100), 100), [stats.day]);
+
+  // Check for stored API key on mount
+  useEffect(() => {
+    const storedKey = localStorage.getItem('mlife_gemini_key');
+    if (storedKey) {
+      setApiKey(storedKey);
+      setUseAI(true);
+    }
+  }, []);
 
   // Auth & Session Logic
   useEffect(() => {
@@ -227,7 +241,16 @@ const App: React.FC = () => {
 
     try {
       const fullProfile = { ...character, class: profileClass } as CharacterProfile;
-      const nextScene = await getNextStep(fullProfile, choice.text, updatedHistory, inventory);
+      
+      // Use AI mode or pre-defined scenarios
+      let nextScene: GameResponse;
+      if (useAI && apiKey) {
+        const contextSummary = updatedHistory.map(h => h.summary).join(' ');
+        nextScene = await generateScene(contextSummary, choice.text, fullProfile, stats, inventory);
+      } else {
+        nextScene = await getNextStep(fullProfile, choice.text, updatedHistory, inventory);
+      }
+      
       const { money_change, stress_change, energy_change, day_change } = nextScene.stats_update;
       
       const changes = [];
@@ -595,9 +618,146 @@ const App: React.FC = () => {
             <div><label className="block text-[11px] uppercase text-slate-500 font-black mb-3 tracking-widest sinhala">Gender</label><select value={character.gender} onChange={e => setCharacter({...character, gender: e.target.value as Gender})} className="w-full bg-slate-800/40 border border-white/10 p-6 rounded-3xl focus:outline-none focus:border-blue-500 font-black text-lg appearance-none cursor-pointer"><option value="Male">Male</option><option value="Female">Female</option></select></div>
           </div>
           <div><label className="block text-[11px] uppercase text-slate-500 font-black mb-3 tracking-widest sinhala">Status</label><div className="grid grid-cols-3 gap-3">{(['Single', 'Couple', 'With Kids'] as RelationshipStatus[]).map(s => (<button key={s} onClick={() => setCharacter({...character, status: s})} className={`py-5 rounded-3xl border text-[10px] font-black transition-all ${character.status === s ? 'bg-blue-600 border-blue-400 text-white shadow-md' : 'bg-slate-800/30 border-white/5 text-slate-500'}`}>{s.toUpperCase()}</button>))}</div></div>
-          <button disabled={!character.name || character.name.length < 2} onClick={() => setScreen('class-select')} className="w-full py-7 bg-blue-600 hover:bg-blue-500 disabled:opacity-20 disabled:grayscale rounded-[2.5rem] font-black text-xl shadow-2xl text-white transition-all">NEXT: PICK SOCIAL CLASS</button>
+          
+          {/* AI Mode Toggle */}
+          <div className="border-t border-white/10 pt-6">
+            <label className="block text-[11px] uppercase text-slate-500 font-black mb-3 tracking-widest">Game Mode</label>
+            <div className="grid grid-cols-2 gap-3">
+              <button onClick={() => { setUseAI(false); localStorage.removeItem('mlife_gemini_key'); }} className={`py-5 rounded-3xl border text-[10px] font-black transition-all ${!useAI ? 'bg-green-600 border-green-400 text-white shadow-md' : 'bg-slate-800/30 border-white/5 text-slate-500'}`}>
+                <i className="fa-solid fa-book mr-2"></i>PRE-DEFINED STORIES
+              </button>
+              <button onClick={() => { setUseAI(true); setShowApiSettings(true); }} className={`py-5 rounded-3xl border text-[10px] font-black transition-all ${useAI ? 'bg-purple-600 border-purple-400 text-white shadow-md' : 'bg-slate-800/30 border-white/5 text-slate-500'}`}>
+                <i className="fa-solid fa-robot mr-2"></i>AI CREATIVE MODE
+              </button>
+            </div>
+            {useAI && (
+              <div className="mt-4 space-y-3">
+                <div className="bg-purple-900/20 border border-purple-500/20 p-4 rounded-2xl text-xs">
+                  <i className="fa-solid fa-info-circle mr-2 text-purple-400"></i>
+                  <span className="text-slate-300">AI mode uses Gemini API for unlimited creative scenarios</span>
+                </div>
+                <button onClick={() => setShowApiSettings(true)} className="w-full py-4 bg-purple-600/20 border border-purple-500/30 hover:bg-purple-600/30 rounded-2xl font-bold text-sm text-purple-300 transition-all">
+                  <i className="fa-solid fa-key mr-2"></i>{apiKey ? 'Update API Key' : 'Enter API Key'}
+                </button>
+              </div>
+            )}
+          </div>
+
+          <button disabled={!character.name || character.name.length < 2 || (useAI && !apiKey)} onClick={() => setScreen('class-select')} className="w-full py-7 bg-blue-600 hover:bg-blue-500 disabled:opacity-20 disabled:grayscale rounded-[2.5rem] font-black text-xl shadow-2xl text-white transition-all">
+            {useAI && !apiKey ? 'ENTER API KEY FIRST' : 'NEXT: PICK SOCIAL CLASS'}
+          </button>
         </div>
       </div>
+
+      {/* API Settings Modal */}
+      {showApiSettings && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div className="w-full max-w-lg bg-slate-900 border border-purple-500/30 p-8 rounded-3xl shadow-2xl">
+            <h3 className="text-2xl font-black mb-6 text-purple-300">
+              <i className="fa-solid fa-robot mr-3"></i>Gemini API Key
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase text-slate-400 font-bold mb-2">Your Gemini API Key</label>
+                <input 
+                  type="password" 
+                  value={apiKey} 
+                  onChange={e => setApiKey(e.target.value)}
+                  placeholder="AIza..."
+                  className="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl focus:outline-none focus:border-purple-500 font-mono text-sm"
+                />
+              </div>
+              <div className="bg-blue-900/20 border border-blue-500/30 p-4 rounded-xl text-xs space-y-2">
+                <p className="font-bold text-blue-300"><i className="fa-solid fa-lightbulb mr-2"></i>How to get API key:</p>
+                <ol className="list-decimal list-inside space-y-1 text-slate-300 ml-2">
+                  <li>Visit <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">aistudio.google.com/apikey</a></li>
+                  <li>Create a free API key</li>
+                  <li>Paste it above</li>
+                </ol>
+              </div>
+              <button onClick={() => setShowPrivacyNotice(true)} className="text-xs text-slate-400 hover:text-slate-200 underline">
+                <i className="fa-solid fa-shield-halved mr-1"></i>Privacy Notice
+              </button>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={() => { setShowApiSettings(false); if (!apiKey) setUseAI(false); }} className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl font-bold">
+                Cancel
+              </button>
+              <button 
+                onClick={() => {
+                  if (apiKey.trim()) {
+                    localStorage.setItem('mlife_gemini_key', apiKey.trim());
+                    setShowApiSettings(false);
+                  }
+                }} 
+                disabled={!apiKey.trim()}
+                className="flex-1 py-3 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 rounded-xl font-bold text-white"
+              >
+                Save Key
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Privacy Notice Modal */}
+      {showPrivacyNotice && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 p-8 rounded-3xl shadow-2xl max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <h3 className="text-2xl font-black mb-6">
+              <i className="fa-solid fa-shield-halved mr-3 text-green-400"></i>Privacy Notice
+            </h3>
+            <div className="space-y-4 text-sm text-slate-300">
+              <div className="bg-green-900/20 border border-green-500/30 p-4 rounded-xl">
+                <p className="font-bold text-green-300 mb-2">Your Privacy is Protected</p>
+                <p>We take your privacy seriously. Here's how your API key is handled:</p>
+              </div>
+              
+              <div className="space-y-3">
+                <div className="flex gap-3">
+                  <i className="fa-solid fa-check text-green-400 mt-1"></i>
+                  <div>
+                    <p className="font-bold">Local Storage Only</p>
+                    <p className="text-xs text-slate-400">Your API key is stored ONLY in your browser's local storage. It never leaves your device.</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3">
+                  <i className="fa-solid fa-check text-green-400 mt-1"></i>
+                  <div>
+                    <p className="font-bold">No Server Storage</p>
+                    <p className="text-xs text-slate-400">We do NOT send or store your API key on any server. All AI requests go directly from your browser to Google.</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3">
+                  <i className="fa-solid fa-check text-green-400 mt-1"></i>
+                  <div>
+                    <p className="font-bold">You Have Control</p>
+                    <p className="text-xs text-slate-400">You can remove your API key anytime by switching to pre-defined story mode.</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3">
+                  <i className="fa-solid fa-check text-green-400 mt-1"></i>
+                  <div>
+                    <p className="font-bold">Google's Terms Apply</p>
+                    <p className="text-xs text-slate-400">When using AI mode, your game prompts are sent to Google's Gemini API according to their <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">terms of service</a>.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-yellow-900/20 border border-yellow-500/30 p-4 rounded-xl">
+                <p className="font-bold text-yellow-300 mb-2"><i className="fa-solid fa-exclamation-triangle mr-2"></i>Security Reminder</p>
+                <p className="text-xs">Keep your API key private. Never share it publicly. You can set usage limits in your Google Cloud Console.</p>
+              </div>
+            </div>
+            <button onClick={() => setShowPrivacyNotice(false)} className="w-full mt-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold text-white">
+              I Understand
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 

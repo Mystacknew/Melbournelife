@@ -30,6 +30,17 @@
 }
 </script>
 <link rel="stylesheet" href="/index.css">
+<script type="importmap">
+{
+  "imports": {
+    "@google/generative-ai": "https://esm.sh/@google/generative-ai@0.21.0"
+  }
+}
+</script>
+<script type="module">
+  import { GoogleGenerativeAI } from "@google/generative-ai";
+  window.aistudio = { GoogleGenerativeAI };
+</script>
 </head>
 <body>
   <div id="root"></div>
