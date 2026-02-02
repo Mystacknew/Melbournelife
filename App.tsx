@@ -1184,10 +1184,10 @@ const App: React.FC = () => {
 
   const renderStart = () => (
     <div className="flex flex-col items-center min-h-screen p-6 text-center bg-slate-950 relative overflow-hidden">
-      {/* Subtle background */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.15)_0%,transparent_40%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(22,163,74,0.15)_0%,transparent_40%)]"></div>
+      {/* Subtle background - POINTER EVENTS NONE to allow clicks through */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.15)_0%,transparent_40%)] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(22,163,74,0.15)_0%,transparent_40%)] pointer-events-none"></div>
       </div>
 
       {/* Header */}
