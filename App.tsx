@@ -233,6 +233,10 @@ const App: React.FC = () => {
     };
     setGameSettings(currentSettings);
     
+    // DEBUG: Log which mode is being used
+    console.log('🎮 Starting game in mode:', currentSettings.storyMode);
+    console.log('📸 Image source:', currentSettings.storyMode === 'predefined' ? 'Local images from /public/images/story/' : 'AI Generated via Gemini');
+    
     const fullProfile = { ...character, class: selectedClass } as CharacterProfile;
     setProfileClass(selectedClass);
     setStats(INITIAL_STATS[selectedClass]);
@@ -636,6 +640,21 @@ const App: React.FC = () => {
         <button onClick={() => setScreen('register')} className="w-full py-6 bg-white text-slate-950 rounded-[2.5rem] font-black text-2xl hover:scale-105 shadow-xl transition-all">
            {hasExistingSave ? 'NEW JOURNEY' : "LET'S FLY 🇦🇺"}
         </button>
+        
+        {hasExistingSave && (
+          <button onClick={async () => {
+            if (confirm('Delete saved game? This cannot be undone!')) {
+              if (session) {
+                await supabase.from('saves').delete().eq('user_id', session.user.id);
+              }
+              localStorage.removeItem('mlife_guest_save');
+              setHasExistingSave(false);
+              resetGame();
+            }
+          }} className="text-red-600 font-black hover:text-red-400 transition-colors uppercase tracking-widest text-xs mt-4">
+            <i className="fa-solid fa-trash mr-2"></i>DELETE SAVED GAME
+          </button>
+        )}
         
         {session && <button onClick={handleLogout} className="text-slate-600 font-black hover:text-red-500 transition-colors uppercase tracking-widest text-xs mt-4">LOGOUT</button>}
         {!session && <button onClick={() => setScreen('auth')} className="text-slate-600 font-black hover:text-blue-500 transition-colors uppercase tracking-widest text-xs mt-4">BACK TO LOGIN</button>}

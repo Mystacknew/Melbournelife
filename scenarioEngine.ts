@@ -182,9 +182,12 @@ export const generateSceneImage = async (
   // Simulate small loading delay for smooth UX
   await new Promise(resolve => setTimeout(resolve, 100));
   
+  console.log('🖼️ Generating image for:', { scenarioId, storyMode, prompt: imagePrompt.substring(0, 50) + '...' });
+  
   // AI Creative Mode - Generate with Gemini
   if (storyMode === 'ai-creative' && geminiApiKey) {
     try {
+      console.log('🤖 Using AI Creative mode with Gemini');
       return await generateImageWithGemini(imagePrompt, geminiApiKey);
     } catch (error) {
       console.error('AI image generation failed, falling back to predefined:', error);
@@ -197,12 +200,15 @@ export const generateSceneImage = async (
   if (scenarioId) {
     const scenarioImage = getScenarioImage(scenarioId);
     if (scenarioImage) {
+      console.log('✅ Found local image for scenario:', scenarioId, '→', scenarioImage);
       return scenarioImage;
     }
   }
   
   // Fall back to keyword matching based on image prompt
-  return getImageByKeywords(imagePrompt);
+  const keywordImage = getImageByKeywords(imagePrompt);
+  console.log('🔍 Using keyword match:', keywordImage);
+  return keywordImage;
 };
 
 /* OLD AI VERSION - Kept for reference, now replaced with local images
