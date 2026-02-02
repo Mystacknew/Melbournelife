@@ -604,49 +604,125 @@ const App: React.FC = () => {
   );
 
   const renderAuth = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center bg-slate-950 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent)]"></div>
-      <div className="mb-16 relative animate-in fade-in zoom-in duration-1000">
-        <div className="absolute -inset-20 bg-blue-600/20 blur-[120px] rounded-full animate-blob"></div>
-        <h1 className="text-7xl font-black mb-3 tracking-tighter text-white relative z-10">MELBOURNE<br/>LIFE</h1>
-        <p className="text-3xl sinhala font-black text-blue-500 relative z-10">මෙල්බර්න් ලයිෆ්</p>
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center bg-gradient-to-br from-slate-950 via-red-950/20 to-slate-950 overflow-hidden relative">
+      {/* Sri Lankan Flag Colors Background */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-amber-600 to-orange-500 blur-3xl"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1/3 bg-gradient-to-r from-red-900 to-red-700 blur-3xl"></div>
+        <div className="absolute top-2/3 left-0 w-full h-1/3 bg-gradient-to-r from-green-800 to-green-600 blur-3xl"></div>
       </div>
-      <div className="w-full max-w-sm bg-slate-900/60 border border-white/10 p-10 rounded-[3rem] shadow-2xl relative z-20 backdrop-blur-xl">
-        <p className="sinhala font-bold mb-8 text-slate-400 text-lg">ගමන පටන් ගන්න ඉස්සෙල්ලා ලොග් වෙලා ඉමු මචං.</p>
-        <button onClick={handleGoogleLogin} className="group w-full flex items-center justify-center gap-4 bg-white text-slate-950 py-6 rounded-3xl font-black text-xl hover:scale-105 transition-all shadow-2xl">
+      
+      <div className="mb-12 relative animate-in fade-in zoom-in duration-1000 z-10">
+        <div className="absolute -inset-20 bg-gradient-to-r from-orange-500/20 via-red-700/20 to-green-600/20 blur-[120px] rounded-full animate-pulse"></div>
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <span className="text-6xl animate-bounce" style={{animationDelay: '0ms'}}>🇱🇰</span>
+          <i className="fa-solid fa-plane text-5xl text-blue-400 animate-pulse"></i>
+          <span className="text-6xl animate-bounce" style={{animationDelay: '500ms'}}>🇦🇺</span>
+        </div>
+        <h1 className="text-6xl md:text-7xl font-black mb-3 tracking-tighter bg-gradient-to-r from-orange-500 via-red-600 to-green-600 bg-clip-text text-transparent relative z-10 drop-shadow-2xl">MELBOURNE<br/>LIFE</h1>
+        <p className="text-3xl sinhala font-black bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent relative z-10">මෙල්බර්න් ජීවිතය</p>
+        <p className="text-slate-400 text-xs mt-2 font-bold tracking-wider">🎮 Immigration Survival Simulator</p>
+      </div>
+      
+      <div className="w-full max-w-sm bg-gradient-to-br from-slate-900/80 to-slate-800/80 border border-white/10 p-10 rounded-[3rem] shadow-2xl relative z-20 backdrop-blur-xl">
+        <p className="sinhala font-bold mb-8 text-slate-300 text-lg">ගමන පටන් ගන්න ඉස්සෙල්ලා ලොග් වෙලා ඉමු මචං! 🚀</p>
+        <button onClick={handleGoogleLogin} className="group w-full flex items-center justify-center gap-4 bg-gradient-to-r from-white to-slate-100 text-slate-950 py-6 rounded-3xl font-black text-xl hover:scale-105 transition-all shadow-2xl hover:shadow-orange-500/30">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-7 h-7" alt="G" /> Login with Google
         </button>
-        <div className="mt-10 flex flex-col gap-4">
-           <button onClick={() => setScreen('start')} className="w-full py-4 bg-slate-800 text-slate-300 rounded-3xl font-black hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+        <div className="mt-8 flex flex-col gap-4">
+           <button onClick={() => setScreen('start')} className="w-full py-5 bg-gradient-to-r from-slate-800 to-slate-700 text-slate-200 rounded-3xl font-black hover:scale-105 transition-all flex items-center justify-center gap-2 border border-white/5 shadow-xl">
              <i className="fa-solid fa-user-secret"></i> Play as Guest
            </button>
-           <p className="text-[10px] text-slate-500 uppercase tracking-widest leading-relaxed">Guest saves are only stored on this device.</p>
+           <p className="text-[10px] text-slate-500 uppercase tracking-widest leading-relaxed">
+             <i className="fa-solid fa-info-circle mr-1"></i>
+             Guest saves stored locally only
+           </p>
         </div>
       </div>
     </div>
   );
 
   const renderStart = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center bg-slate-950">
-      <div className="mb-16 relative">
-         <div className="absolute -inset-10 bg-blue-500/30 blur-[100px] rounded-full"></div>
-         <h1 className="text-8xl font-black mb-2 tracking-tighter bg-gradient-to-br from-white to-slate-600 bg-clip-text text-transparent relative z-10">MLIFE</h1>
-         <p className="text-4xl sinhala font-black text-blue-500 relative z-10">මෙල්බර්න් ලයිෆ්</p>
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center bg-gradient-to-br from-slate-950 via-red-950/20 to-slate-950 relative overflow-hidden">
+      {/* Sri Lankan Flag Colors Background Animation */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-amber-600 to-orange-500 blur-3xl"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1/3 bg-gradient-to-r from-red-900 to-red-700 blur-3xl"></div>
+        <div className="absolute top-2/3 left-0 w-full h-1/3 bg-gradient-to-r from-green-800 to-green-600 blur-3xl"></div>
       </div>
-      <div className="flex flex-col gap-6 animate-in fade-in duration-700 w-full max-w-xs">
-        <div className="bg-slate-900/60 px-8 py-4 rounded-full border border-white/5 backdrop-blur-md text-slate-300 font-bold flex items-center justify-center gap-3">
+
+      {/* Main Content */}
+      <div className="mb-12 relative z-10">
+         <div className="absolute -inset-10 bg-gradient-to-r from-orange-500/30 via-red-700/30 to-green-600/30 blur-[100px] rounded-full animate-pulse"></div>
+         <div className="flex items-center justify-center gap-4 mb-4">
+           <span className="text-5xl">🇱🇰</span>
+           <i className="fa-solid fa-plane text-4xl text-blue-400 animate-bounce"></i>
+           <span className="text-5xl">🇦🇺</span>
+         </div>
+         <h1 className="text-7xl md:text-8xl font-black mb-3 tracking-tighter bg-gradient-to-r from-orange-500 via-red-600 to-green-600 bg-clip-text text-transparent relative z-10 drop-shadow-2xl">MELBOURNE LIFE</h1>
+         <p className="text-4xl sinhala font-black bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent relative z-10">මෙල්බර්න් ජීවිතය</p>
+         <p className="text-slate-400 text-sm mt-3 font-bold tracking-wider">Sri Lankan Immigration Simulator</p>
+      </div>
+
+      {/* How to Play Section */}
+      <div className="w-full max-w-2xl mb-8 relative z-10">
+        <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl rounded-3xl border border-white/10 p-6 shadow-2xl">
+          <h3 className="text-xl font-black text-amber-400 mb-4 flex items-center justify-center gap-2">
+            <i className="fa-solid fa-gamepad"></i> HOW TO PLAY
+          </h3>
+          <div className="grid md:grid-cols-3 gap-4 text-left">
+            <div className="flex gap-3 items-start">
+              <div className="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0">
+                <i className="fa-solid fa-user text-orange-400"></i>
+              </div>
+              <div>
+                <p className="text-white font-bold text-sm mb-1">Create Character</p>
+                <p className="text-slate-400 text-xs">Choose your background and class</p>
+              </div>
+            </div>
+            <div className="flex gap-3 items-start">
+              <div className="w-10 h-10 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center flex-shrink-0">
+                <i className="fa-solid fa-book-open text-red-400"></i>
+              </div>
+              <div>
+                <p className="text-white font-bold text-sm mb-1">Make Choices</p>
+                <p className="text-slate-400 text-xs">Navigate life in Melbourne wisely</p>
+              </div>
+            </div>
+            <div className="flex gap-3 items-start">
+              <div className="w-10 h-10 rounded-xl bg-green-500/20 border border-green-500/30 flex items-center justify-center flex-shrink-0">
+                <i className="fa-solid fa-trophy text-green-400"></i>
+              </div>
+              <div>
+                <p className="text-white font-bold text-sm mb-1">Survive & Thrive</p>
+                <p className="text-slate-400 text-xs">Reach 30 days for PR settlement!</p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-white/5">
+            <p className="text-xs text-slate-500 text-center">
+              <i className="fa-solid fa-info-circle mr-1"></i>
+              Manage money, stress, energy & health • Complete 90 visa days • Find work, housing & friends
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col gap-4 animate-in fade-in duration-700 w-full max-w-sm relative z-10">
+        <div className="bg-gradient-to-r from-slate-900/60 via-red-900/40 to-slate-900/60 px-8 py-4 rounded-full border border-white/10 backdrop-blur-md text-slate-300 font-bold flex items-center justify-center gap-3 shadow-xl">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> 
             {session ? session.user.user_metadata?.full_name?.split(' ')[0] : 'Guest Mode'}
         </div>
         
         {hasExistingSave && (
-          <button onClick={loadGame} className="w-full py-6 bg-emerald-600 text-white rounded-[2.5rem] font-black text-2xl hover:scale-105 shadow-xl flex items-center justify-center gap-4 transition-all">
-            <i className="fa-solid fa-play"></i> CONTINUE
+          <button onClick={loadGame} className="w-full py-6 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-[2.5rem] font-black text-2xl hover:scale-105 shadow-2xl flex items-center justify-center gap-4 transition-all hover:shadow-emerald-500/50">
+            <i className="fa-solid fa-play"></i> CONTINUE JOURNEY
           </button>
         )}
 
-        <button onClick={() => setScreen('register')} className="w-full py-6 bg-white text-slate-950 rounded-[2.5rem] font-black text-2xl hover:scale-105 shadow-xl transition-all">
-           {hasExistingSave ? 'NEW JOURNEY' : "LET'S FLY 🇦🇺"}
+        <button onClick={() => setScreen('register')} className="w-full py-6 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 text-white rounded-[2.5rem] font-black text-2xl hover:scale-105 shadow-2xl transition-all hover:shadow-orange-500/50">
+           <i className="fa-solid fa-plane-departure mr-2"></i>{hasExistingSave ? 'NEW JOURNEY' : "START ADVENTURE 🇦🇺"}
         </button>
         
         {hasExistingSave && (
@@ -659,7 +735,7 @@ const App: React.FC = () => {
               setHasExistingSave(false);
               resetGame();
             }
-          }} className="text-red-600 font-black hover:text-red-400 transition-colors uppercase tracking-widest text-xs mt-4">
+          }} className="text-red-500 font-black hover:text-red-400 transition-colors uppercase tracking-widest text-xs mt-2 hover:scale-105">
             <i className="fa-solid fa-trash mr-2"></i>DELETE SAVED GAME
           </button>
         )}
