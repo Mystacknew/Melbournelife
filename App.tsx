@@ -1349,33 +1349,29 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer - BACK TO LOGIN FIX */}
-      <div className="mt-6 flex flex-col items-center gap-4">
-        {session && (
+      {/* Footer - BACK TO LOGIN - ALWAYS SHOW FOR GUESTS */}
+      <div className="mt-6 flex flex-col items-center gap-4 relative z-50">
+        {/* Logout for logged in users */}
+        {session ? (
           <button 
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              handleLogout();
-            }} 
-            className="px-8 py-4 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black text-sm uppercase tracking-wider transition-all rounded-2xl flex items-center gap-3 shadow-xl hover:shadow-red-500/30 hover:scale-105 active:scale-95"
+            onClick={() => handleLogout()} 
+            className="px-8 py-4 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black text-sm uppercase tracking-wider transition-all rounded-2xl flex items-center gap-3 shadow-xl hover:shadow-red-500/30 hover:scale-105 active:scale-95 cursor-pointer"
           >
             <i className="fa-solid fa-right-from-bracket"></i> Logout කරමු
           </button>
-        )}
-        {!session && (
+        ) : (
+          /* Back to Login for guests - ALWAYS VISIBLE */
           <button 
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('🔙 Back to Login button clicked!');
+            onClick={() => {
+              alert('Going back to login page!');
               setScreen('auth');
             }} 
-            className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-black text-sm uppercase tracking-wider transition-all rounded-2xl flex items-center gap-3 shadow-xl hover:shadow-cyan-500/30 hover:scale-105 active:scale-95 border-2 border-cyan-400/50"
+            className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-black text-sm uppercase tracking-wider transition-all rounded-2xl flex items-center gap-3 shadow-xl hover:shadow-cyan-500/30 hover:scale-105 active:scale-95 border-2 border-cyan-400/50 cursor-pointer select-none"
+            style={{ pointerEvents: 'auto' }}
           >
-            <i className="fa-solid fa-arrow-left"></i> 🔐 Login Page එකට
+            <i className="fa-solid fa-arrow-left"></i> 🔐 Login Page එකට යමු
           </button>
         )}
         <p className="text-slate-600 text-[10px] sinhala">Guest mode එකේ save local only - Login කරලා cloud sync කරගන්න 👆</p>
