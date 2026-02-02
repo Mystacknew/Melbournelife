@@ -332,6 +332,184 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
     game_state: "ongoing"
   },
 
+  // ============================================
+  // MINISTER SON EXCLUSIVE SCAM SCENARIOS
+  // Rich kid problems: Clubbing, Gold Diggers, Drink & Drive, Fake Friends
+  // ============================================
+
+  // CLUBBING INVITATION - VIP Lifestyle Trap
+  "minister_clubbing_invite": {
+    id: "minister_clubbing_invite",
+    story_text: "Uni එකේ හම්බවුන rich kid gang එක invite කරනවා - 'Machi, Friday night Revolver Upstairs! VIP table, bottle service! 🍾 ඔයාගේ ගාව BMW තියෙන්නේ, come pick us up!' ඔයා cool වෙන්න ඕනේ නේ! VIP table $2000, but connections important ද?",
+    image_prompt: "Melbourne nightclub VIP area, champagne bottles, luxury party scene",
+    choices: [
+      { id: "c1", text: "VIP table එක book කරලා party hard! 🥳", is_risky: true, next_scenario: "minister_clubbing_chaos" },
+      { id: "c2", text: "යමු, but drinks only - VIP table unnecessary", next_scenario: "minister_clubbing_smart" },
+      { id: "c3", text: "Nah machi, assignment deadline තියනවා 📚", next_scenario: "minister_study_focus" }
+    ],
+    stats_update: { money_change: 0, stress_change: 10, energy_change: -5, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "minister_clubbing_chaos": {
+    id: "minister_clubbing_chaos",
+    story_text: "VIP table $2000! Vodka bottles, everyone posting Instagram stories tagging you! 📱 ඔයා maaaara famous! But... 3am, ඔයා heavily drunk. 'Friends' කිව්වා 'Machi, BMW එක drive කරලා McDonald's යමු!' ඔයා keys ගත්තා... 🚗🍺",
+    image_prompt: "Drunk party scene, car keys in hand, friends pressuring to drive",
+    choices: [
+      { id: "c1", text: "මම drive කරන්නම්, I can handle it! 🚗", is_risky: true, next_scenario: "minister_drink_drive" },
+      { id: "c2", text: "Uber ගමු, BMW එක හෙට ගනිමු 🚕", next_scenario: "minister_smart_choice" },
+      { id: "c3", text: "Club එකේ sleep කරලා morning drive 😴", next_scenario: "minister_stay_safe" }
+    ],
+    stats_update: { money_change: -2000, stress_change: 20, energy_change: -40, day_change: 1 },
+    new_items: ["VIP Wristband"],
+    game_state: "ongoing"
+  },
+
+  // DRINK AND DRIVE - MAJOR CONSEQUENCE
+  "minister_drink_drive": {
+    id: "minister_drink_drive",
+    story_text: "🚨 POLICE LIGHTS! Random breath test, Chapel Street. ඔයාගේ BAC 0.12 - limit 0.05! License SUSPENDED 12 months! Court date, $2500 fine, criminal record! 😱 Worse - BMW impounded 30 days ($1500). Appachchi ට call කරන්න වෙනවා explain කරන්න... ලංකාවේ news spread වෙයි! 'ඇමති පුතා Australia වල drunk driving!' 📰 Social media comments destroying your family name!",
+    image_prompt: "Police breath test at night, driver in shock, flashing lights, impounded car",
+    choices: [
+      { id: "c1", text: "Lawyer hire කරලා fight කරමු 👨‍⚖️", next_scenario: "minister_court_case" },
+      { id: "c2", text: "Appachchi ට honestly කියලා help ඉල්ලමු 📞", next_scenario: "minister_family_shame" },
+      { id: "c3", text: "Low profile, accept fine, learn lesson 😔", next_scenario: "minister_humble_lesson" }
+    ],
+    stats_update: { money_change: -4000, stress_change: 90, energy_change: -60, day_change: 7 },
+    new_items: ["Criminal Record", "Suspended License"],
+    game_state: "ongoing"
+  },
+
+  "minister_family_shame": {
+    id: "minister_family_shame",
+    story_text: "Appachchi phone එක pick කරන්නේ නැති දවස් 3ක්. Finally call back - 'පුතා, මොකක්ද මේ කළේ? අපේ family name!' 😢 Amma crying in background. Media interviews refuse කරනවා. Appachchi lawyer arrange කළා but conditions - 'No more partying, serious about studies, or come back to Sri Lanka!' Reputation damage control start!",
+    image_prompt: "Video call with disappointed parents, student looking ashamed, serious conversation",
+    choices: [
+      { id: "c1", text: "Promise keep කරලා prove කරමු 💪", next_scenario: "minister_redemption" },
+      { id: "c2", text: "ලංකාවට යමු, Australia life over 😔", next_scenario: "return_srilanka" },
+      { id: "c3", text: "Low profile maintain කරමු, slowly rebuild 🏗️", next_scenario: "minister_rebuild" }
+    ],
+    stats_update: { money_change: 0, stress_change: 50, energy_change: -30, day_change: 14 },
+    new_items: ["Family Pressure"],
+    game_state: "ongoing"
+  },
+
+  // GOLD DIGGER GIRLFRIEND SCAM
+  "minister_gold_digger": {
+    id: "minister_gold_digger",
+    story_text: "Uni එකේ 'Natasha' කියලා ලස්සන Model looking එකෙක් ඔයාට approach කළා. 'OMG your BMW is so nice! Are you from a good family?' 💕 2 weeks dating - ඇයි always expensive restaurants suggest කරන්නේ? Designer gifts expect කරනවා? ඇයි ඇගේ friends always ඔයාගේ ගාව money situation ගැන අහන්නේ? 🤔",
+    image_prompt: "Beautiful woman at expensive restaurant, looking at man's wallet/watch, red flags",
+    choices: [
+      { id: "c1", text: "ඇය genuine! Birthday gift - Tiffany necklace ($3000) 💎", is_risky: true, next_scenario: "minister_gold_digger_trap" },
+      { id: "c2", text: "Test කරමු - cheap date suggest කරලා reaction බලමු 🧪", next_scenario: "minister_gold_digger_test" },
+      { id: "c3", text: "Red flags වැඩියි, slowly distance ගමු 🚩", next_scenario: "minister_dodge_bullet" }
+    ],
+    stats_update: { money_change: -500, stress_change: 15, energy_change: -10, day_change: 14 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "minister_gold_digger_trap": {
+    id: "minister_gold_digger_trap",
+    story_text: "Tiffany necklace gift කළා! ඇය 'OMG baby you're the best!' 😍 One week later - 'Baby, my rent is due, can you help? $2000 just for this month!' ඔයා help කළා. Next month - 'My car needs fixing! $1500?' Pattern එක පේනවද? 🚩 Then one day, ඇගේ 'ex-boyfriend' message - 'Bro, she did the same to me! She has 3 other rich boyfriends right now!' 💀 ඔයා spent $8000+ on professional gold digger!",
+    image_prompt: "Shocked man reading messages exposing girlfriend's scheme, expensive gifts scattered",
+    choices: [
+      { id: "c1", text: "Confront her and demand items back 😤", next_scenario: "minister_gold_digger_confront" },
+      { id: "c2", text: "Ghost her, lesson learned, move on 👻", next_scenario: "minister_lesson_learned" },
+      { id: "c3", text: "Expose her on social media warning others 📢", next_scenario: "minister_expose_scammer" }
+    ],
+    stats_update: { money_change: -8000, stress_change: 70, energy_change: -40, day_change: 30 },
+    new_items: ["Trust Issues", "Expensive Lesson"],
+    game_state: "ongoing"
+  },
+
+  "minister_gold_digger_test": {
+    id: "minister_gold_digger_test",
+    story_text: "Picnic at park suggest කළා instead of restaurant. ඇගේ face! 😒 'Eww, picnic? That's so... basic. Let's go somewhere nice na baby?' ඔයා insist කළා. ඇය 'sick' වුණා suddenly. Next day, ඇගේ Instagram story - වෙන rich looking guy එක්ක dinner at Vue de Monde! 🍽️ Bullet dodged machi! ඇය gold digger confirm! ඔයාගේ intelligence save කළා thousands!",
+    image_prompt: "Man smiling at phone seeing Instagram story, relieved expression, dodged scam",
+    choices: [
+      { id: "c1", text: "Good riddance! Focus on real connections 💪", next_scenario: "minister_genuine_friends" },
+      { id: "c2", text: "Screenshot save කරලා future reference 📱", next_scenario: "minister_wisdom_gained" },
+      { id: "c3", text: "Friends ට warning share කරමු 🗣️", next_scenario: "minister_friend_warning" }
+    ],
+    stats_update: { money_change: 0, stress_change: -20, energy_change: 10, day_change: 1 },
+    new_items: ["Scam Radar"],
+    game_state: "ongoing"
+  },
+
+  // FAKE FRIEND MONEY SCAM
+  "minister_fake_friend_scam": {
+    id: "minister_fake_friend_scam",
+    story_text: "Uni friend 'Dinesh' - ඔයා trust කරන close friend. One day crying call - 'Machi, emergency! Amma hospital Sri Lanka, need $5000 for surgery! I'll pay back next month promise! ඔයා one පාරක් help කළා!' 😢 ඔයාගේ ගාව money තියනවා, Dinesh genuine feeling...",
+    image_prompt: "Friend desperately asking for money, emotional manipulation, student uncertain",
+    choices: [
+      { id: "c1", text: "Of course machi! Transfer now! 💸", is_risky: true, next_scenario: "minister_friend_scam_victim" },
+      { id: "c2", text: "Hospital details send කරන්න, direct pay කරන්නම් 🏥", next_scenario: "minister_friend_scam_dodge" },
+      { id: "c3", text: "Sorry machi, I don't lend money to friends 🙅", next_scenario: "minister_friend_boundaries" }
+    ],
+    stats_update: { money_change: 0, stress_change: 30, energy_change: -10, day_change: 0 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "minister_friend_scam_victim": {
+    id: "minister_friend_scam_victim",
+    story_text: "$5000 transfer කළා. 'Thanks machi, I'll never forget this!' 🙏 One month - 'Machi, just few more weeks?' Two months - 'Bro, things rough, soon!' Three months - phone number changed, Instagram blocked, disappeared from uni! 😱 Mutual friends ට අහනකොට - 'Bro, Dinesh already left to Canada! ඔයා 4th person he scammed!' Professional friendship scammer! ඇමති පුතා ද scam වෙන්නේ! 💀",
+    image_prompt: "Blocked contact on phone, realization of being scammed by friend, empty wallet",
+    choices: [
+      { id: "c1", text: "Parents ට නොකියා absorb the loss 😔", next_scenario: "minister_silent_loss" },
+      { id: "c2", text: "Police report file කරමු 🚔", next_scenario: "minister_police_report" },
+      { id: "c3", text: "Lankan community එකේ expose කරමු 📢", next_scenario: "minister_community_expose" }
+    ],
+    stats_update: { money_change: -5000, stress_change: 60, energy_change: -30, day_change: 90 },
+    new_items: ["Trust Issues", "Friend Scam Experience"],
+    game_state: "ongoing"
+  },
+
+  "minister_friend_scam_dodge": {
+    id: "minister_friend_scam_dodge",
+    story_text: "'Hospital bill direct pay කරන්නම්, details send කරන්න!' ඔයා intelligent! 🧠 Dinesh suddenly - 'Umm... actually hospital is in rural area, no direct payment, cash only...' More questions = more excuses. Finally - 'Forget it machi, I'll ask someone else!' and blocked you! 😂 Later found out - no sick amma, professional scammer! ඔයාගේ $5000 safe because you asked questions! Smart rich kid!",
+    image_prompt: "Student smiling, realizing they avoided scam, phone showing blocked contact",
+    choices: [
+      { id: "c1", text: "Other friends ට warning share කරමු 🗣️", next_scenario: "minister_warning_friends" },
+      { id: "c2", text: "Move on, some people are just trash 🗑️", next_scenario: "minister_move_on" },
+      { id: "c3", text: "More careful about who I trust now 🔒", next_scenario: "minister_trust_wisely" }
+    ],
+    stats_update: { money_change: 0, stress_change: -10, energy_change: 5, day_change: 1 },
+    new_items: ["Scam Prevention Skill"],
+    game_state: "ongoing"
+  },
+
+  // MINISTER SON SMART CHOICES - REWARDS
+  "minister_smart_choice": {
+    id: "minister_smart_choice",
+    story_text: "Uber ගත්තා, BMW එක club parking එකේ safe. Smart decision! 🧠 Morning Uber back ගියා car ගන්න - no police, no drama, no criminal record! Friends කිව්වා 'Machi you're boring!' but ඔයාගේ license, record, reputation all intact! This is how rich kids stay rich - smart decisions!",
+    image_prompt: "Next morning picking up car safely, feeling good about smart decision",
+    choices: [
+      { id: "c1", text: "Gym යමු, hangover recover කරමු 💪", next_scenario: "minister_healthy_life" },
+      { id: "c2", text: "Assignment finish කරමු, productive day 📚", next_scenario: "minister_study_focus" },
+      { id: "c3", text: "Real friends එක්ක proper lunch plan 🍽️", next_scenario: "minister_genuine_friends" }
+    ],
+    stats_update: { money_change: -50, stress_change: -20, energy_change: 10, day_change: 1 },
+    new_items: ["Good Decision Streak"],
+    game_state: "ongoing"
+  },
+
+  "minister_genuine_friends": {
+    id: "minister_genuine_friends",
+    story_text: "Finally genuine friends හම්බවුණා! Not impressed by money, actually care about you as a person. Study sessions, gym together, home-cooked meals share කරනවා. Real friendship! 🤝 ඔයාට realize වුණා - fake friends always ask for money/favors, real friends just want your company. Quality > Quantity!",
+    image_prompt: "Group of genuine friends studying together, casual setting, real friendship",
+    choices: [
+      { id: "c1", text: "Study group maintain කරමු 📚", next_scenario: "minister_academic_success" },
+      { id: "c2", text: "Weekend trips plan කරමු together 🚗", next_scenario: "minister_road_trip" },
+      { id: "c3", text: "Small business idea discuss කරමු 💡", next_scenario: "minister_friend_startup" }
+    ],
+    stats_update: { money_change: 0, stress_change: -30, energy_change: 20, day_change: 7 },
+    new_items: ["Real Friends"],
+    game_state: "ongoing"
+  },
+
   // Business family expanded paths
   "business_groceries": {
     id: "business_groceries",
@@ -1756,33 +1934,50 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
 
 // Helper function to get random scenario continuation if specific next is not set
 export function getRandomScenario(profileClass: ProfileClass): string {
-  // 30% chance of scam scenario for harder gameplay!
+  // Class-appropriate scam scenarios - DIFFERENT problems for DIFFERENT classes!
   const scamChance = Math.random();
   
-  // Scam scenarios more likely for lower classes
-  const scamScenarios = [
+  // MINISTER SON SCAMS - Rich kid problems: fake friends, gold diggers, VIP lifestyle traps
+  const ministerScams = [
+    "minister_clubbing_invite",
+    "minister_gold_digger", 
+    "minister_fake_friend_scam",
+    "minister_gambling_addiction"
+  ];
+  
+  // BUSINESS FAMILY SCAMS - Mid-tier problems: investment scams, car scams
+  const businessScams = [
+    "dandenong_car_scam",
+    "visa_agent_scam",
+    "job_broker_scam"
+  ];
+  
+  // MIDDLE/LOWER CLASS SCAMS - Working class problems: contractor scams, unpaid wages
+  const workingClassScams = [
     "cleaning_contractor_scam",
     "dandenong_car_scam", 
-    "love_scam_intro",
     "visa_agent_scam",
     "job_broker_scam",
     "cleaning_unpaid_months",
     "coe_cancelled"
   ];
   
-  if (profileClass === "Lower Class" && scamChance < 0.35) {
-    return scamScenarios[Math.floor(Math.random() * scamScenarios.length)];
-  } else if (profileClass === "Middle Class" && scamChance < 0.25) {
-    return scamScenarios[Math.floor(Math.random() * scamScenarios.length)];
-  } else if (profileClass === "Business Family" && scamChance < 0.15) {
-    return scamScenarios[Math.floor(Math.random() * scamScenarios.length)];
-  } else if (profileClass === "ඇමති පුතා" && scamChance < 0.08) {
-    return scamScenarios[Math.floor(Math.random() * scamScenarios.length)];
+  // Apply class-appropriate scams with probability
+  if (profileClass === "ඇමති පුතා" && scamChance < 0.25) {
+    // Minister son gets RICH KID scams, not working class scams!
+    return ministerScams[Math.floor(Math.random() * ministerScams.length)];
+  } else if (profileClass === "Business Family" && scamChance < 0.20) {
+    return businessScams[Math.floor(Math.random() * businessScams.length)];
+  } else if (profileClass === "Middle Class" && scamChance < 0.30) {
+    return workingClassScams[Math.floor(Math.random() * workingClassScams.length)];
+  } else if (profileClass === "Lower Class" && scamChance < 0.35) {
+    return workingClassScams[Math.floor(Math.random() * workingClassScams.length)];
   }
   
+  // Class-appropriate regular scenarios
   const classScenarios: Record<ProfileClass, string[]> = {
-    "ඇමති පුතා": ["minister_hotel", "minister_university", "minister_leisure", "minister_business_connection"],
-    "Business Family": ["business_apartment", "business_job_search", "business_uber_eats", "business_warehouse_job"],
+    "ඇමති පුතා": ["minister_hotel", "minister_university", "minister_leisure", "minister_business_connection", "minister_genuine_friends", "minister_smart_choice"],
+    "Business Family": ["business_apartment", "business_job_search", "business_uber_eats", "business_warehouse_job", "business_smart_shopping"],
     "Middle Class": ["middle_footscray", "middle_job_hunt", "middle_cleaning_job", "middle_srilankan_food"],
     "Lower Class": ["lower_help_desk", "lower_emergency_hostel", "lower_community", "lower_desperate_job_hunt"]
   };

@@ -102,6 +102,8 @@ function determineNextScenario(
 ): string {
   const actionLower = action.toLowerCase();
   const dayNumber = history.length * 3; // Approximate day progression
+  const isMinisterSon = profileClass === "ඇමති පුතා";
+  const isRichKid = isMinisterSon || profileClass === "Business Family";
 
   // PRIORITY 1: Check for direct next_scenario links from choices
   // This ensures storyline continuity when choices have explicit paths
@@ -120,48 +122,109 @@ function determineNextScenario(
     }
   }
 
-  // PRIORITY 2: Day-based progression to ensure forward movement
-  // These ensure the game progresses even if no specific match is found
+  // PRIORITY 2: CLASS-SPECIFIC scenarios based on day progression
   
-  // Early game (Days 1-21): Survival scenarios
-  if (dayNumber < 21) {
-    if (actionLower.includes('job') || actionLower.includes('work')) {
-      if (profileClass === 'Business Family') return 'business_job_search';
-      if (profileClass === 'Middle Class') return 'middle_cleaning_job';
-      return 'lower_community_help';
+  // ============================================
+  // MINISTER SON - Rich kid problems (NOT working class scams!)
+  // ============================================
+  if (isMinisterSon) {
+    // Early game: Lifestyle choices
+    if (dayNumber < 21) {
+      if (actionLower.includes('party') || actionLower.includes('club') || actionLower.includes('friend')) {
+        return 'minister_clubbing_invite';
+      }
+      if (actionLower.includes('girl') || actionLower.includes('date') || actionLower.includes('tinder')) {
+        return 'minister_gold_digger';
+      }
     }
-    if (actionLower.includes('accommodation') || actionLower.includes('room') || actionLower.includes('house')) {
-      if (profileClass === 'Middle Class') return 'middle_footscray';
-      return 'lower_emergency_hostel';
+    
+    // Mid game: Rich kid scams
+    if (dayNumber >= 22 && dayNumber <= 50) {
+      if (!hasVisitedScenario(history, 'minister_clubbing_invite') && 
+          (actionLower.includes('party') || actionLower.includes('friday') || actionLower.includes('weekend'))) {
+        return 'minister_clubbing_invite';
+      }
+      if (!hasVisitedScenario(history, 'minister_gold_digger') && 
+          (actionLower.includes('girl') || actionLower.includes('relationship') || actionLower.includes('date'))) {
+        return 'minister_gold_digger';
+      }
+      if (!hasVisitedScenario(history, 'minister_fake_friend_scam') && 
+          (actionLower.includes('friend') || actionLower.includes('help') || actionLower.includes('money'))) {
+        return 'minister_fake_friend_scam';
+      }
+    }
+    
+    // Late game: Career/PR path
+    if (dayNumber >= 51) {
+      if (!hasVisitedScenario(history, 'minister_genuine_friends')) {
+        return 'minister_genuine_friends';
+      }
     }
   }
   
-  // Mid game (Days 22-50): Scam encounters and hustle
-  if (dayNumber >= 22 && dayNumber <= 50) {
-    // Force scam scenarios to appear based on day ranges (not random!)
-    if (dayNumber >= 22 && dayNumber <= 27 && !hasVisitedScenario(history, 'cleaning_contractor_scam')) {
-      if (actionLower.includes('contractor') || actionLower.includes('cash') || actionLower.includes('cleaning')) {
-        return 'cleaning_contractor_scam';
+  // ============================================
+  // MIDDLE/LOWER CLASS - Working class problems
+  // ============================================
+  if (!isRichKid) {
+    // Early game (Days 1-21): Survival scenarios
+    if (dayNumber < 21) {
+      if (actionLower.includes('job') || actionLower.includes('work')) {
+        if (profileClass === 'Middle Class') return 'middle_cleaning_job';
+        return 'lower_desperate_job_hunt';
+      }
+      if (actionLower.includes('accommodation') || actionLower.includes('room') || actionLower.includes('house')) {
+        if (profileClass === 'Middle Class') return 'middle_footscray';
+        return 'lower_emergency_hostel';
       }
     }
-    if (dayNumber >= 28 && dayNumber <= 35 && !hasVisitedScenario(history, 'dandenong_car_scam')) {
-      if (actionLower.includes('car') || actionLower.includes('buy') || actionLower.includes('dandenong')) {
+    
+    // Mid game (Days 22-50): Working class scam encounters
+    if (dayNumber >= 22 && dayNumber <= 50) {
+      if (dayNumber >= 22 && dayNumber <= 27 && !hasVisitedScenario(history, 'cleaning_contractor_scam')) {
+        if (actionLower.includes('contractor') || actionLower.includes('cash') || actionLower.includes('cleaning')) {
+          return 'cleaning_contractor_scam';
+        }
+      }
+      if (dayNumber >= 28 && dayNumber <= 35 && !hasVisitedScenario(history, 'dandenong_car_scam')) {
+        if (actionLower.includes('car') || actionLower.includes('buy') || actionLower.includes('dandenong')) {
+          return 'dandenong_car_scam';
+        }
+      }
+      if (dayNumber >= 32 && dayNumber <= 40 && !hasVisitedScenario(history, 'job_broker_scam')) {
+        if (actionLower.includes('friend') || actionLower.includes('connection') || actionLower.includes('job')) {
+          return 'job_broker_scam';
+        }
+      }
+      if (dayNumber >= 36 && dayNumber <= 45 && !hasVisitedScenario(history, 'coe_cancelled')) {
+        if (actionLower.includes('university') || actionLower.includes('study') || actionLower.includes('class')) {
+          return 'coe_cancelled';
+        }
+      }
+    }
+  }
+  
+  // ============================================
+  // BUSINESS FAMILY - Mid-tier scenarios
+  // ============================================
+  if (profileClass === 'Business Family') {
+    if (dayNumber < 21) {
+      if (actionLower.includes('job') || actionLower.includes('work')) {
+        return 'business_job_search';
+      }
+    }
+    if (dayNumber >= 22 && dayNumber <= 50) {
+      if (!hasVisitedScenario(history, 'dandenong_car_scam') && 
+          (actionLower.includes('car') || actionLower.includes('buy'))) {
         return 'dandenong_car_scam';
       }
-    }
-    if (dayNumber >= 32 && dayNumber <= 40 && !hasVisitedScenario(history, 'job_broker_scam')) {
-      if (actionLower.includes('friend') || actionLower.includes('connection') || actionLower.includes('job')) {
-        return 'job_broker_scam';
-      }
-    }
-    if (dayNumber >= 36 && dayNumber <= 45 && !hasVisitedScenario(history, 'coe_cancelled')) {
-      if (actionLower.includes('university') || actionLower.includes('study') || actionLower.includes('class')) {
-        return 'coe_cancelled';
+      if (!hasVisitedScenario(history, 'visa_agent_scam') && 
+          (actionLower.includes('visa') || actionLower.includes('agent'))) {
+        return 'visa_agent_scam';
       }
     }
   }
   
-  // Late game (Days 51-70): Building roots
+  // Late game (Days 51-70): Building roots - ALL CLASSES
   if (dayNumber >= 51 && dayNumber <= 70) {
     if (!hasVisitedScenario(history, 'visa_agent_scam') && 
         (actionLower.includes('visa') || actionLower.includes('agent') || actionLower.includes('regional'))) {
@@ -172,7 +235,7 @@ function determineNextScenario(
     }
   }
   
-  // End game (Days 71+): Path to PR
+  // End game (Days 71+): Path to PR - ALL CLASSES
   if (dayNumber >= 71) {
     if (!hasVisitedScenario(history, 'pr_application_start')) {
       return 'pr_application_start';

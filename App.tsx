@@ -1253,78 +1253,27 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* How Choices Affect Your Future */}
+        {/* Quick Tips - No Spoilers */}
         <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl border border-white/10 p-6 mb-6 shadow-2xl">
-          <h3 className="text-lg font-black text-white mb-5 flex items-center justify-center gap-2">
-            <i className="fa-solid fa-route text-cyan-400"></i> YOUR CHOICES MATTER
+          <h3 className="text-lg font-black text-white mb-4 flex items-center justify-center gap-2">
+            <i className="fa-solid fa-lightbulb text-yellow-400"></i> SURVIVAL TIPS
           </h3>
-          <p className="text-slate-400 text-xs text-center mb-4">Every decision ripples through your journey. Same choices, different outcomes! 🎭</p>
-          
-          <div className="space-y-4">
-            {/* Example 1: Work vs Study */}
-            <div className="bg-slate-800/50 rounded-xl p-4 border border-white/5">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xl">💼</span>
-                <span className="text-white font-bold text-sm">Work More vs Study Balance</span>
-              </div>
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="bg-red-500/10 rounded-lg p-2 border border-red-500/20">
-                  <p className="text-red-400 font-bold mb-1">❌ Work Overtime</p>
-                  <p className="text-slate-500">→ Miss uni classes</p>
-                  <p className="text-slate-500">→ Attendance drops</p>
-                  <p className="text-red-400 font-bold">→ COE CANCELLED Ch.13!</p>
-                </div>
-                <div className="bg-green-500/10 rounded-lg p-2 border border-green-500/20">
-                  <p className="text-green-400 font-bold mb-1">✅ Balance Both</p>
-                  <p className="text-slate-500">→ Pass all subjects</p>
-                  <p className="text-slate-500">→ Build skills</p>
-                  <p className="text-green-400 font-bold">→ Job offers Ch.15!</p>
-                </div>
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-white/5">
+              <span className="text-2xl">🎯</span>
+              <p className="text-white font-bold text-xs mt-2">Every choice matters</p>
             </div>
-            
-            {/* Example 2: Trust Issues */}
-            <div className="bg-slate-800/50 rounded-xl p-4 border border-white/5">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xl">🤝</span>
-                <span className="text-white font-bold text-sm">Trust "Aiya" Connections</span>
-              </div>
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="bg-red-500/10 rounded-lg p-2 border border-red-500/20">
-                  <p className="text-red-400 font-bold mb-1">❌ Trust Blindly</p>
-                  <p className="text-slate-500">→ "Job 100% confirm"</p>
-                  <p className="text-slate-500">→ Pay $500-$3500</p>
-                  <p className="text-red-400 font-bold">→ SCAMMED! Lost $$</p>
-                </div>
-                <div className="bg-green-500/10 rounded-lg p-2 border border-green-500/20">
-                  <p className="text-green-400 font-bold mb-1">✅ Verify First</p>
-                  <p className="text-slate-500">→ Check ABN/MARA</p>
-                  <p className="text-slate-500">→ Research reviews</p>
-                  <p className="text-green-400 font-bold">→ Safe & secure!</p>
-                </div>
-              </div>
+            <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-white/5">
+              <span className="text-2xl">⚠️</span>
+              <p className="text-white font-bold text-xs mt-2">Not everyone is helpful</p>
             </div>
-            
-            {/* Example 3: Health vs Money */}
-            <div className="bg-slate-800/50 rounded-xl p-4 border border-white/5">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xl">💪</span>
-                <span className="text-white font-bold text-sm">Health vs Money Grind</span>
-              </div>
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="bg-red-500/10 rounded-lg p-2 border border-red-500/20">
-                  <p className="text-red-400 font-bold mb-1">❌ Ignore Health</p>
-                  <p className="text-slate-500">→ No sleep, junk food</p>
-                  <p className="text-slate-500">→ Stress 100%</p>
-                  <p className="text-red-400 font-bold">→ BURNOUT Ch.14!</p>
-                </div>
-                <div className="bg-green-500/10 rounded-lg p-2 border border-green-500/20">
-                  <p className="text-green-400 font-bold mb-1">✅ Stay Healthy</p>
-                  <p className="text-slate-500">→ Rest, cook at home</p>
-                  <p className="text-slate-500">→ Exercise sometimes</p>
-                  <p className="text-green-400 font-bold">→ Energy for PR!</p>
-                </div>
-              </div>
+            <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-white/5">
+              <span className="text-2xl">⚖️</span>
+              <p className="text-white font-bold text-xs mt-2">Balance is key</p>
+            </div>
+            <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-white/5">
+              <span className="text-2xl">🧠</span>
+              <p className="text-white font-bold text-xs mt-2">Think before acting</p>
             </div>
           </div>
         </div>
