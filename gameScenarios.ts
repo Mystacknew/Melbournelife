@@ -1431,16 +1431,360 @@ export const SCENARIOS: Record<string, ScenarioTemplate> = {
     stats_update: { money_change: -2300, stress_change: 40, energy_change: -30, day_change: 30 },
     new_items: ["Heavy Debt"],
     game_state: "ongoing"
+  },
+
+  // ===============================================
+  // 🔥 SCAM SCENARIOS WITH ROASTING SINHALA SLANGS
+  // ===============================================
+
+  // CONTRACTOR AIYA SCAM - Cleaning Job
+  "cleaning_contractor_scam": {
+    id: "cleaning_contractor_scam",
+    story_text: "මචං, Facebook එකේ 'Melbourne Lankan Jobs' group එකේ contractor අයියා කෙනෙක් post දාලා - 'Cleaning job, $35/hour, immediate start!' ඔයා excited වෙලා call කළා. අයියා කිව්වා 'මචං ABN ඕනේ නෑ, cash pay කරන්නම්, trust me bro!' 🤡 පළවෙනි week training කියලා free වැඩ කරවගත්තා. දෙවෙනි week 'invoice issue' කියලා. තුන්වෙනි week phone off! ඔබේ 3 weeks pay - $1200 gone! 💀",
+    image_prompt: "Frustrated Sri Lankan worker calling contractor who won't answer phone, cleaning supplies scattered",
+    choices: [
+      { id: "c1", text: "Fair Work Australia complaint දාමු - legal ගහමු මේ පරඩ්ඩියට! 😤", next_scenario: "contractor_fair_work" },
+      { id: "c2", text: "Facebook එකේ expose කරමු - community එකට warn කරමු 📢", next_scenario: "contractor_expose" },
+      { id: "c3", text: "කමක් නෑ මචං, lesson learned - move on 😔", next_scenario: "contractor_move_on" }
+    ],
+    stats_update: { money_change: -1200, stress_change: 50, energy_change: -30, day_change: 21 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "contractor_fair_work": {
+    id: "contractor_fair_work",
+    story_text: "Fair Work එකට complaint දැම්මා. ඒත් මචං, ඒගොල්ලෝ කිව්වා 'Evidence ඕනේ - contract, messages, bank transfers.' ඔයා ළඟ මොකුත් නෑ - cash deal, no contract, WhatsApp messages delete වෙලා! 😭 Contractor අයියා smart - ඔයාව legally protect වෙන විදියට scam කරලා. Fair Work කිව්වා 'Sorry, we can't help without evidence.' දැන් ඔයාට තේරුණා ඇයි 'cash job' කියන්නේ trap එකක් කියලා!",
+    image_prompt: "Disappointed person leaving Fair Work office, realizing they have no evidence",
+    choices: [
+      { id: "c1", text: "දැන් ඉඳන් proper job එකක් හොයමු - lesson learned 📝", next_scenario: "middle_job_hunt" },
+      { id: "c2", text: "Community එකට warn කරලා අනිත් අයව බේරගමු", next_scenario: "contractor_expose" },
+      { id: "c3", text: "Mental health support ගමු - stress handle කරන්න බෑ", next_scenario: "mental_health_support" }
+    ],
+    stats_update: { money_change: 0, stress_change: 30, energy_change: -20, day_change: 7 },
+    new_items: ["Life Lesson"],
+    game_state: "ongoing"
+  },
+
+  "contractor_expose": {
+    id: "contractor_expose",
+    story_text: "Facebook group එකේ contractor අයියාගේ photo, name, number post කළා warning එක්ක. Comments 200ක් ආවා! 🔥 'මටත් මේ ගෑණි කළා same scam!' 'මේක serial scammer!' Turns out, මේ මිනිහා 50+ students scam කරලා! Media pickup කරලා SBS Sinhala interview request ආවා. Contractor panic වෙලා ඔයාගේ $600 refund කළා 'please delete post' කියලා. 😂 Power of community!",
+    image_prompt: "Viral Facebook post exposing scammer, community support comments flooding in",
+    choices: [
+      { id: "c1", text: "Post delete නොකරමු - community protection 💪", next_scenario: "community_hero" },
+      { id: "c2", text: "$600 ගෙන post delete කරමු - at least something 💰", next_scenario: "partial_refund" },
+      { id: "c3", text: "SBS interview accept කරමු - full expose! 📺", next_scenario: "media_expose" }
+    ],
+    stats_update: { money_change: 600, stress_change: -20, energy_change: 10, day_change: 3 },
+    new_items: ["Community Respect"],
+    game_state: "ongoing"
+  },
+
+  // DANDENONG GERMAN TECH AIYA CAR SCAM
+  "dandenong_car_scam": {
+    id: "dandenong_car_scam",
+    story_text: "Dandenong South industrial area එකේ 'German Tech Auto Sales' කියලා කඩයක් තියනවා. Aiya කෙනෙක් BMW 320i 2008 model එකක් පෙන්නනවා - '$5,500 only මචං! Import from Japan, mint condition, log book service!' 🚗 Engine sound smooth, body clean. Aiya දිව ගහනවා 'මචං මේක grab කරන්න, හෙට තව buyer කෙනෙක් එනවා!' ඔයා FOMO hit වෙලා $5000 cash දුන්නා. 2 weeks later - engine මළ! Mechanic කිව්වා 'Bro, මේකේ engine එක sawdust වලින් patch කරලා, transmission dying, total write-off!' 💀",
+    image_prompt: "Broken down BMW on roadside, angry buyer calling dealer who won't answer",
+    choices: [
+      { id: "c1", text: "ACCC Consumer complaint + CAV complaint දාමු 📋", next_scenario: "car_scam_complaint" },
+      { id: "c2", text: "Dealer එක්ක confront වෙන්න යමු - refund ඉල්ලමු 😤", next_scenario: "car_dealer_confront" },
+      { id: "c3", text: "Part out කරලා whatever salvage කරමු 🔧", next_scenario: "car_salvage" }
+    ],
+    stats_update: { money_change: -5000, stress_change: 70, energy_change: -40, day_change: 14 },
+    new_items: ["Broken Car"],
+    game_state: "ongoing"
+  },
+
+  "car_dealer_confront": {
+    id: "car_dealer_confront",
+    story_text: "Dealer ගාවට ගියා. Aiya මුණ බල බල කියනවා 'Machan, ඔයා test drive කළානෙ! As is where is sale, no warranty!' ඔයා argue කරනකොට shop එකෙන් thugs 3ක් ආවා - 'Problem එකක් තියනවද bro?' 😰 Police call කළත් ඒගොල්ලෝ කිව්වා 'Civil matter, we can't help.' CCTV බලනකොට ඔයාම cash දුන්නා receipt නැතිව - legally ඔයා screwed! German Tech Aiya wins. Lesson: RACV inspection before buying ANY used car!",
+    image_prompt: "Confrontation at dodgy car dealer, intimidating scene, buyer realizing mistake",
+    choices: [
+      { id: "c1", text: "Walk away කරලා legal options බලමු", next_scenario: "car_legal_options" },
+      { id: "c2", text: "Lankan community Facebook warning post", next_scenario: "car_community_warning" },
+      { id: "c3", text: "Accept loss, sell for scrap, move on 😔", next_scenario: "car_salvage" }
+    ],
+    stats_update: { money_change: 0, stress_change: 40, energy_change: -30, day_change: 2 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  // GIRLFRIEND/BOYFRIEND SCAM - Illicit Affair
+  "love_scam_intro": {
+    id: "love_scam_intro",
+    story_text: "Tinder එකේ match උනේ 'Shenaya' කියලා ලස්සන එකෙක් එක්ක. 3 months dating - restaurant dates, movies, weekend trips. ඔයා පට්ටම fall වෙලා! 💕 Birthday එකට iPhone 15 Pro gift කළා ($1,800). One day, random number එකකින් call එකක් - 'Bro, ඔයා Shenaya එක්ක date කරනවද? ඒකගේ husband මම! ඒක married, kids 2යි, husband PR holder!' 🤯 ඔයාගේ world collapse! Shenaya ghosted - iPhone, gifts, emotions all gone!",
+    image_prompt: "Shocked person receiving devastating phone call, discovering partner's secret marriage",
+    choices: [
+      { id: "c1", text: "Husband එක්ක meet වෙලා situation explain කරමු 🤝", next_scenario: "love_scam_husband" },
+      { id: "c2", text: "Shenaya confront කරන්න try කරමු 😤", next_scenario: "love_scam_confront" },
+      { id: "c3", text: "Block everything, forget, move on 💔", next_scenario: "love_scam_move_on" }
+    ],
+    stats_update: { money_change: -2500, stress_change: 80, energy_change: -50, day_change: 90 },
+    new_items: ["Broken Heart", "Trust Issues"],
+    game_state: "ongoing"
+  },
+
+  "love_scam_husband": {
+    id: "love_scam_husband",
+    story_text: "Husband එක්ක cafe එකක meet උනා. Turns out, ඔයා victim number 5! 😱 Shenaya serial scammer - married students target කරලා gifts ගන්නවා, husband ගෙදර නැති වෙලාවට boyfriends maintain කරනවා. Husband කිව්වා 'I'm filing divorce, you're welcome to be witness.' ඔයා evidence දුන්නා - chat screenshots, gift receipts. Husband ඔයාට beer එකක් ගෙවලා 'Sorry you got caught up bro.' Weird bonding moment!",
+    image_prompt: "Two men talking seriously at cafe, showing phone evidence, unexpected alliance",
+    choices: [
+      { id: "c1", text: "Witness statement දෙමු - justice 🏛️", next_scenario: "love_scam_justice" },
+      { id: "c2", text: "මේකෙන් ඉවත් වෙමු - drama enough", next_scenario: "love_scam_move_on" },
+      { id: "c3", text: "Shenaya expose කරමු publicly 📢", next_scenario: "love_scam_expose" }
+    ],
+    stats_update: { money_change: 0, stress_change: -20, energy_change: 10, day_change: 1 },
+    new_items: ["Character Development"],
+    game_state: "ongoing"
+  },
+
+  // COE CANCELLATION DRAMA
+  "coe_cancelled": {
+    id: "coe_cancelled",
+    story_text: "University email ආවා - 'Your COE has been cancelled due to unsatisfactory course progression.' 😱 Attendance 60% (minimum 80%), failed 3 subjects. Immigration notified! ඔයාට 28 days තියනවා appeal submit කරන්න or visa automatically cancel! Student visa rule - maintain enrollment or go home! Panic mode activated! 🚨",
+    image_prompt: "Student in shock reading university email about COE cancellation, visa crisis",
+    choices: [
+      { id: "c1", text: "University appeal submit කරමු - medical/compassionate grounds 📝", next_scenario: "coe_appeal" },
+      { id: "c2", text: "Migration agent consult කරමු - professional help 👔", next_scenario: "coe_migration_agent" },
+      { id: "c3", text: "වෙන university/course එකකට transfer try කරමු 🔄", next_scenario: "coe_transfer" }
+    ],
+    stats_update: { money_change: 0, stress_change: 90, energy_change: -60, day_change: 1 },
+    new_items: ["COE Cancellation Notice"],
+    game_state: "ongoing"
+  },
+
+  "coe_appeal": {
+    id: "coe_appeal",
+    story_text: "Appeal submit කළා - doctor certificate, personal statement, study plan. University panel review කළා. 2 weeks suspense! 😰 Finally email ආවා - 'Appeal GRANTED with conditions: Maintain 80% attendance, pass all subjects, fortnightly progress meetings.' ඔයාට second chance එකක්! Don't waste it! 💪 Immigration නුදුරේ still watching.",
+    image_prompt: "Student relieved reading appeal granted email, second chance given",
+    choices: [
+      { id: "c1", text: "Serious mode - 100% attendance from now 📚", next_scenario: "study_serious_mode" },
+      { id: "c2", text: "Part-time work reduce කරලා study focus 🎯", next_scenario: "work_life_balance" },
+      { id: "c3", text: "Tutor hire කරලා grades boost කරමු 👨‍🏫", next_scenario: "hire_tutor" }
+    ],
+    stats_update: { money_change: 0, stress_change: -30, energy_change: 20, day_change: 14 },
+    new_items: ["Second Chance", "Study Plan"],
+    game_state: "ongoing"
+  },
+
+  // VISA AGENT SCAM - Regional Pressure
+  "visa_agent_scam": {
+    id: "visa_agent_scam",
+    story_text: "Visa agent uncle කෙනෙක් Dandenong office එකේ. ඔයාගේ visa situation check කරලා කිව්වා 'Machan, ඔයාගේ visa risky! Melbourne competitive වැඩියි. Regional Australia යන්න - Tasmania, Adelaide. PR fast track!' 🤔 Agent charge $3,500 for 'regional sponsorship arrangement.' 'Trust me bro, මගේ contacts තියනවා!' Agent ගේ office එක fancy, certificates wall එකේ. Legit feeling!",
+    image_prompt: "Visa agent office with certificates on wall, concerned student being pressured",
+    choices: [
+      { id: "c1", text: "Agent trust කරලා regional package ගමු 💰", is_risky: true, next_scenario: "visa_agent_trap" },
+      { id: "c2", text: "MARA registered ද check කරලා verify කරමු 🔍", next_scenario: "visa_agent_verify" },
+      { id: "c3", text: "Second opinion ගමු - another agent consult 👀", next_scenario: "visa_second_opinion" }
+    ],
+    stats_update: { money_change: 0, stress_change: 40, energy_change: -20, day_change: 3 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "visa_agent_trap": {
+    id: "visa_agent_trap",
+    story_text: "$3,500 pay කළා. Agent documents 'prepare' කළා 6 weeks. Then silence. Phone calls - no answer. Office visit - 'Uncle sick, next week.' 2 months later - office closed! 🏚️ Google search කරනකොට - 5 star reviews all fake, multiple complaints, NOT MARA registered! ඔයාගේ $3,500 + visa still uncertain. Scammed by professional scammer! 💀",
+    image_prompt: "Closed down visa agent office, 'For Lease' sign, devastated student outside",
+    choices: [
+      { id: "c1", text: "Police complaint + MARA complaint file 🚔", next_scenario: "visa_scam_report" },
+      { id: "c2", text: "Legit MARA agent hire කරලා fix කරමු 👔", next_scenario: "legit_migration_agent" },
+      { id: "c3", text: "DIY visa application try කරමු - research 📚", next_scenario: "diy_visa_application" }
+    ],
+    stats_update: { money_change: -3500, stress_change: 70, energy_change: -40, day_change: 60 },
+    new_items: ["Scam Victim Experience"],
+    game_state: "ongoing"
+  },
+
+  "visa_agent_verify": {
+    id: "visa_agent_verify",
+    story_text: "MARA website check කළා - Uncle ගේ name NOT REGISTERED! 😱 ඔයා save වුණා! Agent එකට call කරලා confront කරනකොට 'Machan I'm MARA pending application, no problem!' Lie! Unregistered agent illegal. ඔයා politely decline කරලා walk out. $3,500 save වුණා + scam avoided! Smart move! 🧠",
+    image_prompt: "Person checking MARA website on phone, relieved expression, walking away from office",
+    choices: [
+      { id: "c1", text: "Proper MARA registered agent හොයමු ✅", next_scenario: "legit_migration_agent" },
+      { id: "c2", text: "Immigration lawyer consult කරමු 👨‍⚖️", next_scenario: "immigration_lawyer" },
+      { id: "c3", text: "Community එකට warning share කරමු 📢", next_scenario: "community_warning_agent" }
+    ],
+    stats_update: { money_change: 0, stress_change: -20, energy_change: 10, day_change: 1 },
+    new_items: ["Scam Detector Skill"],
+    game_state: "ongoing"
+  },
+
+  // JOB BROKER SCAM - Friend's "Connection"
+  "job_broker_scam": {
+    id: "job_broker_scam",
+    story_text: "Friend කෙනෙක් introduce කළා 'job broker aiya' කෙනෙක්. 'Machan, මේ aiya warehouse manager job හොයාදෙනවා, $32/hour! Fee එක $800 only, job guarantee!' 🤝 Aiya professional looking - suit, business card. WhatsApp group එකේ 'success stories' share කරනවා - screenshots of people thanking him. Sounds legit?",
+    image_prompt: "Job broker in suit showing WhatsApp success stories, student considering offer",
+    choices: [
+      { id: "c1", text: "Fee ගෙවලා job ගමු - friend recommended නේ 💰", is_risky: true, next_scenario: "job_broker_trap" },
+      { id: "c2", text: "Success story contacts verify කරමු 🔍", next_scenario: "job_broker_verify" },
+      { id: "c3", text: "Reject කරලා myself apply කරමු 💪", next_scenario: "direct_job_apply" }
+    ],
+    stats_update: { money_change: 0, stress_change: 20, energy_change: -10, day_change: 1 },
+    new_items: [],
+    game_state: "ongoing"
+  },
+
+  "job_broker_trap": {
+    id: "job_broker_trap",
+    story_text: "$800 ගෙව්වා. Aiya 'processing' කරනවා 3 weeks. Interview date දුන්නා - fake company, fake address! 😤 'Success stories' all staged - paid actors! ඔයාගේ friend ද victim - ඔයා refer කළාට $100 commission ගත්තා without knowing scam! Classic pyramid recruitment scam. Police complaint - 'Civil matter, file in VCAT.' $800 gone, trust broken with friend! 💔",
+    image_prompt: "Empty warehouse where fake interview was supposed to be, realization of scam",
+    choices: [
+      { id: "c1", text: "VCAT complaint file කරමු 📋", next_scenario: "vcat_complaint" },
+      { id: "c2", text: "Friend එක්ක situation explain කරලා reconcile 🤝", next_scenario: "friend_reconcile" },
+      { id: "c3", text: "Social media expose + move on 📢", next_scenario: "job_scam_expose" }
+    ],
+    stats_update: { money_change: -800, stress_change: 50, energy_change: -30, day_change: 21 },
+    new_items: ["Trust Issues"],
+    game_state: "ongoing"
+  },
+
+  "job_broker_verify": {
+    id: "job_broker_verify",
+    story_text: "Smart move! Success story එකක contact ඉල්ලුවා. Aiya hesitate කළා - 'Privacy bro.' ඔයා insist කළා. Finally number එකක් දුන්නා - call කරනකොට number disconnected! 🚩 Red flag! ABN check කරනකොට - no registered business! ඔයා aiya ට 'No thanks' කියලා walk away. $800 save වුණා! Friend ට ද explain කළා - ඒයත් shocked. Scam network exposed! 💪",
+    image_prompt: "Person doing research on laptop, finding red flags, avoiding scam",
+    choices: [
+      { id: "c1", text: "Direct job applications යමු 📝", next_scenario: "direct_job_apply" },
+      { id: "c2", text: "Recruitment agency (legit) register කරමු 🏢", next_scenario: "legit_recruitment" },
+      { id: "c3", text: "Community warning post දාමු 📢", next_scenario: "job_scam_warning" }
+    ],
+    stats_update: { money_change: 0, stress_change: -10, energy_change: 10, day_change: 2 },
+    new_items: ["Scam Detector Skill"],
+    game_state: "ongoing"
+  },
+
+  // CLEANING CONTRACTOR NOT PAYING FOR MONTHS
+  "cleaning_unpaid_months": {
+    id: "cleaning_unpaid_months",
+    story_text: "Cleaning contractor aiya එක්ක මාස 3ක් වැඩ කළා. Invoice total: $4,500! Every week 'next week pay කරන්නම්' කියනවා. Now 12 weeks overdue! 😤 ඔයා desprate - rent, bills, food. Aiya excuses: 'Client pay කළේ නෑ', 'Bank issue', 'COVID impact.' Meanwhile aiya Instagram එකේ new BMW, Bali holiday posts! 🤬",
+    image_prompt: "Worker confronting contractor while he shows off BMW, rage and betrayal",
+    choices: [
+      { id: "c1", text: "Fair Work complaint + legal letter 📋", next_scenario: "unpaid_fair_work" },
+      { id: "c2", text: "Work site එකේ scene එකක් දාමු - public pressure 📢", next_scenario: "unpaid_public_scene" },
+      { id: "c3", text: "Small Claims Court file කරමු 🏛️", next_scenario: "unpaid_small_claims" }
+    ],
+    stats_update: { money_change: 0, stress_change: 80, energy_change: -50, day_change: 84 },
+    new_items: ["Unpaid Invoices"],
+    game_state: "ongoing"
+  },
+
+  "unpaid_fair_work": {
+    id: "unpaid_fair_work",
+    story_text: "Fair Work complaint submit කළා. Investigation started. 8 weeks later - verdict: 'Contractor must pay $4,500 + $500 penalty within 14 days!' 🎉 Aiya panic mode! Pay කළා finally, cash hand-delivered! 'Sorry machan, business tough.' ඔයා legally won! But lesson learned - ABN, written contracts, payment terms ALWAYS! Never trust 'machan' again.",
+    image_prompt: "Fair Work victory letter, contractor reluctantly handing over cash payment",
+    choices: [
+      { id: "c1", text: "Proper job එකක් හොයමු - no more contractor work", next_scenario: "middle_job_hunt" },
+      { id: "c2", text: "Own ABN ගෙන self-employed වෙමු 💼", next_scenario: "own_abn" },
+      { id: "c3", text: "Money save කරලා emergency fund build 🏦", next_scenario: "build_savings" }
+    ],
+    stats_update: { money_change: 5000, stress_change: -40, energy_change: 30, day_change: 60 },
+    new_items: ["Legal Victory", "Life Lessons"],
+    game_state: "ongoing"
+  },
+
+  // MENTAL HEALTH SUPPORT
+  "mental_health_support": {
+    id: "mental_health_support",
+    story_text: "Stress overload! GP visit කළා. Doctor recommend කළා mental health care plan - 10 free psychology sessions Medicare එකෙන්. Psychologist එක්ක talk therapy start. 😌 ඔයා realize වුණා - scam වෙනවා, struggle කරනවා, lonely වෙනවා normal කියලා. Tools ඉගෙන ගත්තා - stress management, healthy boundaries, scam detection. Mental health = survival skill!",
+    image_prompt: "Person in therapy session, feeling supported, Melbourne city through window",
+    choices: [
+      { id: "c1", text: "Therapy continue කරලා heal වෙමු 💚", next_scenario: "healing_journey" },
+      { id: "c2", text: "Support group join කරමු - shared experiences 👥", next_scenario: "support_group" },
+      { id: "c3", text: "Tools use කරලා fresh start ගමු 🌟", next_scenario: "fresh_start" }
+    ],
+    stats_update: { money_change: 0, stress_change: -40, energy_change: 30, day_change: 14 },
+    new_items: ["Mental Health Plan", "Coping Skills"],
+    game_state: "ongoing"
+  },
+
+  // COMMUNITY HERO PATH
+  "community_hero": {
+    id: "community_hero",
+    story_text: "ඔයාගේ scam expose post viral වුණා! 🔥 SBS interview, community WhatsApp groups, student unions share. ඔයා informal 'scam watchdog' වුණා. New students ඔයාගෙන් advice ඉල්ලනවා. Melbourne Lankan community appreciate කරනවා. Volunteer work lead to actual job offer - community organization admin role, $28/hour! Karma real! 💪",
+    image_prompt: "Community recognition ceremony, person receiving appreciation from Lankan community",
+    choices: [
+      { id: "c1", text: "Job offer accept කරමු - stable career path 💼", next_scenario: "community_job" },
+      { id: "c2", text: "Volunteer continue + studies focus 📚", next_scenario: "study_volunteer_balance" },
+      { id: "c3", text: "YouTube/TikTok start කරලා scam awareness grow 📺", next_scenario: "content_creator" }
+    ],
+    stats_update: { money_change: 0, stress_change: -30, energy_change: 20, day_change: 30 },
+    new_items: ["Community Respect", "Network Connections"],
+    game_state: "ongoing"
+  },
+
+  // FRESH START AFTER STRUGGLES
+  "fresh_start": {
+    id: "fresh_start",
+    story_text: "Hard lessons learned! Scam victims, unpaid wages, heartbreak - ඔයා survive කළා. Now smarter, stronger, more careful. New job, stable accommodation, proper visa situation. PR pathway clear. Day 60+ in Melbourne - ඔයා no longer naive fresh-off-boat student. ඔයා Melbourne veteran! 🏆",
+    image_prompt: "Confident person walking through Melbourne CBD, sunrise, hopeful future",
+    choices: [
+      { id: "c1", text: "PR application process start කරමු 📋", next_scenario: "pr_application_start" },
+      { id: "c2", text: "Career advancement focus - promotions! 📈", next_scenario: "career_advancement" },
+      { id: "c3", text: "Community give back - mentor new students 🤝", next_scenario: "mentor_students" }
+    ],
+    stats_update: { money_change: 500, stress_change: -50, energy_change: 50, day_change: 7 },
+    new_items: ["Melbourne Survival Skills", "Wisdom"],
+    game_state: "ongoing"
+  },
+
+  // PR APPLICATION START
+  "pr_application_start": {
+    id: "pr_application_start",
+    story_text: "Day 85! PR EOI (Expression of Interest) submit කළා. Points: Age 30, English IELTS 7 (20 points), Bachelor degree (15 points), 2 years work experience (5 points), regional study (5 points). Total: 70 points! Invitation waiting... 🤞 ස්වප්නය real වෙන්න ළඟයි!",
+    image_prompt: "Person submitting PR application online, hopeful expression, Australian flag in background",
+    choices: [
+      { id: "c1", text: "Wait කරද්දී points boost කරමු - NAATI/PY 📚", next_scenario: "pr_boost_points" },
+      { id: "c2", text: "Patient වෙලා wait කරමු - anxiety manage 🧘", next_scenario: "pr_waiting" },
+      { id: "c3", text: "Backup plan - employer sponsorship explore 💼", next_scenario: "employer_sponsorship" }
+    ],
+    stats_update: { money_change: -4000, stress_change: 30, energy_change: -20, day_change: 3 },
+    new_items: ["EOI Submitted"],
+    game_state: "ongoing"
+  },
+
+  // FINAL SUCCESS - PR GRANTED
+  "pr_granted": {
+    id: "pr_granted",
+    story_text: "DAY 90! 📧 Email notification: 'Your Permanent Residency visa has been GRANTED!' 🎉🎉🎉 Tears of joy! 3 months of struggle, scams, heartbreak, hustle - ALL WORTH IT! ඔයා official Australian Permanent Resident! No more visa stress, work restrictions, uncertainty. 25 chapters, countless challenges - ඔයා beat the system! 🏆 මෙල්බර්න් ජීවිතේ ජය ගත්තා!",
+    image_prompt: "Ecstatic person holding PR grant letter, Australian flag, Melbourne skyline, tears of joy",
+    choices: [],
+    stats_update: { money_change: 0, stress_change: -100, energy_change: 100, day_change: 0 },
+    new_items: ["PR Visa", "Australian Dream"],
+    game_state: "victory"
   }
 };
 
 // Helper function to get random scenario continuation if specific next is not set
 export function getRandomScenario(profileClass: ProfileClass): string {
+  // 30% chance of scam scenario for harder gameplay!
+  const scamChance = Math.random();
+  
+  // Scam scenarios more likely for lower classes
+  const scamScenarios = [
+    "cleaning_contractor_scam",
+    "dandenong_car_scam", 
+    "love_scam_intro",
+    "visa_agent_scam",
+    "job_broker_scam",
+    "cleaning_unpaid_months",
+    "coe_cancelled"
+  ];
+  
+  if (profileClass === "Lower Class" && scamChance < 0.35) {
+    return scamScenarios[Math.floor(Math.random() * scamScenarios.length)];
+  } else if (profileClass === "Middle Class" && scamChance < 0.25) {
+    return scamScenarios[Math.floor(Math.random() * scamScenarios.length)];
+  } else if (profileClass === "Business Family" && scamChance < 0.15) {
+    return scamScenarios[Math.floor(Math.random() * scamScenarios.length)];
+  } else if (profileClass === "ඇමති පුතා" && scamChance < 0.08) {
+    return scamScenarios[Math.floor(Math.random() * scamScenarios.length)];
+  }
+  
   const classScenarios: Record<ProfileClass, string[]> = {
-    "ඇමති පුතා": ["minister_hotel", "minister_university", "minister_leisure"],
-    "Business Family": ["business_apartment", "business_job_search", "business_uber_eats"],
-    "Middle Class": ["middle_footscray", "middle_job_hunt", "middle_cleaning_job"],
-    "Lower Class": ["lower_help_desk", "lower_emergency_hostel", "lower_community"]
+    "ඇමති පුතා": ["minister_hotel", "minister_university", "minister_leisure", "minister_business_connection"],
+    "Business Family": ["business_apartment", "business_job_search", "business_uber_eats", "business_warehouse_job"],
+    "Middle Class": ["middle_footscray", "middle_job_hunt", "middle_cleaning_job", "middle_srilankan_food"],
+    "Lower Class": ["lower_help_desk", "lower_emergency_hostel", "lower_community", "lower_desperate_job_hunt"]
   };
 
   const scenarios = classScenarios[profileClass] || classScenarios["Middle Class"];

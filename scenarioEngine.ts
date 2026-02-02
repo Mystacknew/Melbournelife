@@ -105,10 +105,78 @@ function determineNextScenario(
   } else if (actionLower.includes('scam') || actionLower.includes('agent')) {
     return 'lower_agent_call';
   }
+  
+  // 🔥 SCAM SCENARIO TRIGGERS - Make game HARDER!
+  // Random scam encounters based on day progression
+  const dayNumber = history.length * 3; // Approximate day
+  
+  // Cleaning contractor scam - Days 20-30
+  if (dayNumber >= 20 && dayNumber <= 30 && Math.random() < 0.3) {
+    if (actionLower.includes('contractor') || actionLower.includes('cleaning job') || actionLower.includes('cash job')) {
+      return 'cleaning_contractor_scam';
+    }
+  }
+  
+  // Dandenong car scam - Days 25-40
+  if (dayNumber >= 25 && dayNumber <= 40 && Math.random() < 0.25) {
+    if (actionLower.includes('car') || actionLower.includes('buy') || actionLower.includes('dandenong')) {
+      return 'dandenong_car_scam';
+    }
+  }
+  
+  // Love scam - Days 30-60
+  if (dayNumber >= 30 && dayNumber <= 60 && Math.random() < 0.2) {
+    if (actionLower.includes('date') || actionLower.includes('girlfriend') || actionLower.includes('boyfriend') || actionLower.includes('tinder')) {
+      return 'love_scam_intro';
+    }
+  }
+  
+  // COE cancellation - Days 35-50
+  if (dayNumber >= 35 && dayNumber <= 50 && Math.random() < 0.25) {
+    if (actionLower.includes('university') || actionLower.includes('study') || actionLower.includes('attendance')) {
+      return 'coe_cancelled';
+    }
+  }
+  
+  // Visa agent scam - Days 40-70
+  if (dayNumber >= 40 && dayNumber <= 70 && Math.random() < 0.25) {
+    if (actionLower.includes('visa') || actionLower.includes('agent') || actionLower.includes('regional') || actionLower.includes('migration')) {
+      return 'visa_agent_scam';
+    }
+  }
+  
+  // Job broker scam - Days 15-35
+  if (dayNumber >= 15 && dayNumber <= 35 && Math.random() < 0.3) {
+    if (actionLower.includes('friend') || actionLower.includes('connection') || actionLower.includes('job broker')) {
+      return 'job_broker_scam';
+    }
+  }
+  
+  // Unpaid wages - Days 45-70
+  if (dayNumber >= 45 && dayNumber <= 70 && Math.random() < 0.2) {
+    if (actionLower.includes('unpaid') || actionLower.includes('invoice') || actionLower.includes('contractor')) {
+      return 'cleaning_unpaid_months';
+    }
+  }
+  
+  // Mental health support trigger - when stress is high
+  if (history.length > 10 && Math.random() < 0.1) {
+    return 'mental_health_support';
+  }
+  
+  // Fresh start after many struggles
+  if (history.length >= 20 && history.length < 25) {
+    return 'fresh_start';
+  }
+  
+  // PR Application - Days 80+
+  if (dayNumber >= 80) {
+    return 'pr_application_start';
+  }
 
-  // Check progression - if day >= 25, move toward success
-  if (history.length >= 15) {
-    return 'success_settled';
+  // Check progression - if day >= 30 (now 90 for harder mode), move toward success
+  if (history.length >= 30) {
+    return 'pr_granted';
   }
 
   // Default: return a random scenario for their class

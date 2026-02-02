@@ -37,7 +37,8 @@ export async function generateScene(
   const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
   const prompt = `
-You are a storytelling engine for "Melbourne Life" - a narrative game about Sri Lankan immigrants in Melbourne.
+You are a storytelling engine for "Melbourne Life" - a HARD MODE survival game about Sri Lankan immigrants in Melbourne.
+The game is DIFFICULT with 25 chapters required to reach PR. Include SCAMS, BETRAYALS, and ROASTING SINHALA LANGUAGE!
 
 Current Profile:
 - Name: ${profile.name}
@@ -61,12 +62,12 @@ Player's Choice: ${choice}
 
 Generate the next story segment as JSON with this exact structure:
 {
-  "story_text": "Engaging narrative in Singlish/Sinhala style (2-3 sentences)",
+  "story_text": "Roasting narrative in Sinhala+English slang style (2-4 sentences)",
   "image_prompt": "Detailed scene description for image generation",
   "choices": [
-    {"id": "c1", "text": "Choice 1 text"},
-    {"id": "c2", "text": "Choice 2 text"},
-    {"id": "c3", "text": "Choice 3 text"}
+    {"id": "c1", "text": "Choice 1 - often leads to scam/trap"},
+    {"id": "c2", "text": "Choice 2 - risky but might work"},
+    {"id": "c3", "text": "Choice 3 - safe but slower progress"}
   ],
   "stats_update": {
     "money_change": 0,
@@ -78,19 +79,35 @@ Generate the next story segment as JSON with this exact structure:
   "game_state": "ongoing"
 }
 
-IMPORTANT:
-- story_text should mix English and Sinhala naturally (e.g., "මචං, you need to find රස්සාවක්")
-- Reflect the player's social class in opportunities and challenges
-- Minister's son: Easy access to resources, connections, money
-- Business Family: Moderate resources, some connections
-- Middle Class: Limited resources, must work hard
-- Lower Class: Severe struggles, exploitation, survival mode
-- Money changes should be realistic (-50 to +500 typically)
-- Stress/Energy changes between -30 to +30
-- Include Melbourne-specific locations (Footscray, Box Hill, CBD, etc.)
-- Add cultural authenticity (Lankan community, food, language)
-- Make choices meaningful with clear consequences
-- game_state can be "ongoing", "gameover_broke", "gameover_deported", "gameover_health", "success_pr", "success_stable"
+🔥 SCAM SCENARIOS TO INCLUDE (randomly integrate these):
+1. CLEANING CONTRACTOR SCAM: "Aiya" promises $35/hr, takes 3 weeks work, disappears without paying
+2. DANDENONG CAR SCAM: "German Tech" aiya sells broken cars with sawdust in engine
+3. GIRLFRIEND/BOYFRIEND SCAM: Person is secretly married, extracts gifts/money
+4. COE CANCELLATION: University cancels enrollment, visa at risk
+5. VISA AGENT SCAM: Fake MARA agent takes $3500, office closes down
+6. JOB BROKER SCAM: "Friend's connection" charges $800 for fake job
+7. UNPAID WAGES: Contractor doesn't pay for months while showing off BMW on Instagram
+
+🗣️ ROASTING SINHALA SLANGS TO USE:
+- "මචං" (bro), "පරඩ්ඩිය" (idiot), "ගෑණි" (derogatory for person)
+- "ඔබෝ!" (exclamation of distress), "අම්මෝ!" (oh mother!)
+- "Trust me bro!", "Machan", "Lankan aiya/akka"
+- "scam වෙලා" (got scammed), "සල්ලි ගියා" (money gone)
+- "💀", "🤡", "😤", "🔥" emojis for emphasis
+- Sarcastic phrases like "Life is good machan!" when things go wrong
+
+DIFFICULTY RULES:
+- Minister's son: Some scams but can recover with money
+- Business Family: Moderate scams, need to be careful
+- Middle Class: HIGH RISK of scams, limited resources
+- Lower Class: VERY HIGH scam risk, desperate choices lead to traps
+- Money losses should be PAINFUL: -$500 to -$5000 for scams
+- Stress increases dramatically: +40 to +80 for scams
+- Day changes realistic: 7-30 days for scam recoveries
+- Make game HARD - PR at Day 90 is the goal, many obstacles!
+
+Melbourne locations: Dandenong, Footscray, Sunshine, Box Hill, Clayton, CBD, Werribee
+Include: Sri Lankan shops, community Facebook groups, contractor networks, visa agents
 
 Return ONLY valid JSON, no markdown formatting.
 `;

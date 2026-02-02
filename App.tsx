@@ -140,16 +140,45 @@ const App: React.FC = () => {
   const [statChanges, setStatChanges] = useState<{ id: number; text: string; color: string }[]>([]);
   const changeIdCounter = useRef(0);
 
-  // Survival Progress logic: Target Day 30 for "PR/Settlement"
-  const progressionPercent = useMemo(() => Math.min(Math.round(((stats.day - 1) / 30) * 100), 100), [stats.day]);
+  // Survival Progress logic: Target Day 90 for "PR/Settlement" - HARDER MODE
+  const progressionPercent = useMemo(() => Math.min(Math.round(((stats.day - 1) / 90) * 100), 100), [stats.day]);
 
-  // Chapter System - Story progression based on days
+  // Chapter System - 25 CHAPTERS for full PR journey (harder progression)
   const CHAPTERS = [
-    { id: 1, name: 'The Arrival', days: [1, 7], description: 'First week in Melbourne', icon: '✈️', color: 'orange' },
-    { id: 2, name: 'Survival Mode', days: [8, 14], description: 'Finding your feet', icon: '🏃', color: 'red' },
-    { id: 3, name: 'The Grind', days: [15, 21], description: 'Work and hustle', icon: '💼', color: 'amber' },
-    { id: 4, name: 'Building Roots', days: [22, 28], description: 'Making connections', icon: '🏠', color: 'green' },
-    { id: 5, name: 'The Dream', days: [29, 90], description: 'Achieving your goals', icon: '🏆', color: 'cyan' }
+    // PHASE 1: ARRIVAL (Days 1-7) - 3 chapters
+    { id: 1, name: 'Landing පේන්', days: [1, 2], description: 'Airport එකෙන් බහිනවා', icon: '✈️', color: 'orange' },
+    { id: 2, name: 'First Night Struggle', days: [3, 4], description: 'කොහෙ නිදාගන්නද?', icon: '😰', color: 'red' },
+    { id: 3, name: 'Reality Check', days: [5, 7], description: 'මේ මොකක්ද මේ rate?', icon: '💸', color: 'amber' },
+    
+    // PHASE 2: SURVIVAL MODE (Days 8-21) - 5 chapters
+    { id: 4, name: 'Accommodation Hunt', days: [8, 10], description: 'ගෙයක් හොයමු', icon: '🏠', color: 'blue' },
+    { id: 5, name: 'Scam වලින් බේරෙමු', days: [11, 13], description: 'Contractor අයියලා', icon: '🚨', color: 'red' },
+    { id: 6, name: 'Job Hunt Begins', days: [14, 17], description: 'Resume Print කරමු', icon: '📄', color: 'purple' },
+    { id: 7, name: 'Visa Agent Drama', days: [18, 19], description: 'Regional යන්නද?', icon: '😤', color: 'orange' },
+    { id: 8, name: 'First Paycheck', days: [20, 21], description: 'සල්ලි ඇවිත්ද?', icon: '💰', color: 'green' },
+    
+    // PHASE 3: THE GRIND (Days 22-42) - 7 chapters
+    { id: 9, name: 'Cleaning Contractor Scam', days: [22, 24], description: 'මාස 2ක pay නෑ', icon: '🧹', color: 'red' },
+    { id: 10, name: 'Dandenong Car Scam', days: [25, 27], description: 'German Tech අයියා', icon: '🚗', color: 'amber' },
+    { id: 11, name: 'Love Trap', days: [28, 31], description: 'GF/BF Drama', icon: '💔', color: 'pink' },
+    { id: 12, name: 'Job Broker Scam', days: [32, 35], description: '$500 ගෙවලා job?', icon: '🤝', color: 'red' },
+    { id: 13, name: 'COE Cancelled', days: [36, 38], description: 'University problems', icon: '📚', color: 'purple' },
+    { id: 14, name: 'Hustle Mode', days: [39, 42], description: 'Multiple jobs', icon: '💪', color: 'blue' },
+    
+    // PHASE 4: BUILDING ROOTS (Days 43-63) - 5 chapters
+    { id: 15, name: 'Real Friends', days: [43, 46], description: 'Trust issues', icon: '👥', color: 'cyan' },
+    { id: 16, name: 'Savings Game', days: [47, 51], description: 'Bank balance', icon: '🏦', color: 'green' },
+    { id: 17, name: 'Visa Extension', days: [52, 55], description: 'Documents ready?', icon: '📋', color: 'amber' },
+    { id: 18, name: 'Skill Recognition', days: [56, 59], description: 'Degree valid ද?', icon: '🎓', color: 'purple' },
+    { id: 19, name: 'Tax Time', days: [60, 63], description: 'ATO එක්ක dance', icon: '📊', color: 'blue' },
+    
+    // PHASE 5: PATH TO PR (Days 64-90) - 6 chapters
+    { id: 20, name: 'PR Points Check', days: [64, 68], description: 'Points ඇතිද?', icon: '✅', color: 'green' },
+    { id: 21, name: 'Health Check', days: [69, 72], description: 'Medical exam', icon: '🏥', color: 'pink' },
+    { id: 22, name: 'Police Clearance', days: [73, 77], description: 'Character test', icon: '👮', color: 'blue' },
+    { id: 23, name: 'EOI Submission', days: [78, 82], description: 'Waiting game', icon: '⏳', color: 'amber' },
+    { id: 24, name: 'ITA Received', days: [83, 87], description: 'Invitation!', icon: '📨', color: 'cyan' },
+    { id: 25, name: 'PR Granted!', days: [88, 90], description: 'ජය වේවා!', icon: '🏆', color: 'green' }
   ];
   
   const currentChapter = useMemo(() => {
@@ -446,57 +475,62 @@ const App: React.FC = () => {
         setLockedBranches(prev => [...prev, choice.locksBranch!]);
       }
 
-      // WIN CONDITIONS - Check before loss conditions!
-      // Victory Condition 1: Reached Day 30 with good stats (Early Success)
-      if (newStats.day >= 30 && newStats.money >= 3000 && newStats.stress < 70 && newStats.health >= 60) {
-        setWinReason('🎉 30-Day Milestone! You\'ve established a stable life in Melbourne!');
+      // WIN CONDITIONS - HARDER MODE! 90 days required for PR!
+      // Victory Condition 1: Milestone at Day 30 (No longer victory, just progress)
+      if (newStats.day === 30 && newStats.money >= 2000) {
+        // Just a checkpoint, not victory!
+        console.log('📍 Checkpoint: Day 30 reached!');
+      }
+      
+      // Victory Condition 2: Milestone at Day 60 (Still not victory!)
+      if (newStats.day === 60 && newStats.money >= 5000 && newStats.health >= 50) {
+        // Another checkpoint
+        console.log('📍 Checkpoint: Day 60 reached!');
+      }
+      
+      // Victory Condition 3: Day 90 - ONLY WAY TO WIN! PR Settlement Ready!
+      if (newStats.day >= 90 && newStats.money >= 8000 && newStats.stress < 80 && newStats.health >= 40) {
+        setWinReason('🇦🇺 VICTORY! 90 Days Complete - PR GRANTED! 25 Chapters survived, scams dodged, dreams achieved! You\'re officially an Australian Permanent Resident! 🎉🏆');
         setScreen('victory');
         return;
       }
       
-      // Victory Condition 2: Reached Day 60 (Settlement Progress)
-      if (newStats.day >= 60 && newStats.money >= 5000 && newStats.health >= 50) {
-        setWinReason('🏆 60-Day Achievement! You\'re well on your way to permanent residency!');
-        setScreen('victory');
-        return;
-      }
-      
-      // Victory Condition 3: Reached Day 90 (PR Settlement Ready!) - Ultimate Win
-      if (newStats.day >= 90) {
-        setWinReason('🇦🇺 VICTORY! 90 Days Complete - PR Pathway Unlocked! You\'ve successfully settled in Melbourne!');
-        setScreen('victory');
+      // Day 90 but not enough stats - close but no cigar!
+      if (newStats.day >= 90 && (newStats.money < 8000 || newStats.stress >= 80 || newStats.health < 40)) {
+        setWinReason('😔 Day 90 reached but PR denied! Need: $8000+ savings, <80 stress, 40+ health. Try again!');
+        setScreen('gameover');
         return;
       }
 
-      // GAME OVER CONDITIONS
+      // GAME OVER CONDITIONS - ROASTING SINHALA STYLE! 🌶️
       if (newStats.energy <= 0) {
-        setWinReason('Burnout! Your energy depleted completely.');
+        setWinReason('💀 Burnout වුනා මචං! ඔබේ Energy ගෙවිලා ගියා! ලංකාවේ "free rice" කන්න යන්න වෙනවා! Too many night shifts without proper rest - you collapsed on the job! 😵');
         setScreen('gameover');
         return;
       }
       
       if (newStats.stress >= 100) {
-        setWinReason('Mental breakdown! Stress became overwhelming.');
+        setWinReason('🧠 Mental Breakdown මචං! Stress 100% hit කළා! ඔබෝ! "Melbourne Dream" nightmare වුනා! Migration agent ට ගෙවපු ඩොලර් නිකරුණේ ගියා! 😰');
         setScreen('gameover');
         return;
       }
       
       if (newStats.health <= 0) {
-        setWinReason('Health crisis! You need to return home for treatment.');
+        setWinReason('🏥 Health Crisis! Ambulance ගාස්තු $2000+ බලන්න! Medicare නැතුව hospital bill එක helicopter ride වගේ! ලංකාවේ ආයුර්වේද treatment ට return ticket එකක් ගන්න වෙනවා! 🚑');
         setScreen('gameover');
         return;
       }
 
       // Visa expired without achieving settlement
       if (newStats.visaDaysLeft <= 0) {
-        setWinReason('Visa expired! Time to go back to Sri Lanka.');
+        setWinReason('✈️ Visa Expired! Immigration Department එකෙන් letter එකක් - "Please leave Australia within 28 days"! අම්මෝ! Bridging visa වත් නැහැ! ලංකාවේ ගිහින් "මම Australia ගියා" කියලා කතා කරන්න වෙනවා! 😅');
         setScreen('gameover');
         return;
       }
       
       // Bankruptcy - can't afford rent for 2 weeks
       if (newStats.money < 0 && newStats.weeklyRent > 0) {
-        setWinReason('Bankruptcy! Unable to afford living expenses.');
+        setWinReason('💸 Bankruptcy! Rent ගෙවන්න සල්ලි නැහැ! Landlord eviction notice දුන්නා! Clayton අයියලා loan දෙන්නේ නැහැ - "credit score" නැති නිසා! 🏚️');
         setScreen('gameover');
         return;
       }
@@ -1093,16 +1127,23 @@ const App: React.FC = () => {
           </p>
         </div>
 
-        {/* Chapter preview */}
+        {/* Chapter preview - 25 CHAPTERS */}
         <div className="w-full max-w-3xl mt-8">
-          <h3 className="text-center text-slate-500 font-black text-xs uppercase tracking-widest mb-4">📚 Story Chapters</h3>
+          <h3 className="text-center text-slate-500 font-black text-xs uppercase tracking-widest mb-4">📚 25 Chapters to PR - Can You Survive?</h3>
           <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 custom-scrollbar">
-            {['Ch.1: Arrival', 'Ch.2: Survival', 'Ch.3: Work Life', 'Ch.4: Building Dreams', 'Ch.5: Victory'].map((ch, i) => (
+            {[
+              { name: '✈️ Landing', phase: 1 },
+              { name: '🚨 Scams', phase: 2 },
+              { name: '💼 Hustle', phase: 3 },
+              { name: '💔 Drama', phase: 4 },
+              { name: '🏆 PR!', phase: 5 }
+            ].map((ch, i) => (
               <div key={i} className={`flex-shrink-0 px-4 py-2 rounded-xl border-2 text-xs font-bold ${i === 0 ? 'bg-orange-500/20 border-orange-500/40 text-orange-400' : 'bg-slate-800/50 border-slate-700 text-slate-500'}`}>
-                {ch}
+                Phase {ch.phase}: {ch.name}
               </div>
             ))}
           </div>
+          <p className="text-center text-slate-600 text-[10px] mt-2">⚠️ Warning: Contractor scams, visa agent tricks, job brokers & more await!</p>
         </div>
       </div>
 
