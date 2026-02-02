@@ -1,5 +1,6 @@
 import { GameResponse, CharacterProfile, StoryLog } from "./types";
 import { SCENARIOS, getInitialScenario, getRandomScenario } from "./gameScenarios";
+import { getScenarioImage, getImageByKeywords } from "./imageMapper";
 
 // This replaces geminiService.ts - no AI needed!
 export const getNextStep = async (
@@ -41,6 +42,7 @@ export const getNextStep = async (
 // Convert scenario template to game response
 function convertToGameResponse(scenario: any): GameResponse {
   return {
+    id: scenario.id, // Include scenario ID for image mapping
     story_text: scenario.story_text,
     image_prompt: scenario.image_prompt,
     choices: scenario.choices.map((choice: any) => ({
@@ -169,8 +171,25 @@ const SCENE_IMAGES: Record<string, string> = {
   default: 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=800&h=600&fit=crop'
 };
 
-// Generate scene image using AI image generation
-export const generateSceneImage = async (prompt: string): Promise<string> => {
+// Generate scene image using pre-organized local images instead of AI
+export const generateSceneImage = async (imagePrompt: string, scenarioId?: string): Promise<string> => {
+  // Simulate small loading delay for smooth UX
+  await new Promise(resolve => setTimeout(resolve, 100));
+  
+  // First try to get image by scenario ID if provided
+  if (scenarioId) {
+    const scenarioImage = getScenarioImage(scenarioId);
+    if (scenarioImage) {
+      return scenarioImage;
+    }
+  }
+  
+  // Fall back to keyword matching based on image prompt
+  return getImageByKeywords(imagePrompt);
+};
+
+/* OLD AI VERSION - Kept for reference, now replaced with local images
+export const generateSceneImageWithAI = async (prompt: string): Promise<string> => {
   // Simulate loading delay
   await new Promise(resolve => setTimeout(resolve, 300));
 
@@ -184,8 +203,9 @@ export const generateSceneImage = async (prompt: string): Promise<string> => {
   
   return pollinationsUrl;
 };
+*/
 
-// Enhance prompts to create better comic-style images
+// Enhanced prompt function - kept for reference if needed later
 function enhancePromptForComicStyle(originalPrompt: string): string {
   const promptLower = originalPrompt.toLowerCase();
   

@@ -31,6 +31,7 @@ export interface Choice {
 }
 
 export interface GameResponse {
+  id?: string; // Scenario ID for image mapping
   story_text: string;
   image_prompt: string;
   choices: Choice[];

@@ -185,7 +185,7 @@ const App: React.FC = () => {
       
       setScreen('loading');
       if (savedState.currentScene) {
-        const img = await generateSceneImage(savedState.currentScene.image_prompt);
+        const img = await generateSceneImage(savedState.currentScene.image_prompt, savedState.currentScene.id);
         setSceneImage(img);
         setScreen('game');
       } else {
@@ -218,7 +218,7 @@ const App: React.FC = () => {
     try {
       const initialScene = await getNextStep(fullProfile, "Arrival at Melbourne Airport", [], []);
       setCurrentScene(initialScene);
-      const img = await generateSceneImage(initialScene.image_prompt);
+      const img = await generateSceneImage(initialScene.image_prompt, initialScene.id);
       setSceneImage(img);
       setScreen('game');
       // Initial save
@@ -332,7 +332,7 @@ const App: React.FC = () => {
 
       setCurrentScene(nextScene);
       setSceneImage(null);
-      const img = await generateSceneImage(nextScene.image_prompt);
+      const img = await generateSceneImage(nextScene.image_prompt, nextScene.id);
       setSceneImage(img);
 
       // Auto-save after every move
