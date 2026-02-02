@@ -1278,7 +1278,7 @@ const App: React.FC = () => {
           {/* Phase Cards - Sinhala Slang */}
           <div className="space-y-3 mb-6">
             {/* Phase 1 */}
-            <div className="bg-gradient-to-r from-orange-500/10 to-orange-600/5 rounded-xl p-3 border border-orange-500/20">
+            <div className="card-lift bg-gradient-to-r from-orange-500/10 to-orange-600/5 rounded-xl p-3 border border-orange-500/20 hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-500/20 transition-all animate-fade-in-up stagger-1">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">✈️</span>
                 <div>
@@ -1290,7 +1290,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Phase 2 */}
-            <div className="bg-gradient-to-r from-red-500/10 to-red-600/5 rounded-xl p-3 border border-red-500/20">
+            <div className="card-lift bg-gradient-to-r from-red-500/10 to-red-600/5 rounded-xl p-3 border border-red-500/20 hover:border-red-500/40 hover:shadow-lg hover:shadow-red-500/20 transition-all animate-fade-in-up stagger-2">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🚨</span>
                 <div>
@@ -1302,7 +1302,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Phase 3 */}
-            <div className="bg-gradient-to-r from-amber-500/10 to-amber-600/5 rounded-xl p-3 border border-amber-500/20">
+            <div className="card-lift bg-gradient-to-r from-amber-500/10 to-amber-600/5 rounded-xl p-3 border border-amber-500/20 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/20 transition-all animate-fade-in-up stagger-3">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">💼</span>
                 <div>
@@ -1314,7 +1314,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Phase 4 */}
-            <div className="bg-gradient-to-r from-blue-500/10 to-blue-600/5 rounded-xl p-3 border border-blue-500/20">
+            <div className="card-lift bg-gradient-to-r from-blue-500/10 to-blue-600/5 rounded-xl p-3 border border-blue-500/20 hover:border-blue-500/40 hover:shadow-lg hover:shadow-blue-500/20 transition-all animate-fade-in-up stagger-4">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🏗️</span>
                 <div>
@@ -1326,7 +1326,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Phase 5 */}
-            <div className="bg-gradient-to-r from-green-500/10 to-green-600/5 rounded-xl p-3 border border-green-500/20">
+            <div className="card-lift bg-gradient-to-r from-green-500/10 to-green-600/5 rounded-xl p-3 border border-green-500/20 hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/20 transition-all animate-fade-in-up stagger-5">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🏆</span>
                 <div>
@@ -1380,12 +1380,12 @@ const App: React.FC = () => {
         {/* Action Buttons */}
         <div className="flex flex-col gap-3 mt-auto">
           {hasExistingSave && (
-            <button onClick={loadGame} className="w-full py-5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-2xl font-black text-xl transition-all shadow-xl hover:shadow-emerald-500/30 flex items-center justify-center gap-3">
+            <button onClick={loadGame} className="btn-enhanced w-full py-5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-2xl font-black text-xl transition-all shadow-xl hover:shadow-emerald-500/30 hover:shadow-2xl flex items-center justify-center gap-3">
               <i className="fa-solid fa-play"></i> CONTINUE JOURNEY
             </button>
           )}
 
-          <button onClick={() => setScreen('register')} className="w-full py-5 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 hover:from-orange-400 hover:via-red-500 hover:to-green-500 text-white rounded-2xl font-black text-xl transition-all shadow-xl hover:shadow-orange-500/30 flex items-center justify-center gap-3">
+          <button onClick={() => setScreen('register')} className="btn-enhanced w-full py-5 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 hover:from-orange-400 hover:via-red-500 hover:to-green-500 text-white rounded-2xl font-black text-xl transition-all shadow-xl hover:shadow-orange-500/30 hover:shadow-2xl flex items-center justify-center gap-3">
             <i className="fa-solid fa-plane-departure"></i> {hasExistingSave ? 'NEW JOURNEY' : 'START ADVENTURE'}
           </button>
 
@@ -1765,7 +1765,7 @@ const App: React.FC = () => {
               type="text"
               value={character.name}
               onChange={e => setCharacter({ ...character, name: e.target.value })}
-              className="w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 font-bold text-white placeholder:text-slate-600 transition-all"
+              className="input-focus-glow w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 font-bold text-white placeholder:text-slate-600 transition-all"
               placeholder="Enter your name"
             />
           </div>
@@ -1780,7 +1780,7 @@ const App: React.FC = () => {
                 type="number"
                 value={character.age}
                 onChange={e => setCharacter({ ...character, age: parseInt(e.target.value) || 0 })}
-                className="w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 font-bold text-white transition-all"
+                className="input-focus-glow w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 font-bold text-white transition-all"
               />
             </div>
             <div>
@@ -1790,7 +1790,7 @@ const App: React.FC = () => {
               <select
                 value={character.gender}
                 onChange={e => setCharacter({ ...character, gender: e.target.value as Gender })}
-                className="w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 font-bold text-white appearance-none cursor-pointer transition-all"
+                className="input-focus-glow w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 font-bold text-white appearance-none cursor-pointer transition-all"
               >
                 <option value="Male">♂ Male</option>
                 <option value="Female">♀ Female</option>
@@ -1808,9 +1808,9 @@ const App: React.FC = () => {
                 <button
                   key={s}
                   onClick={() => setCharacter({ ...character, status: s })}
-                  className={`py-3 rounded-xl border text-xs font-bold transition-all ${character.status === s
-                    ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
-                    : 'bg-slate-800/40 border-slate-700 text-slate-500 hover:border-slate-600 hover:text-slate-400'}`}
+                  className={`btn-enhanced py-3 rounded-xl border text-xs font-bold transition-all ${character.status === s
+                    ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-lg shadow-cyan-500/20'
+                    : 'bg-slate-800/40 border-slate-700 text-slate-500 hover:border-slate-600 hover:text-slate-400 hover:shadow-md'}`}
                 >
                   {s === 'Single' && '👤 '}
                   {s === 'Couple' && '👫 '}
@@ -2064,9 +2064,9 @@ const App: React.FC = () => {
           <h2 className="text-4xl font-black mb-2 sinhala text-center tracking-tight bg-gradient-to-r from-orange-400 via-red-500 to-green-500 bg-clip-text text-transparent relative z-10">කොච්චර කට්ට කන්නද? 🔥</h2>
           <p className="text-slate-400 mb-8 text-center text-sm sinhala relative z-10">Melbourne වල struggle කරන level එක select කරන්න මචං 💀</p>
           <div className="grid gap-4 w-full max-w-md relative z-10">
-            {(Object.keys(INITIAL_STATS) as ProfileClass[]).map(p => (
-              <button key={p} onClick={() => startGame(p)} className="p-5 card-lift glass border border-white/10 rounded-2xl hover:border-blue-500/60 transition-all text-left group shadow-2xl relative overflow-hidden">
-                <div className="absolute right-[-20px] bottom-[-20px] text-8xl opacity-5 text-white transition-all duration-700">
+            {(Object.keys(INITIAL_STATS) as ProfileClass[]).map((p, i) => (
+              <button key={p} onClick={() => startGame(p)} className={`p-5 card-lift glass border border-white/10 rounded-2xl hover:border-blue-500/60 transition-all text-left group shadow-2xl relative overflow-hidden animate-fade-in-up stagger-${i + 1} hover:shadow-blue-500/20`}>
+                <div className="absolute right-[-20px] bottom-[-20px] text-8xl opacity-5 text-white transition-all duration-700 group-hover:scale-110 group-hover:opacity-10 animate-icon-pulse">
                   <i className={`fa-solid ${p === 'ඇමති පුතා' ? 'fa-crown' : p === 'Business Family' ? 'fa-building' : p === 'Middle Class' ? 'fa-utensils' : 'fa-skull'}`}></i>
                 </div>
                 <div className="relative z-10">
@@ -2083,14 +2083,14 @@ const App: React.FC = () => {
                   <p className="text-slate-500 text-xs italic mb-2">"{CLASS_DISPLAY[p].subtitle}"</p>
                   {/* Difficulty Badge */}
                   <div className="flex items-center justify-between">
-                    <span className={`px-3 py-1 rounded-full text-[10px] font-black ${p === 'ඇමති පුතා' ? 'bg-green-900/50 text-green-400 border border-green-500/30' :
-                      p === 'Business Family' ? 'bg-blue-900/50 text-blue-400 border border-blue-500/30' :
-                        p === 'Middle Class' ? 'bg-orange-900/50 text-orange-400 border border-orange-500/30' :
-                          'bg-red-900/50 text-red-400 border border-red-500/30'
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-black transition-all group-hover:shadow-lg ${p === 'ඇමති පුතා' ? 'bg-green-900/50 text-green-400 border border-green-500/30 group-hover:shadow-green-500/30' :
+                      p === 'Business Family' ? 'bg-blue-900/50 text-blue-400 border border-blue-500/30 group-hover:shadow-blue-500/30' :
+                        p === 'Middle Class' ? 'bg-orange-900/50 text-orange-400 border border-orange-500/30 group-hover:shadow-orange-500/30' :
+                          'bg-red-900/50 text-red-400 border border-red-500/30 group-hover:shadow-red-500/30'
                       }`}>
                       {CLASS_DISPLAY[p].difficulty}
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all text-sm"><i className="fa-solid fa-play"></i></div>
+                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white group-hover:scale-110 transition-all text-sm shadow-md group-hover:shadow-lg group-hover:shadow-blue-500/50"><i className="fa-solid fa-play"></i></div>
                   </div>
                 </div>
               </button>
@@ -2101,26 +2101,34 @@ const App: React.FC = () => {
       )}
       {screen === 'loading' && (
         <div className="flex flex-col items-center justify-center min-h-screen p-10 text-center bg-slate-950 relative overflow-hidden">
-          {/* Background effects */}
+          {/* Enhanced background effects with particles */}
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.15)_0%,transparent_50%)]"></div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl animate-pulse"></div>
+            {/* Floating particles */}
+            <div className="floating-particles">
+              <div className="floating-particle" style={{ left: '20%', top: '30%' }}></div>
+              <div className="floating-particle" style={{ left: '80%', top: '60%', animationDelay: '2s' }}></div>
+              <div className="floating-particle" style={{ left: '50%', top: '80%', animationDelay: '4s' }}></div>
+            </div>
           </div>
-          {/* Enhanced dual-ring spinner */}
+          {/* Enhanced triple-ring spinner */}
           <div className="relative mb-12">
             <div className="absolute inset-0 bg-blue-500/20 blur-3xl animate-glow-pulse rounded-full"></div>
             {/* Outer ring */}
-            <div className="w-32 h-32 border-4 border-white/5 border-t-blue-500 border-r-blue-400 rounded-full animate-spin relative z-10"></div>
+            <div className="w-36 h-36 border-4 border-white/5 border-t-blue-500 border-r-blue-400 rounded-full animate-spin-slow relative z-10"></div>
+            {/* Middle ring */}
+            <div className="absolute top-3 left-3 w-30 h-30 border-4 border-white/5 border-b-cyan-500 border-l-cyan-400 rounded-full animate-spin"></div>
             {/* Inner ring */}
-            <div className="absolute top-4 left-4 w-24 h-24 border-4 border-white/5 border-b-cyan-500 border-l-cyan-400 rounded-full animate-spin-reverse"></div>
-            {/* Center icon */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl z-20">✈️</div>
+            <div className="absolute top-6 left-6 w-24 h-24 border-3 border-white/5 border-t-purple-500 border-r-purple-400 rounded-full animate-spin-reverse"></div>
+            {/* Center icon with pulse */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl z-20 animate-bounce-subtle">✈️</div>
           </div>
           <h2 className="text-3xl font-black sinhala mb-3 text-white relative z-10 animate-fade-in-up">මෙල්බර්න් වලට ලෑන්ඩ් වෙනවා මචං...</h2>
-          <p className="text-slate-500 font-black uppercase tracking-[0.3em] text-[10px] relative z-10"><span className="animate-pulse">Australia is calling...</span></p>
-          {/* Loading progress bar */}
-          <div className="w-48 h-1 bg-slate-800 rounded-full mt-6 overflow-hidden relative z-10">
-            <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 animate-shimmer" style={{ width: '100%' }}></div>
+          <p className="text-slate-500 font-black uppercase tracking-[0.3em] text-[10px] relative z-10"><span className="animate-typing">Australia is calling...</span></p>
+          {/* Enhanced loading progress bar */}
+          <div className="w-48 h-1.5 bg-slate-800 rounded-full mt-6 overflow-hidden relative z-10 shadow-inner">
+            <div className="h-full bg-gradient-to-r from-blue-500 via-cyan-400 to-purple-500 animate-shimmer shadow-lg" style={{ width: '100%', boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)' }}></div>
           </div>
         </div>
       )}
