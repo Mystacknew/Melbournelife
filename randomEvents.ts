@@ -11,15 +11,15 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     choices: [
       {
         text: 'Hire migration agent ($500, professional help)',
-        consequences: { money: -500, stress: -20, visaDaysLeft: 15, happiness: 10 }
+        consequences: { money: -500, stress: -20, happiness: 10 }
       },
       {
         text: 'Prepare yourself (Free, risky)',
-        consequences: { stress: 30, visaDaysLeft: Math.random() > 0.5 ? 10 : -5, energy: -20 }
+        consequences: { stress: 30, energy: -20 }
       },
       {
         text: 'Bring Lankan uncle who knows everyone ($200)',
-        consequences: { money: -200, stress: -10, visaDaysLeft: 20, happiness: 5 }
+        consequences: { money: -200, stress: -10, happiness: 5 }
       }
     ]
   },
