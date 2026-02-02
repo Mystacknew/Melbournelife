@@ -54,6 +54,29 @@ const getItemMetadata = (itemName: string): ItemData => {
   return key ? ITEM_METADATA[key] : { icon: "fa-tag", category: 'Other', color: 'bg-slate-500' };
 };
 
+// Item effects - what each item provides when used/collected
+const ITEM_EFFECTS: Record<string, { energy?: number; stress?: number; money?: number; health?: number; unlocks?: string }> = {
+  "Uber Bag": { money: 150, unlocks: "Delivery jobs" },
+  "Myki Card": { unlocks: "Public transport", stress: -5 },
+  "Passport": { unlocks: "ID verification, Bank account" },
+  "Phone": { unlocks: "Job applications, Maps", stress: -5 },
+  "SIM Card": { unlocks: "Communication" },
+  "Laptop": { money: 200, unlocks: "Remote work, Study" },
+  "Work Boots": { unlocks: "Construction jobs" },
+  "High-Vis Vest": { unlocks: "Warehouse jobs" },
+  "Cleaning Kit": { money: 100, unlocks: "Cleaning jobs" },
+  "Bicycle": { energy: 10, unlocks: "Fast transport, Exercise" },
+  "Car Key": { unlocks: "Uber driving, Long trips" },
+  "Student ID": { unlocks: "Discounts, Library access" },
+  "Tax File Number": { unlocks: "Legal employment" },
+  "RSA Certificate": { unlocks: "Bar/Restaurant jobs" },
+  "Winter Jacket": { health: 10, stress: -5 },
+  "Sunscreen": { health: 5 },
+  "Backpack": { unlocks: "Carry more items" },
+  "Safety Vest": { unlocks: "Traffic controller jobs" },
+  "Uber Account": { money: 200, unlocks: "Ride-share driving" }
+};
+
 // Removed redundant local interface and augmentation as window.aistudio is provided by the environment
 
 const TypewriterText: React.FC<{ text: string; speed?: number }> = ({ text, speed = 15 }) => {
@@ -580,68 +603,138 @@ const App: React.FC = () => {
         ))}
       </div>
 
-      <div className="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 p-4 shadow-xl">
-        {/* Progression Bar */}
-        <div className="mb-4">
-           <div className="flex justify-between items-center mb-1">
-             <span className="text-[10px] uppercase font-black tracking-widest text-blue-400">Migration Journey</span>
-             <span className="text-[10px] font-black text-slate-500">{progressionPercent}% Settled</span>
-           </div>
-           <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5">
-             <div className="h-full bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500 transition-all duration-1000" style={{ width: `${progressionPercent}%` }} />
-           </div>
+      {/* STICKY HEADER WITH BREADCRUMBS & STATS */}
+      <div className="sticky top-0 z-40 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-900/80 backdrop-blur-xl border-b border-white/5 shadow-2xl">
+        
+        {/* Breadcrumb Navigation */}
+        <div className="px-4 py-2 border-b border-white/5 bg-slate-950/50">
+          <div className="flex items-center gap-2 text-[10px] font-bold">
+            <span className="text-slate-500 flex items-center gap-1">
+              <i className="fa-solid fa-home"></i> Melbourne
+            </span>
+            <i className="fa-solid fa-chevron-right text-slate-700 text-[8px]"></i>
+            <span className="text-slate-500">Day {stats.day}</span>
+            <i className="fa-solid fa-chevron-right text-slate-700 text-[8px]"></i>
+            <span className={`px-2 py-0.5 rounded-full ${
+              stats.day <= 7 ? 'bg-blue-500/20 text-blue-400' :
+              stats.day <= 21 ? 'bg-purple-500/20 text-purple-400' :
+              stats.day <= 60 ? 'bg-orange-500/20 text-orange-400' :
+              'bg-green-500/20 text-green-400'
+            }`}>
+              {stats.day <= 7 ? '📦 Settling In' : 
+               stats.day <= 21 ? '💼 Finding Work' : 
+               stats.day <= 60 ? '🏠 Establishing Life' : 
+               '🎯 Path to PR'}
+            </span>
+            <div className="flex-grow"></div>
+            <span className={`px-2 py-0.5 rounded-full ${gameSettings.storyMode === 'ai-creative' ? 'bg-purple-500/20 text-purple-400' : 'bg-green-500/20 text-green-400'}`}>
+              {gameSettings.storyMode === 'ai-creative' ? '🤖 AI Mode' : '📖 Story Mode'}
+            </span>
+          </div>
+        </div>
+        
+        {/* Migration Journey Progress */}
+        <div className="px-4 pt-3 pb-2">
+          <div className="flex justify-between items-center mb-1.5">
+            <span className="text-[9px] uppercase font-black tracking-[0.2em] text-orange-400 flex items-center gap-2">
+              <i className="fa-solid fa-route"></i> MIGRATION JOURNEY
+            </span>
+            <span className="text-[9px] font-black text-slate-500">{progressionPercent}% Settled</span>
+          </div>
+          <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5 shadow-inner">
+            <div 
+              className="h-full bg-gradient-to-r from-orange-500 via-red-500 to-green-500 transition-all duration-1000 relative" 
+              style={{ width: `${progressionPercent}%` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+            </div>
+          </div>
+          <div className="flex justify-between mt-1">
+            <span className="text-[8px] text-slate-600">🇱🇰 Start</span>
+            <span className="text-[8px] text-slate-600">🏠 PR</span>
+            <span className="text-[8px] text-slate-600">🇦🇺 Citizen</span>
+          </div>
         </div>
 
-        <div className="flex justify-between items-center mb-4">
+        {/* Character & Quick Actions */}
+        <div className="flex justify-between items-center px-4 py-3 border-y border-white/5 bg-slate-800/30">
           <div className="flex gap-3 group">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white border-2 transition-all duration-500 group-hover:rotate-6 ${character.gender === 'Female' ? 'bg-pink-600 border-pink-400' : 'bg-blue-600 border-blue-400'}`}>
-              <i className={`fa-solid ${character.gender === 'Female' ? 'fa-person-dress' : 'fa-person'} text-xl`}></i>
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white border-2 transition-all duration-500 group-hover:rotate-6 shadow-xl ${character.gender === 'Female' ? 'bg-gradient-to-br from-pink-600 to-pink-700 border-pink-400' : 'bg-gradient-to-br from-blue-600 to-blue-700 border-blue-400'}`}>
+              <i className={`fa-solid ${character.gender === 'Female' ? 'fa-person-dress' : 'fa-person'} text-2xl`}></i>
             </div>
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-2">
-                <p className="text-[10px] uppercase text-slate-400 font-black tracking-widest leading-none">{character.name}</p>
-                {isSaving && <span className="text-[8px] font-bold text-emerald-500 animate-pulse uppercase">Saving...</span>}
-                <span className={`text-[7px] font-bold uppercase px-1.5 py-0.5 rounded ${gameSettings.storyMode === 'ai-creative' ? 'bg-purple-500/20 text-purple-300' : 'bg-green-500/20 text-green-300'}`}>
-                  {gameSettings.storyMode === 'ai-creative' ? 'AI' : 'Story'}
-                </span>
+                <p className="text-xs text-slate-400 font-black uppercase tracking-widest leading-none">{character.name}</p>
+                {isSaving && <span className="text-[8px] font-bold text-emerald-500 animate-pulse uppercase flex items-center gap-1"><i className="fa-solid fa-cloud-arrow-up"></i> Saving</span>}
               </div>
-              <p className="text-base font-black text-white leading-tight uppercase tracking-tight">{profileClass}</p>
+              <p className="text-lg font-black text-white leading-tight uppercase tracking-tight">{profileClass}</p>
+              <p className="text-[9px] text-slate-500 font-bold">{character.status} • Age {character.age}</p>
             </div>
           </div>
           <div className="flex gap-2">
-            <button onClick={() => setShowInventory(!showInventory)} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all relative ${showInventory ? 'bg-blue-500 text-white scale-110 shadow-lg' : 'bg-slate-800/80 text-slate-400 hover:text-white'}`}>
-              <i className="fa-solid fa-briefcase"></i>
-              {inventory.length > 0 && !showInventory && <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 border-2 border-slate-900 rounded-full animate-bounce"></span>}
+            <button onClick={() => setShowInventory(!showInventory)} className={`relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${showInventory ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white scale-110 shadow-lg shadow-blue-500/30' : 'bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700'}`}>
+              <i className="fa-solid fa-briefcase text-lg"></i>
+              {inventory.length > 0 && !showInventory && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-slate-900 rounded-full flex items-center justify-center text-[9px] font-black text-white animate-bounce">{inventory.length}</span>
+              )}
             </button>
-            <button onClick={handleLogout} className="w-10 h-10 rounded-xl bg-slate-800/80 text-slate-400 hover:bg-red-500/20 hover:text-red-400 flex items-center justify-center transition-all">
-              <i className="fa-solid fa-sign-out-alt"></i>
+            <button onClick={handleLogout} className="w-12 h-12 rounded-2xl bg-slate-800/80 text-slate-400 hover:bg-red-500/20 hover:text-red-400 flex items-center justify-center transition-all">
+              <i className="fa-solid fa-sign-out-alt text-lg"></i>
             </button>
-            <div className="bg-slate-800/50 px-3 py-1 rounded-xl border border-white/5 flex flex-col items-center min-w-[48px]">
-              <span className="text-[9px] text-slate-500 font-black uppercase leading-none mt-0.5">Day</span>
-              <span className="text-sm font-black text-blue-400 leading-none">{stats.day}</span>
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-700/80 px-4 py-2 rounded-2xl border border-white/10 flex flex-col items-center min-w-[56px] shadow-lg">
+              <span className="text-[8px] text-slate-500 font-black uppercase leading-none">Day</span>
+              <span className="text-xl font-black text-blue-400 leading-none">{stats.day}</span>
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-3">
-          <StatBar label="සල්ලි" value={stats.money} max={10000} icon="fa-solid fa-wallet" color="text-green-400" />
-          <StatBar label="Stress" value={stats.stress} max={100} icon="fa-solid fa-brain" color="text-red-400" />
-          <StatBar label="පණ" value={stats.energy} max={100} icon="fa-solid fa-bolt-lightning" color="text-blue-400" />
-        </div>
-        <div className="grid grid-cols-3 gap-3 mt-3">
-          <StatBar label="Health" value={stats.health} max={100} icon="fa-solid fa-heart-pulse" color="text-pink-400" />
-          <StatBar label="Happiness" value={stats.happiness || 50} max={100} icon="fa-solid fa-face-smile" color="text-yellow-400" />
-          <div className="bg-slate-800/50 px-3 py-2 rounded-xl border border-white/5 flex flex-col">
-            <span className="text-[9px] text-slate-500 font-black uppercase leading-none">Visa Days</span>
-            <span className={`text-sm font-black leading-none mt-1 ${stats.visaDaysLeft < 30 ? 'text-red-400 animate-pulse' : 'text-blue-400'}`}>{stats.visaDaysLeft} days</span>
+        
+        {/* ENHANCED STAT BARS - Bigger & More Stylish */}
+        <div className="p-4 space-y-3">
+          {/* Top Row - Money, Stress, Energy */}
+          <div className="grid grid-cols-3 gap-3">
+            <StatBar label="සල්ලි" value={stats.money} max={10000} icon="fa-solid fa-wallet" color="text-emerald-400" size="md" />
+            <StatBar label="Stress" value={stats.stress} max={100} icon="fa-solid fa-brain" color="text-red-400" size="md" />
+            <StatBar label="පණ" value={stats.energy} max={100} icon="fa-solid fa-bolt-lightning" color="text-blue-400" size="md" />
+          </div>
+          
+          {/* Bottom Row - Health, Happiness, Visa */}
+          <div className="grid grid-cols-3 gap-3">
+            <StatBar label="Health" value={stats.health} max={100} icon="fa-solid fa-heart-pulse" color="text-pink-400" size="md" />
+            <StatBar label="Happiness" value={stats.happiness || 50} max={100} icon="fa-solid fa-face-smile" color="text-yellow-400" size="md" />
+            <div className={`relative p-3 rounded-2xl transition-all duration-300 ${
+              stats.visaDaysLeft < 14 ? 'bg-gradient-to-br from-red-950/80 to-red-900/60 border-2 border-red-500/40 animate-pulse' : 
+              stats.visaDaysLeft < 30 ? 'bg-gradient-to-br from-orange-950/60 to-orange-900/40 border-2 border-orange-500/30' :
+              'bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-white/10'
+            }`}>
+              <div className="flex items-center gap-2 mb-2">
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${stats.visaDaysLeft < 14 ? 'bg-red-500/30 text-red-400' : 'bg-blue-500/30 text-blue-400'}`}>
+                  <i className="fa-solid fa-passport text-sm"></i>
+                </div>
+                <span className="text-[10px] uppercase font-black tracking-widest text-slate-400">Visa Days</span>
+              </div>
+              <div className="flex items-end gap-1">
+                <span className={`text-2xl font-black ${stats.visaDaysLeft < 14 ? 'text-red-400 animate-pulse' : stats.visaDaysLeft < 30 ? 'text-orange-400' : 'text-blue-400'}`}>
+                  {stats.visaDaysLeft}
+                </span>
+                <span className="text-xs text-slate-500 font-bold mb-0.5">days</span>
+              </div>
+              {stats.visaDaysLeft < 14 && (
+                <div className="mt-2 flex items-center gap-1 text-red-400">
+                  <i className="fa-solid fa-triangle-exclamation text-xs animate-pulse"></i>
+                  <span className="text-[9px] font-black">Visa expiring soon!</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="flex-grow p-4 space-y-6 pb-28 overflow-y-auto custom-scrollbar relative z-10">
         <div className="relative w-full aspect-video bg-slate-900 rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl group">
-          {/* DEBUG: Show which mode is active */}
-          <div className={`absolute top-2 left-2 z-30 px-3 py-1 rounded-lg font-black text-xs ${gameSettings.storyMode === 'predefined' ? 'bg-green-500/90 text-white' : 'bg-purple-500/90 text-white'}`}>
-            {gameSettings.storyMode === 'predefined' ? '📚 LOCAL IMAGES' : '🤖 AI MODE'}
+          {/* Mode indicator on image */}
+          <div className={`absolute top-3 left-3 z-30 px-3 py-1.5 rounded-xl font-black text-xs flex items-center gap-2 backdrop-blur-md ${gameSettings.storyMode === 'predefined' ? 'bg-green-500/90 text-white' : 'bg-purple-500/90 text-white'}`}>
+            <i className={`fa-solid ${gameSettings.storyMode === 'predefined' ? 'fa-book' : 'fa-robot'}`}></i>
+            {gameSettings.storyMode === 'predefined' ? 'STORY MODE' : 'AI MODE'}
           </div>
           
           {sceneImage ? (
@@ -653,40 +746,50 @@ const App: React.FC = () => {
               onLoad={() => console.log('✅ Image loaded:', sceneImage)}
               onError={(e) => {
                 console.error('❌ Image failed to load:', sceneImage);
-                // Fallback to a default Melbourne image if comic generation fails
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=1024&h=768&fit=crop';
               }}
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center gap-3 animate-pulse">
-              <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin"></div>
-              <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Generating Comic Scene...</p>
+            <div className="w-full h-full flex flex-col items-center justify-center gap-3 animate-pulse bg-gradient-to-br from-slate-800 to-slate-900">
+              <div className="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin"></div>
+              <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Generating Scene...</p>
             </div>
           )}
           {isProcessing && <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center z-20"><div className="w-16 h-16 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin"></div></div>}
         </div>
 
-        <div className="bg-slate-900/40 p-8 rounded-[2.5rem] border border-white/5 backdrop-blur-md shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-1 h-full bg-blue-500 group-hover:h-1/2 transition-all duration-500"></div>
+        <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/40 p-8 rounded-[2.5rem] border border-white/10 backdrop-blur-md shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-orange-500 via-red-500 to-green-500 group-hover:h-1/2 transition-all duration-500"></div>
           <p className="sinhala text-xl leading-relaxed text-slate-100 font-medium"><TypewriterText text={currentScene?.story_text || ""} /></p>
         </div>
 
+        {/* Choices with enhanced styling */}
         <div className="grid gap-3">
           {currentScene?.choices.map((choice, idx) => {
              const hasRequired = !choice.required_item || inventory.includes(choice.required_item);
              return (
               <button key={choice.id} disabled={isProcessing || !hasRequired} onClick={() => handleChoice(choice)} className={`sinhala text-left p-5 rounded-[1.5rem] border transition-all transform active:scale-[0.98] group relative overflow-hidden
-                  ${!hasRequired ? 'opacity-40 grayscale cursor-not-allowed' : isProcessing ? 'opacity-50 cursor-wait' : 'bg-slate-900/60 border-white/5 hover:border-blue-500/40 hover:bg-slate-800/80 shadow-lg'}`}>
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/5 to-transparent rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-150"></div>
+                  ${!hasRequired ? 'opacity-40 grayscale cursor-not-allowed bg-slate-900/30' : isProcessing ? 'opacity-50 cursor-wait' : 'bg-gradient-to-r from-slate-900/80 to-slate-800/60 border-white/5 hover:border-blue-500/40 hover:from-slate-800/90 hover:to-slate-700/70 shadow-lg hover:shadow-blue-500/10'}`}>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150"></div>
                 <div className="flex items-start gap-5 relative z-10">
-                  <span className={`w-10 h-10 rounded-xl bg-slate-800 transition-all flex items-center justify-center text-slate-500 group-hover:bg-blue-500 group-hover:text-white font-black shrink-0 mt-0.5 ${choice.is_risky ? 'border-orange-500/40' : ''}`}>
-                    {choice.is_risky ? <i className="fa-solid fa-skull text-sm"></i> : idx + 1}
+                  <span className={`w-12 h-12 rounded-xl transition-all flex items-center justify-center font-black shrink-0 mt-0.5 text-lg ${
+                    choice.is_risky 
+                      ? 'bg-gradient-to-br from-orange-600 to-red-600 text-white border-2 border-orange-400/50' 
+                      : 'bg-slate-800 text-slate-500 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:to-blue-600 group-hover:text-white'
+                  }`}>
+                    {choice.is_risky ? <i className="fa-solid fa-skull"></i> : idx + 1}
                   </span>
                   <div className="flex flex-col flex-grow">
                     <span className="text-lg font-bold leading-tight group-hover:text-white transition-colors">{choice.text}</span>
                     {choice.required_item && (
-                      <span className={`text-[10px] font-black uppercase tracking-widest mt-1.5 flex items-center gap-2 ${hasRequired ? 'text-blue-400' : 'text-red-500'}`}>
-                        <i className={`fa-solid ${hasRequired ? 'fa-check' : 'fa-lock'} text-[8px]`}></i> Needs: {choice.required_item}
+                      <span className={`text-[10px] font-black uppercase tracking-widest mt-2 flex items-center gap-2 px-3 py-1 rounded-lg w-fit ${hasRequired ? 'bg-blue-500/20 text-blue-400' : 'bg-red-500/20 text-red-400'}`}>
+                        <i className={`fa-solid ${hasRequired ? 'fa-check-circle' : 'fa-lock'} text-[10px]`}></i> 
+                        {hasRequired ? 'Has' : 'Needs'}: {choice.required_item}
+                      </span>
+                    )}
+                    {choice.is_risky && (
+                      <span className="text-[10px] font-black uppercase tracking-widest mt-2 flex items-center gap-2 px-3 py-1 rounded-lg w-fit bg-orange-500/20 text-orange-400">
+                        <i className="fa-solid fa-triangle-exclamation"></i> RISKY CHOICE
                       </span>
                     )}
                   </div>
@@ -698,57 +801,125 @@ const App: React.FC = () => {
       </div>
       
       {showInventory && (
-        <div className="absolute inset-0 z-[100] bg-slate-950/80 backdrop-blur-xl p-4 pt-24 animate-in fade-in duration-300 flex items-center justify-center">
-          <div className="bg-slate-900/95 border border-white/10 rounded-[3rem] p-6 shadow-2xl w-full max-w-lg h-[85vh] flex flex-col relative overflow-hidden">
-             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 z-[100] bg-slate-950/90 backdrop-blur-xl p-4 pt-20 animate-in fade-in duration-300 flex items-center justify-center">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-white/10 rounded-[3rem] p-6 shadow-2xl w-full max-w-lg h-[90vh] flex flex-col relative overflow-hidden">
+            {/* Background glow */}
+            <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute -top-32 -left-32 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
+            
+            {/* Header */}
             <div className="flex justify-between items-center mb-6 relative z-10 px-2">
-              <h3 className="text-3xl font-black sinhala flex items-center gap-4 text-white">
-                <i className="fa-solid fa-box-open text-blue-500 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]"></i> මගේ බඩු
-              </h3>
-              <button onClick={() => { setShowInventory(false); setInventorySearch(""); }} className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-500 transition-colors">
-                <i className="fa-solid fa-times"></i>
+              <div>
+                <h3 className="text-3xl font-black sinhala flex items-center gap-4 text-white">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                    <i className="fa-solid fa-box-open text-2xl text-white"></i>
+                  </div>
+                  මගේ බඩු
+                </h3>
+                <p className="text-slate-500 text-xs mt-1 ml-[70px]">{inventory.length} items collected</p>
+              </div>
+              <button onClick={() => { setShowInventory(false); setInventorySearch(""); }} className="w-12 h-12 rounded-2xl bg-slate-800 hover:bg-red-500/20 hover:text-red-400 flex items-center justify-center text-slate-500 transition-all">
+                <i className="fa-solid fa-times text-lg"></i>
               </button>
             </div>
-            <div className="relative z-10 space-y-3 mb-6 px-2">
+            
+            {/* How Inventory Works - Info Box */}
+            <div className="relative z-10 mb-4 px-2">
+              <div className="bg-gradient-to-r from-amber-900/30 to-orange-900/30 border border-amber-500/30 rounded-2xl p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                    <i className="fa-solid fa-lightbulb text-amber-400"></i>
+                  </div>
+                  <div>
+                    <h4 className="text-amber-400 font-black text-sm mb-1">How to Use Items</h4>
+                    <p className="text-amber-200/70 text-xs leading-relaxed">
+                      Items unlock special choices in the story! 🔓 Look for choices marked with 
+                      <span className="text-blue-400 font-bold"> "Needs: [Item]"</span>. 
+                      Collect items by making good choices and exploring Melbourne!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Search & Filters */}
+            <div className="relative z-10 space-y-3 mb-4 px-2">
               <div className="relative">
                 <i className="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                <input type="text" placeholder="බඩු හොයන්න..." value={inventorySearch} onChange={(e) => setInventorySearch(e.target.value)} className="w-full bg-slate-800/50 border border-white/5 p-4 pl-12 rounded-2xl focus:outline-none focus:border-blue-500 transition-all font-bold text-sm sinhala placeholder:opacity-50" />
+                <input type="text" placeholder="බඩු හොයන්න..." value={inventorySearch} onChange={(e) => setInventorySearch(e.target.value)} className="w-full bg-slate-800/50 border-2 border-white/10 p-4 pl-12 rounded-2xl focus:outline-none focus:border-blue-500 transition-all font-bold text-sm sinhala placeholder:opacity-50" />
               </div>
-              <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar mask-gradient-right">
+              <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
                 {(['All', 'Essentials', 'Transport', 'Work', 'Documents'] as const).map(cat => (
-                  <button key={cat} onClick={() => setInventoryCategory(cat)} className={`whitespace-nowrap py-2 px-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all shrink-0 ${inventoryCategory === cat ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-800 text-slate-500 hover:bg-slate-700'}`}>
+                  <button key={cat} onClick={() => setInventoryCategory(cat)} className={`whitespace-nowrap py-2.5 px-4 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all shrink-0 ${inventoryCategory === cat ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-slate-800 text-slate-500 hover:bg-slate-700'}`}>
+                    {cat === 'Essentials' && '🎒 '}
+                    {cat === 'Transport' && '🚌 '}
+                    {cat === 'Work' && '💼 '}
+                    {cat === 'Documents' && '📄 '}
+                    {cat === 'All' && '📦 '}
                     {cat}
                   </button>
                 ))}
               </div>
               <div className="flex gap-2">
-                <button onClick={() => setInventorySort('newest')} className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${inventorySort === 'newest' ? 'bg-slate-100 text-slate-900 shadow-md' : 'bg-slate-800 text-slate-500'}`}><i className="fa-solid fa-clock-rotate-left mr-2"></i> Newest</button>
-                <button onClick={() => setInventorySort('alphabetical')} className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${inventorySort === 'alphabetical' ? 'bg-slate-100 text-slate-900 shadow-md' : 'bg-slate-800 text-slate-500'}`}><i className="fa-solid fa-sort-alpha-down mr-2"></i> A-Z</button>
+                <button onClick={() => setInventorySort('newest')} className={`flex-1 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${inventorySort === 'newest' ? 'bg-gradient-to-r from-slate-100 to-slate-200 text-slate-900 shadow-md' : 'bg-slate-800 text-slate-500 hover:bg-slate-700'}`}><i className="fa-solid fa-clock-rotate-left mr-2"></i> Newest</button>
+                <button onClick={() => setInventorySort('alphabetical')} className={`flex-1 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${inventorySort === 'alphabetical' ? 'bg-gradient-to-r from-slate-100 to-slate-200 text-slate-900 shadow-md' : 'bg-slate-800 text-slate-500 hover:bg-slate-700'}`}><i className="fa-solid fa-sort-alpha-down mr-2"></i> A-Z</button>
               </div>
             </div>
+            
+            {/* Item Grid */}
             <div className="flex-grow grid grid-cols-2 gap-4 overflow-y-auto pr-2 px-2 custom-scrollbar relative z-10 pb-6">
               {processedInventory.length === 0 ? (
-                <div className="col-span-2 flex flex-col items-center justify-center py-20 opacity-30 text-center">
-                  <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mb-4"><i className="fa-solid fa-ghost text-4xl"></i></div>
-                  <p className="sinhala text-xl font-black uppercase tracking-tighter">මුකුත් නෑ මචං</p>
+                <div className="col-span-2 flex flex-col items-center justify-center py-20 text-center">
+                  <div className="w-24 h-24 bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
+                    <i className="fa-solid fa-ghost text-5xl text-slate-600"></i>
+                  </div>
+                  <p className="sinhala text-xl font-black uppercase tracking-tighter text-slate-600">මුකුත් නෑ මචං</p>
+                  <p className="text-xs text-slate-700 mt-2">Make choices to collect items!</p>
                 </div>
               ) : (
                 processedInventory.map((item, idx) => {
                   const meta = getItemMetadata(item);
+                  const itemEffects = ITEM_EFFECTS[item];
                   return (
-                    <div key={idx} className="bg-slate-800/40 p-4 rounded-3xl border border-white/5 flex flex-col gap-3 hover:bg-slate-800 hover:border-blue-500/30 transition-all group animate-in zoom-in duration-300 relative overflow-hidden">
-                      <div className="absolute top-2 right-2 text-[7px] font-black uppercase tracking-tighter opacity-30">{meta.category}</div>
-                      <div className={`w-12 h-12 rounded-2xl ${meta.color}/10 flex items-center justify-center ${meta.color.replace('bg-', 'text-')} group-hover:scale-110 group-hover:${meta.color} group-hover:text-white transition-all shadow-xl`}>
-                        <i className={`fa-solid ${meta.icon} text-lg`}></i>
+                    <div key={idx} className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 p-4 rounded-3xl border-2 border-white/5 flex flex-col gap-3 hover:border-blue-500/40 hover:from-slate-800 hover:to-slate-700 transition-all group animate-in zoom-in duration-300 relative overflow-hidden">
+                      {/* Category tag */}
+                      <div className={`absolute top-2 right-2 text-[7px] font-black uppercase tracking-tighter px-2 py-0.5 rounded-full ${meta.color}/20 ${meta.color.replace('bg-', 'text-')}`}>
+                        {meta.category}
                       </div>
+                      
+                      {/* Item icon */}
+                      <div className={`w-14 h-14 rounded-2xl ${meta.color}/20 flex items-center justify-center ${meta.color.replace('bg-', 'text-')} group-hover:scale-110 group-hover:${meta.color} group-hover:text-white transition-all shadow-xl border-2 border-white/5`}>
+                        <i className={`fa-solid ${meta.icon} text-xl`}></i>
+                      </div>
+                      
+                      {/* Item name */}
                       <div className="flex flex-col">
-                        <span className="leading-tight text-slate-200 text-sm font-black sinhala">{item}</span>
-                        <div className="w-4 h-1 bg-white/10 rounded-full mt-2 group-hover:w-8 group-hover:bg-blue-500 transition-all"></div>
+                        <span className="leading-tight text-white text-sm font-black sinhala">{item}</span>
+                        
+                        {/* Item effect hint */}
+                        {itemEffects && (
+                          <div className="mt-2 text-[9px] text-slate-400 space-y-0.5">
+                            {itemEffects.energy && <span className="block"><i className="fa-solid fa-bolt text-blue-400 mr-1"></i>+{itemEffects.energy} Energy</span>}
+                            {itemEffects.stress && <span className="block"><i className="fa-solid fa-brain text-green-400 mr-1"></i>{itemEffects.stress} Stress</span>}
+                            {itemEffects.money && <span className="block"><i className="fa-solid fa-wallet text-emerald-400 mr-1"></i>+{itemEffects.money}$ potential</span>}
+                            {itemEffects.unlocks && <span className="block text-purple-400"><i className="fa-solid fa-key mr-1"></i>Unlocks: {itemEffects.unlocks}</span>}
+                          </div>
+                        )}
+                        
+                        <div className="w-6 h-1 bg-white/10 rounded-full mt-3 group-hover:w-full group-hover:bg-blue-500 transition-all"></div>
                       </div>
                     </div>
                   );
                 })
               )}
+            </div>
+            
+            {/* Footer tip */}
+            <div className="relative z-10 pt-4 border-t border-white/5 px-2">
+              <p className="text-[10px] text-slate-500 text-center">
+                <i className="fa-solid fa-info-circle mr-1"></i>
+                Items are automatically used when you select a choice that requires them
+              </p>
             </div>
           </div>
         </div>
