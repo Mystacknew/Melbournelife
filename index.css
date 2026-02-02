@@ -84,6 +84,20 @@
   animation: shake-intense 0.5s ease-in-out;
 }
 
+/* Slow Spin Animation */
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
 /* Radial Vignette */
 .bg-radial-vignette {
   background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);

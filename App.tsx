@@ -143,6 +143,26 @@ const App: React.FC = () => {
   // Survival Progress logic: Target Day 30 for "PR/Settlement"
   const progressionPercent = useMemo(() => Math.min(Math.round(((stats.day - 1) / 30) * 100), 100), [stats.day]);
 
+  // Chapter System - Story progression based on days
+  const CHAPTERS = [
+    { id: 1, name: 'The Arrival', days: [1, 7], description: 'First week in Melbourne', icon: '✈️', color: 'orange' },
+    { id: 2, name: 'Survival Mode', days: [8, 14], description: 'Finding your feet', icon: '🏃', color: 'red' },
+    { id: 3, name: 'The Grind', days: [15, 21], description: 'Work and hustle', icon: '💼', color: 'amber' },
+    { id: 4, name: 'Building Roots', days: [22, 28], description: 'Making connections', icon: '🏠', color: 'green' },
+    { id: 5, name: 'The Dream', days: [29, 90], description: 'Achieving your goals', icon: '🏆', color: 'cyan' }
+  ];
+  
+  const currentChapter = useMemo(() => {
+    return CHAPTERS.find(ch => stats.day >= ch.days[0] && stats.day <= ch.days[1]) || CHAPTERS[0];
+  }, [stats.day]);
+  
+  const chapterProgress = useMemo(() => {
+    const ch = currentChapter;
+    const daysInChapter = ch.days[1] - ch.days[0] + 1;
+    const dayInChapter = stats.day - ch.days[0] + 1;
+    return Math.round((dayInChapter / daysInChapter) * 100);
+  }, [stats.day, currentChapter]);
+
   // Check for stored API key on mount
   useEffect(() => {
     const storedKey = localStorage.getItem('mlife_gemini_key');
@@ -606,30 +626,42 @@ const App: React.FC = () => {
       {/* STICKY HEADER WITH BREADCRUMBS & STATS */}
       <div className="sticky top-0 z-40 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-900/80 backdrop-blur-xl border-b border-white/5 shadow-2xl">
         
-        {/* Breadcrumb Navigation */}
+        {/* Chapter-Based Breadcrumb Navigation */}
         <div className="px-4 py-2 border-b border-white/5 bg-slate-950/50">
           <div className="flex items-center gap-2 text-[10px] font-bold">
             <span className="text-slate-500 flex items-center gap-1">
               <i className="fa-solid fa-home"></i> Melbourne
             </span>
             <i className="fa-solid fa-chevron-right text-slate-700 text-[8px]"></i>
-            <span className="text-slate-500">Day {stats.day}</span>
-            <i className="fa-solid fa-chevron-right text-slate-700 text-[8px]"></i>
-            <span className={`px-2 py-0.5 rounded-full ${
-              stats.day <= 7 ? 'bg-blue-500/20 text-blue-400' :
-              stats.day <= 21 ? 'bg-purple-500/20 text-purple-400' :
-              stats.day <= 60 ? 'bg-orange-500/20 text-orange-400' :
-              'bg-green-500/20 text-green-400'
+            <span className={`px-2 py-0.5 rounded-full flex items-center gap-1 ${
+              currentChapter.color === 'orange' ? 'bg-orange-500/20 text-orange-400' :
+              currentChapter.color === 'red' ? 'bg-red-500/20 text-red-400' :
+              currentChapter.color === 'amber' ? 'bg-amber-500/20 text-amber-400' :
+              currentChapter.color === 'green' ? 'bg-green-500/20 text-green-400' :
+              'bg-cyan-500/20 text-cyan-400'
             }`}>
-              {stats.day <= 7 ? '📦 Settling In' : 
-               stats.day <= 21 ? '💼 Finding Work' : 
-               stats.day <= 60 ? '🏠 Establishing Life' : 
-               '🎯 Path to PR'}
+              <span>{currentChapter.icon}</span>
+              <span>Ch.{currentChapter.id}: {currentChapter.name}</span>
             </span>
+            <i className="fa-solid fa-chevron-right text-slate-700 text-[8px]"></i>
+            <span className="text-slate-400">Day {stats.day}</span>
             <div className="flex-grow"></div>
             <span className={`px-2 py-0.5 rounded-full ${gameSettings.storyMode === 'ai-creative' ? 'bg-purple-500/20 text-purple-400' : 'bg-green-500/20 text-green-400'}`}>
               {gameSettings.storyMode === 'ai-creative' ? '🤖 AI Mode' : '📖 Story Mode'}
             </span>
+          </div>
+          {/* Chapter Progress Bar */}
+          <div className="mt-2 flex items-center gap-2">
+            <div className="flex-grow h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div className={`h-full transition-all duration-500 ${
+                currentChapter.color === 'orange' ? 'bg-gradient-to-r from-orange-600 to-orange-400' :
+                currentChapter.color === 'red' ? 'bg-gradient-to-r from-red-600 to-red-400' :
+                currentChapter.color === 'amber' ? 'bg-gradient-to-r from-amber-600 to-amber-400' :
+                currentChapter.color === 'green' ? 'bg-gradient-to-r from-green-600 to-green-400' :
+                'bg-gradient-to-r from-cyan-600 to-cyan-400'
+              }`} style={{ width: `${chapterProgress}%` }}></div>
+            </div>
+            <span className="text-[9px] text-slate-600 font-bold min-w-[50px] text-right">{chapterProgress}% done</span>
           </div>
         </div>
         
@@ -672,14 +704,23 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="flex gap-2">
+            {/* Manual Save Button */}
+            <button 
+              onClick={() => currentScene && saveGame(stats, inventory, history, currentScene)} 
+              disabled={isSaving}
+              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${isSaving ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800/80 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10'}`}
+              title="Save Game"
+            >
+              <i className={`fa-solid ${isSaving ? 'fa-spinner fa-spin' : 'fa-floppy-disk'} text-lg`}></i>
+            </button>
             <button onClick={() => setShowInventory(!showInventory)} className={`relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${showInventory ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white scale-110 shadow-lg shadow-blue-500/30' : 'bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700'}`}>
               <i className="fa-solid fa-briefcase text-lg"></i>
               {inventory.length > 0 && !showInventory && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-slate-900 rounded-full flex items-center justify-center text-[9px] font-black text-white animate-bounce">{inventory.length}</span>
               )}
             </button>
-            <button onClick={handleLogout} className="w-12 h-12 rounded-2xl bg-slate-800/80 text-slate-400 hover:bg-red-500/20 hover:text-red-400 flex items-center justify-center transition-all">
-              <i className="fa-solid fa-sign-out-alt text-lg"></i>
+            <button onClick={() => setScreen('start')} className="w-12 h-12 rounded-2xl bg-slate-800/80 text-slate-400 hover:bg-slate-700 hover:text-white flex items-center justify-center transition-all" title="Main Menu">
+              <i className="fa-solid fa-home text-lg"></i>
             </button>
             <div className="bg-gradient-to-br from-slate-800/80 to-slate-700/80 px-4 py-2 rounded-2xl border border-white/10 flex flex-col items-center min-w-[56px] shadow-lg">
               <span className="text-[8px] text-slate-500 font-black uppercase leading-none">Day</span>
@@ -928,144 +969,257 @@ const App: React.FC = () => {
   );
 
   const renderAuth = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center bg-gradient-to-br from-slate-950 via-red-950/20 to-slate-950 overflow-hidden relative">
-      {/* Sri Lankan Flag Colors Background */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-amber-600 to-orange-500 blur-3xl"></div>
-        <div className="absolute top-1/3 left-0 w-full h-1/3 bg-gradient-to-r from-red-900 to-red-700 blur-3xl"></div>
-        <div className="absolute top-2/3 left-0 w-full h-1/3 bg-gradient-to-r from-green-800 to-green-600 blur-3xl"></div>
+    <div className="flex flex-col items-center min-h-screen bg-slate-950 overflow-hidden relative">
+      {/* Comic-style background pattern */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(251,146,60,0.1)_0%,transparent_50%)]"></div>
+        <div className="absolute top-0 left-0 w-full h-full opacity-5 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.4%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')]"></div>
+        {/* Sri Lankan Flag gradient blur */}
+        <div className="absolute top-0 left-0 w-2/3 h-1/3 bg-gradient-to-br from-amber-600/20 to-transparent blur-3xl"></div>
+        <div className="absolute top-1/3 right-0 w-2/3 h-1/3 bg-gradient-to-bl from-red-800/20 to-transparent blur-3xl"></div>
+        <div className="absolute bottom-0 left-1/4 w-2/3 h-1/3 bg-gradient-to-t from-green-700/20 to-transparent blur-3xl"></div>
       </div>
-      
-      <div className="mb-12 relative animate-in fade-in zoom-in duration-1000 z-10">
-        <div className="absolute -inset-20 bg-gradient-to-r from-orange-500/20 via-red-700/20 to-green-600/20 blur-[120px] rounded-full animate-pulse"></div>
-        <div className="flex items-center justify-center gap-4 mb-6">
-          <span className="text-6xl animate-bounce" style={{animationDelay: '0ms'}}>🇱🇰</span>
-          <i className="fa-solid fa-plane text-5xl text-blue-400 animate-pulse"></i>
-          <span className="text-6xl animate-bounce" style={{animationDelay: '500ms'}}>🇦🇺</span>
-        </div>
-        <h1 className="text-6xl md:text-7xl font-black mb-3 tracking-tighter bg-gradient-to-r from-orange-500 via-red-600 to-green-600 bg-clip-text text-transparent relative z-10 drop-shadow-2xl">MELBOURNE<br/>LIFE</h1>
-        <p className="text-3xl sinhala font-black bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent relative z-10">මෙල්බර්න් ජීවිතය</p>
-        <p className="text-slate-400 text-xs mt-2 font-bold tracking-wider">🎮 Immigration Survival Simulator</p>
+
+      {/* Comic-style Header Banner */}
+      <div className="w-full bg-gradient-to-r from-amber-600 via-red-700 to-green-700 py-2 text-center relative z-10">
+        <p className="text-white text-xs font-black tracking-[0.3em] uppercase">🎮 Sri Lanka's #1 Immigration Survival Adventure Game 🎮</p>
       </div>
-      
-      <div className="w-full max-w-sm bg-gradient-to-br from-slate-900/80 to-slate-800/80 border border-white/10 p-10 rounded-[3rem] shadow-2xl relative z-20 backdrop-blur-xl">
-        <p className="sinhala font-bold mb-8 text-slate-300 text-lg">ගමන පටන් ගන්න ඉස්සෙල්ලා ලොග් වෙලා ඉමු මචං! 🚀</p>
-        <button onClick={handleGoogleLogin} className="group w-full flex items-center justify-center gap-4 bg-gradient-to-r from-white to-slate-100 text-slate-950 py-6 rounded-3xl font-black text-xl hover:scale-105 transition-all shadow-2xl hover:shadow-orange-500/30">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-7 h-7" alt="G" /> Login with Google
-        </button>
-        <div className="mt-8 flex flex-col gap-4">
-           <button onClick={() => setScreen('start')} className="w-full py-5 bg-gradient-to-r from-slate-800 to-slate-700 text-slate-200 rounded-3xl font-black hover:scale-105 transition-all flex items-center justify-center gap-2 border border-white/5 shadow-xl">
-             <i className="fa-solid fa-user-secret"></i> Play as Guest
-           </button>
-           <p className="text-[10px] text-slate-500 uppercase tracking-widest leading-relaxed">
-             <i className="fa-solid fa-info-circle mr-1"></i>
-             Guest saves stored locally only
-           </p>
+
+      {/* Main Content */}
+      <div className="flex-grow flex flex-col items-center justify-center p-6 w-full max-w-4xl relative z-10">
+        
+        {/* Comic-style Logo Section */}
+        <div className="relative mb-8 animate-in zoom-in duration-700">
+          {/* Starburst background */}
+          <div className="absolute -inset-16 opacity-20">
+            <svg viewBox="0 0 200 200" className="w-full h-full animate-spin-slow">
+              <polygon points="100,10 120,80 190,80 140,120 160,190 100,150 40,190 60,120 10,80 80,80" fill="url(#starGrad)" />
+              <defs>
+                <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#f97316" />
+                  <stop offset="50%" stopColor="#dc2626" />
+                  <stop offset="100%" stopColor="#16a34a" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          
+          {/* Flags with plane */}
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="text-5xl md:text-6xl drop-shadow-2xl animate-bounce" style={{animationDuration: '2s'}}>🇱🇰</span>
+            <div className="relative">
+              <i className="fa-solid fa-plane text-4xl md:text-5xl text-cyan-400 animate-pulse drop-shadow-[0_0_20px_rgba(34,211,238,0.5)]"></i>
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"></div>
+            </div>
+            <span className="text-5xl md:text-6xl drop-shadow-2xl animate-bounce" style={{animationDelay: '0.5s', animationDuration: '2s'}}>🇦🇺</span>
+          </div>
+          
+          {/* Main Title - Comic style */}
+          <div className="relative">
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-center leading-none">
+              <span className="block bg-gradient-to-r from-orange-400 via-red-500 to-green-500 bg-clip-text text-transparent drop-shadow-2xl" style={{textShadow: '4px 4px 0px rgba(0,0,0,0.3)'}}>
+                MELBOURNE
+              </span>
+              <span className="block bg-gradient-to-r from-green-400 via-emerald-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl" style={{textShadow: '4px 4px 0px rgba(0,0,0,0.3)'}}>
+                LIFE
+              </span>
+            </h1>
+            {/* Comic speech bubble style subtitle */}
+            <div className="absolute -right-4 md:-right-8 top-0 bg-white text-slate-900 px-3 py-1 rounded-lg text-xs font-black transform rotate-12 shadow-lg border-2 border-slate-900">
+              NEW!
+            </div>
+          </div>
+          
+          {/* Sinhala subtitle */}
+          <p className="text-3xl md:text-4xl sinhala font-black text-center mt-2 bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
+            මෙල්බර්න් ජීවිතය
+          </p>
+          <p className="text-slate-400 text-sm md:text-base mt-2 font-bold tracking-wider text-center">
+            🎭 Interactive Comic Adventure • Immigration Survival Simulator
+          </p>
         </div>
+
+        {/* Features showcase - Comic panel style */}
+        <div className="w-full max-w-3xl mb-8 grid grid-cols-3 gap-2 md:gap-4">
+          <div className="bg-slate-900/80 border-2 border-orange-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all">
+            <div className="text-3xl md:text-4xl mb-2">📖</div>
+            <p className="text-orange-400 font-black text-xs md:text-sm">CHAPTERS</p>
+            <p className="text-slate-500 text-[10px] md:text-xs mt-1">Story-driven gameplay</p>
+          </div>
+          <div className="bg-slate-900/80 border-2 border-red-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all">
+            <div className="text-3xl md:text-4xl mb-2">🎯</div>
+            <p className="text-red-400 font-black text-xs md:text-sm">CHOICES</p>
+            <p className="text-slate-500 text-[10px] md:text-xs mt-1">Your decisions matter</p>
+          </div>
+          <div className="bg-slate-900/80 border-2 border-green-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all">
+            <div className="text-3xl md:text-4xl mb-2">🏆</div>
+            <p className="text-green-400 font-black text-xs md:text-sm">VICTORY</p>
+            <p className="text-slate-500 text-[10px] md:text-xs mt-1">Achieve your dreams</p>
+          </div>
+        </div>
+
+        {/* Login Card - Comic panel style */}
+        <div className="w-full max-w-md bg-gradient-to-br from-slate-900 to-slate-800 border-4 border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+          {/* Corner decoration */}
+          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-orange-500/20 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-green-500/20 to-transparent"></div>
+          
+          <h2 className="text-xl md:text-2xl font-black text-center mb-6 text-white">
+            <i className="fa-solid fa-gamepad mr-2 text-cyan-400"></i>START YOUR JOURNEY
+          </h2>
+          
+          {/* Google Login */}
+          <button onClick={handleGoogleLogin} className="group w-full flex items-center justify-center gap-4 bg-white hover:bg-slate-100 text-slate-900 py-4 md:py-5 rounded-2xl font-black text-lg md:text-xl transition-all shadow-xl hover:shadow-white/20 hover:scale-[1.02] active:scale-[0.98] mb-4">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-6 h-6 md:w-7 md:h-7" alt="G" />
+            <span>Continue with Google</span>
+          </button>
+          
+          {/* Divider */}
+          <div className="flex items-center gap-4 my-5">
+            <div className="flex-grow h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <span className="text-slate-500 text-xs font-bold uppercase">or</span>
+            <div className="flex-grow h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          </div>
+          
+          {/* Guest Mode */}
+          <button onClick={() => setScreen('start')} className="w-full py-4 md:py-5 bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white rounded-2xl font-black text-base md:text-lg transition-all flex items-center justify-center gap-3 border-2 border-white/10 hover:border-white/20">
+            <i className="fa-solid fa-user-secret text-slate-400"></i>
+            <span>Play as Guest</span>
+          </button>
+          
+          <p className="text-[10px] md:text-xs text-slate-500 text-center mt-4 leading-relaxed">
+            <i className="fa-solid fa-cloud mr-1"></i>Google login syncs saves across devices<br/>
+            <i className="fa-solid fa-laptop mr-1"></i>Guest saves stored locally only
+          </p>
+        </div>
+
+        {/* Chapter preview */}
+        <div className="w-full max-w-3xl mt-8">
+          <h3 className="text-center text-slate-500 font-black text-xs uppercase tracking-widest mb-4">📚 Story Chapters</h3>
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 custom-scrollbar">
+            {['Ch.1: Arrival', 'Ch.2: Survival', 'Ch.3: Work Life', 'Ch.4: Building Dreams', 'Ch.5: Victory'].map((ch, i) => (
+              <div key={i} className={`flex-shrink-0 px-4 py-2 rounded-xl border-2 text-xs font-bold ${i === 0 ? 'bg-orange-500/20 border-orange-500/40 text-orange-400' : 'bg-slate-800/50 border-slate-700 text-slate-500'}`}>
+                {ch}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="w-full py-4 text-center border-t border-white/5 relative z-10">
+        <p className="text-slate-600 text-xs">Made with ❤️ for Sri Lankan immigrants • v2.0</p>
       </div>
     </div>
   );
 
   const renderStart = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center bg-gradient-to-br from-slate-950 via-red-950/20 to-slate-950 relative overflow-hidden">
-      {/* Sri Lankan Flag Colors Background Animation */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-amber-600 to-orange-500 blur-3xl"></div>
-        <div className="absolute top-1/3 left-0 w-full h-1/3 bg-gradient-to-r from-red-900 to-red-700 blur-3xl"></div>
-        <div className="absolute top-2/3 left-0 w-full h-1/3 bg-gradient-to-r from-green-800 to-green-600 blur-3xl"></div>
+    <div className="flex flex-col items-center min-h-screen p-6 text-center bg-slate-950 relative overflow-hidden">
+      {/* Subtle background */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.15)_0%,transparent_40%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(22,163,74,0.15)_0%,transparent_40%)]"></div>
+      </div>
+
+      {/* Header */}
+      <div className="w-full bg-gradient-to-r from-slate-800/50 via-slate-700/50 to-slate-800/50 py-4 mb-8 border-b border-white/5">
+        <div className="flex items-center justify-center gap-3">
+          <span className="text-3xl">🇱🇰</span>
+          <i className="fa-solid fa-plane text-2xl text-cyan-400"></i>
+          <span className="text-3xl">🇦🇺</span>
+        </div>
+        <h1 className="text-3xl font-black bg-gradient-to-r from-orange-400 via-red-500 to-green-500 bg-clip-text text-transparent mt-2">MELBOURNE LIFE</h1>
+      </div>
+
+      {/* Player Status */}
+      <div className="bg-gradient-to-r from-slate-900/80 to-slate-800/80 px-6 py-3 rounded-2xl border border-white/10 mb-6 flex items-center gap-3 backdrop-blur-xl">
+        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span className="text-slate-200 font-bold">{session ? session.user.user_metadata?.full_name?.split(' ')[0] : 'Guest'}</span>
+        {session && <span className="text-slate-500 text-xs">☁️ Synced</span>}
+        {!session && <span className="text-slate-500 text-xs">💻 Local</span>}
       </div>
 
       {/* Main Content */}
-      <div className="mb-12 relative z-10">
-         <div className="absolute -inset-10 bg-gradient-to-r from-orange-500/30 via-red-700/30 to-green-600/30 blur-[100px] rounded-full animate-pulse"></div>
-         <div className="flex items-center justify-center gap-4 mb-4">
-           <span className="text-5xl">🇱🇰</span>
-           <i className="fa-solid fa-plane text-4xl text-blue-400 animate-bounce"></i>
-           <span className="text-5xl">🇦🇺</span>
-         </div>
-         <h1 className="text-7xl md:text-8xl font-black mb-3 tracking-tighter bg-gradient-to-r from-orange-500 via-red-600 to-green-600 bg-clip-text text-transparent relative z-10 drop-shadow-2xl">MELBOURNE LIFE</h1>
-         <p className="text-4xl sinhala font-black bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent relative z-10">මෙල්බර්න් ජීවිතය</p>
-         <p className="text-slate-400 text-sm mt-3 font-bold tracking-wider">Sri Lankan Immigration Simulator</p>
-      </div>
-
-      {/* How to Play Section */}
-      <div className="w-full max-w-2xl mb-8 relative z-10">
-        <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl rounded-3xl border border-white/10 p-6 shadow-2xl">
-          <h3 className="text-xl font-black text-amber-400 mb-4 flex items-center justify-center gap-2">
-            <i className="fa-solid fa-gamepad"></i> HOW TO PLAY
+      <div className="w-full max-w-2xl relative z-10 flex-grow flex flex-col">
+        
+        {/* How to Play - Clean Card */}
+        <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl border border-white/10 p-6 mb-6 shadow-2xl">
+          <h3 className="text-lg font-black text-white mb-5 flex items-center justify-center gap-2">
+            <i className="fa-solid fa-gamepad text-amber-400"></i> HOW TO PLAY
           </h3>
-          <div className="grid md:grid-cols-3 gap-4 text-left">
-            <div className="flex gap-3 items-start">
-              <div className="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0">
-                <i className="fa-solid fa-user text-orange-400"></i>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-slate-800/50 rounded-2xl p-4 border border-white/5 hover:border-orange-500/30 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 border border-orange-500/30 flex items-center justify-center mx-auto mb-3">
+                <i className="fa-solid fa-user text-orange-400 text-lg"></i>
               </div>
-              <div>
-                <p className="text-white font-bold text-sm mb-1">Create Character</p>
-                <p className="text-slate-400 text-xs">Choose your background and class</p>
-              </div>
+              <p className="text-white font-bold text-sm mb-1">1. Create Profile</p>
+              <p className="text-slate-500 text-xs">Choose name, age & immigrant class</p>
             </div>
-            <div className="flex gap-3 items-start">
-              <div className="w-10 h-10 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center flex-shrink-0">
-                <i className="fa-solid fa-book-open text-red-400"></i>
+            <div className="bg-slate-800/50 rounded-2xl p-4 border border-white/5 hover:border-red-500/30 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 flex items-center justify-center mx-auto mb-3">
+                <i className="fa-solid fa-book-open text-red-400 text-lg"></i>
               </div>
-              <div>
-                <p className="text-white font-bold text-sm mb-1">Make Choices</p>
-                <p className="text-slate-400 text-xs">Navigate life in Melbourne wisely</p>
-              </div>
+              <p className="text-white font-bold text-sm mb-1">2. Make Choices</p>
+              <p className="text-slate-500 text-xs">Navigate scenarios & manage resources</p>
             </div>
-            <div className="flex gap-3 items-start">
-              <div className="w-10 h-10 rounded-xl bg-green-500/20 border border-green-500/30 flex items-center justify-center flex-shrink-0">
-                <i className="fa-solid fa-trophy text-green-400"></i>
+            <div className="bg-slate-800/50 rounded-2xl p-4 border border-white/5 hover:border-green-500/30 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/30 flex items-center justify-center mx-auto mb-3">
+                <i className="fa-solid fa-trophy text-green-400 text-lg"></i>
               </div>
-              <div>
-                <p className="text-white font-bold text-sm mb-1">Survive & Thrive</p>
-                <p className="text-slate-400 text-xs">Reach 30 days for PR settlement!</p>
-              </div>
+              <p className="text-white font-bold text-sm mb-1">3. Achieve Goals</p>
+              <p className="text-slate-500 text-xs">Survive 90 days to win PR!</p>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-white/5">
-            <p className="text-xs text-slate-500 text-center">
-              <i className="fa-solid fa-info-circle mr-1"></i>
-              Manage money, stress, energy & health • Complete 90 visa days • Find work, housing & friends
-            </p>
+        </div>
+
+        {/* Stats to Manage */}
+        <div className="bg-slate-900/40 backdrop-blur-sm rounded-2xl border border-white/5 p-4 mb-6">
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-3">⚡ Manage These Stats</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            <span className="px-3 py-1.5 bg-green-500/10 text-green-400 rounded-full text-xs font-bold">💵 Money</span>
+            <span className="px-3 py-1.5 bg-red-500/10 text-red-400 rounded-full text-xs font-bold">😰 Stress</span>
+            <span className="px-3 py-1.5 bg-yellow-500/10 text-yellow-400 rounded-full text-xs font-bold">⚡ Energy</span>
+            <span className="px-3 py-1.5 bg-pink-500/10 text-pink-400 rounded-full text-xs font-bold">❤️ Health</span>
+            <span className="px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold">🏠 Housing</span>
+            <span className="px-3 py-1.5 bg-purple-500/10 text-purple-400 rounded-full text-xs font-bold">👥 Social</span>
           </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3 mt-auto">
+          {hasExistingSave && (
+            <button onClick={loadGame} className="w-full py-5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-2xl font-black text-xl transition-all shadow-xl hover:shadow-emerald-500/30 flex items-center justify-center gap-3">
+              <i className="fa-solid fa-play"></i> CONTINUE JOURNEY
+            </button>
+          )}
+
+          <button onClick={() => setScreen('register')} className="w-full py-5 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 hover:from-orange-400 hover:via-red-500 hover:to-green-500 text-white rounded-2xl font-black text-xl transition-all shadow-xl hover:shadow-orange-500/30 flex items-center justify-center gap-3">
+            <i className="fa-solid fa-plane-departure"></i> {hasExistingSave ? 'NEW JOURNEY' : 'START ADVENTURE'}
+          </button>
+
+          {hasExistingSave && (
+            <button onClick={async () => {
+              if (confirm('Delete saved game? This cannot be undone!')) {
+                if (session) {
+                  await supabase.from('saves').delete().eq('user_id', session.user.id);
+                }
+                localStorage.removeItem('mlife_guest_save');
+                setHasExistingSave(false);
+                resetGame();
+              }
+            }} className="text-red-500/70 hover:text-red-400 font-bold text-xs uppercase tracking-wider py-2 transition-colors">
+              <i className="fa-solid fa-trash mr-2"></i>Delete Saved Game
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col gap-4 animate-in fade-in duration-700 w-full max-w-sm relative z-10">
-        <div className="bg-gradient-to-r from-slate-900/60 via-red-900/40 to-slate-900/60 px-8 py-4 rounded-full border border-white/10 backdrop-blur-md text-slate-300 font-bold flex items-center justify-center gap-3 shadow-xl">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> 
-            {session ? session.user.user_metadata?.full_name?.split(' ')[0] : 'Guest Mode'}
-        </div>
-        
-        {hasExistingSave && (
-          <button onClick={loadGame} className="w-full py-6 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-[2.5rem] font-black text-2xl hover:scale-105 shadow-2xl flex items-center justify-center gap-4 transition-all hover:shadow-emerald-500/50">
-            <i className="fa-solid fa-play"></i> CONTINUE JOURNEY
-          </button>
-        )}
-
-        <button onClick={() => setScreen('register')} className="w-full py-6 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 text-white rounded-[2.5rem] font-black text-2xl hover:scale-105 shadow-2xl transition-all hover:shadow-orange-500/50">
-           <i className="fa-solid fa-plane-departure mr-2"></i>{hasExistingSave ? 'NEW JOURNEY' : "START ADVENTURE 🇦🇺"}
-        </button>
-        
-        {hasExistingSave && (
-          <button onClick={async () => {
-            if (confirm('Delete saved game? This cannot be undone!')) {
-              if (session) {
-                await supabase.from('saves').delete().eq('user_id', session.user.id);
-              }
-              localStorage.removeItem('mlife_guest_save');
-              setHasExistingSave(false);
-              resetGame();
-            }
-          }} className="text-red-500 font-black hover:text-red-400 transition-colors uppercase tracking-widest text-xs mt-2 hover:scale-105">
-            <i className="fa-solid fa-trash mr-2"></i>DELETE SAVED GAME
-          </button>
-        )}
-        
-        {session && <button onClick={handleLogout} className="text-slate-600 font-black hover:text-red-500 transition-colors uppercase tracking-widest text-xs mt-4">LOGOUT</button>}
-        {!session && <button onClick={() => setScreen('auth')} className="text-slate-600 font-black hover:text-blue-500 transition-colors uppercase tracking-widest text-xs mt-4">BACK TO LOGIN</button>}
+      {/* Footer */}
+      <div className="mt-6 flex flex-col items-center gap-3">
+        {session && <button onClick={handleLogout} className="text-slate-600 hover:text-red-500 font-bold text-xs uppercase tracking-wider transition-colors">Logout</button>}
+        {!session && <button onClick={() => setScreen('auth')} className="text-slate-500 hover:text-cyan-400 font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-2">
+          <i className="fa-solid fa-arrow-left"></i> Back to Login
+        </button>}
       </div>
     </div>
   );
@@ -1366,80 +1520,102 @@ const App: React.FC = () => {
   );
 
   const renderRegister = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-6 animate-in zoom-in duration-500 bg-gradient-to-br from-slate-950 via-red-950/20 to-slate-950 relative overflow-hidden">
-      {/* Sri Lankan Flag Colors Background */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-amber-600 to-orange-500 blur-3xl"></div>
-        <div className="absolute top-1/3 left-0 w-full h-1/3 bg-gradient-to-r from-red-900 to-red-700 blur-3xl"></div>
-        <div className="absolute top-2/3 left-0 w-full h-1/3 bg-gradient-to-r from-green-800 to-green-600 blur-3xl"></div>
+    <div className="flex flex-col items-center min-h-screen p-4 md:p-6 bg-slate-950 relative overflow-hidden">
+      {/* Subtle professional background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(100,116,139,0.1)_0%,transparent_50%)]"></div>
+        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[radial-gradient(circle_at_30%_100%,rgba(59,130,246,0.05)_0%,transparent_50%)]"></div>
       </div>
 
-      <div className="w-full max-w-md bg-gradient-to-br from-slate-900/80 to-slate-800/80 border border-white/10 p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] shadow-2xl relative backdrop-blur-xl z-10 touch-manipulation">
-        {/* Mobile Improvement #1: Larger touch-friendly icon */}
-        <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-orange-500 via-red-600 to-green-600 rounded-full border-4 md:border-8 border-slate-950 flex items-center justify-center text-4xl md:text-5xl shadow-2xl text-white animate-bounce" style={{animationDuration: '2s'}}><i className="fa-solid fa-passport"></i></div>
-        <h2 className="text-3xl md:text-4xl font-black mb-6 md:mb-10 sinhala text-center pt-8 md:pt-10 tracking-tight bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">ප්‍රොෆයිල් එක (Profile)</h2>
-        {/* Mobile Improvement #2: Optimized spacing and touch targets (min 44px) */}
-        <div className="space-y-5 md:space-y-8">
+      {/* Header */}
+      <div className="w-full max-w-md relative z-10 mb-6 mt-4">
+        <button onClick={() => setScreen('start')} className="text-slate-500 hover:text-slate-300 font-bold text-sm transition-all flex items-center gap-2 mb-4">
+          <i className="fa-solid fa-arrow-left"></i> Back
+        </button>
+        <div className="text-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/10 shadow-xl">
+            <i className="fa-solid fa-passport text-2xl text-cyan-400"></i>
+          </div>
+          <h1 className="text-2xl font-black text-white mb-1">Create Profile</h1>
+          <p className="text-slate-500 text-sm">Set up your immigrant character</p>
+        </div>
+      </div>
+
+      {/* Form Card */}
+      <div className="w-full max-w-md bg-slate-900/80 border border-white/10 rounded-3xl p-6 shadow-2xl relative z-10 backdrop-blur-xl">
+        <div className="space-y-5">
+          {/* Name Field */}
           <div>
-            <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest sinhala flex items-center gap-2">
-              <i className="fa-solid fa-user text-orange-500"></i>නම (First Name)
+            <label className="block text-xs uppercase text-slate-500 font-bold mb-2 tracking-wider">
+              <i className="fa-solid fa-user mr-2 text-cyan-500"></i>First Name
             </label>
             <input 
               type="text" 
               value={character.name} 
               onChange={e => setCharacter({...character, name: e.target.value})} 
-              className="w-full bg-slate-800/60 border-2 border-white/10 p-4 md:p-6 rounded-2xl md:rounded-3xl focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 font-black text-base md:text-lg placeholder:text-slate-600 transition-all touch-manipulation" 
-              placeholder="Ex: Pathum" 
+              className="w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 font-bold text-white placeholder:text-slate-600 transition-all" 
+              placeholder="Enter your name" 
             />
           </div>
-          <div className="grid grid-cols-2 gap-4 md:gap-6">
+
+          {/* Age & Gender */}
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest sinhala flex items-center gap-2">
-                <i className="fa-solid fa-calendar text-red-500"></i>වයස (Age)
+              <label className="block text-xs uppercase text-slate-500 font-bold mb-2 tracking-wider">
+                <i className="fa-solid fa-calendar mr-2 text-purple-500"></i>Age
               </label>
               <input 
                 type="number" 
                 value={character.age} 
                 onChange={e => setCharacter({...character, age: parseInt(e.target.value) || 0})} 
-                className="w-full bg-slate-800/60 border-2 border-white/10 p-4 md:p-6 rounded-2xl md:rounded-3xl focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 font-black text-base md:text-lg transition-all touch-manipulation" 
+                className="w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 font-bold text-white transition-all" 
               />
             </div>
             <div>
-              <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest sinhala flex items-center gap-2">
-                <i className="fa-solid fa-venus-mars text-green-500"></i>Gender
+              <label className="block text-xs uppercase text-slate-500 font-bold mb-2 tracking-wider">
+                <i className="fa-solid fa-venus-mars mr-2 text-pink-500"></i>Gender
               </label>
               <select 
                 value={character.gender} 
                 onChange={e => setCharacter({...character, gender: e.target.value as Gender})} 
-                className="w-full bg-slate-800/60 border-2 border-white/10 p-4 md:p-6 rounded-2xl md:rounded-3xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 font-black text-base md:text-lg appearance-none cursor-pointer transition-all touch-manipulation"
+                className="w-full bg-slate-800/60 border border-slate-700 hover:border-slate-600 p-4 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/30 font-bold text-white appearance-none cursor-pointer transition-all"
               >
                 <option value="Male">♂ Male</option>
                 <option value="Female">♀ Female</option>
               </select>
             </div>
           </div>
+
+          {/* Status Selection */}
           <div>
-            <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest sinhala flex items-center gap-2">
-              <i className="fa-solid fa-heart text-pink-500"></i>Status
+            <label className="block text-xs uppercase text-slate-500 font-bold mb-2 tracking-wider">
+              <i className="fa-solid fa-heart mr-2 text-red-500"></i>Relationship Status
             </label>
-            {/* Mobile Improvement #3: Larger tap targets with visual feedback */}
-            <div className="grid grid-cols-3 gap-2 md:gap-3">
+            <div className="grid grid-cols-3 gap-2">
               {(['Single', 'Couple', 'With Kids'] as RelationshipStatus[]).map(s => (
                 <button 
                   key={s} 
                   onClick={() => setCharacter({...character, status: s})} 
-                  className={`py-4 md:py-5 rounded-2xl md:rounded-3xl border-2 text-[9px] md:text-[10px] font-black transition-all active:scale-95 touch-manipulation ${character.status === s ? 'bg-gradient-to-br from-orange-500 to-red-600 border-orange-400 text-white shadow-lg shadow-orange-500/30' : 'bg-slate-800/40 border-white/10 text-slate-500 hover:border-white/20'}`}
+                  className={`py-3 rounded-xl border text-xs font-bold transition-all ${character.status === s 
+                    ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300' 
+                    : 'bg-slate-800/40 border-slate-700 text-slate-500 hover:border-slate-600 hover:text-slate-400'}`}
                 >
-                  {s.toUpperCase()}
+                  {s === 'Single' && '👤 '}
+                  {s === 'Couple' && '👫 '}
+                  {s === 'With Kids' && '👨‍👩‍👧 '}
+                  {s}
                 </button>
               ))}
             </div>
           </div>
-          
-          {/* AI Mode Toggle - Mobile Improvement #4: Visual feedback on tap */}
-          <div className="border-t border-white/10 pt-5 md:pt-6">
-            <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest flex items-center gap-2">
-              <i className="fa-solid fa-palette text-blue-500"></i>Game Mode
+
+          {/* Divider */}
+          <div className="border-t border-slate-800 my-2"></div>
+
+          {/* Game Mode Selection */}
+          <div>
+            <label className="block text-xs uppercase text-slate-500 font-bold mb-3 tracking-wider">
+              <i className="fa-solid fa-gamepad mr-2 text-amber-500"></i>Story Mode
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button 
@@ -1447,54 +1623,69 @@ const App: React.FC = () => {
                   setUseAI(false); 
                   localStorage.removeItem('mlife_gemini_key'); 
                   setGameSettings(prev => ({ ...prev, storyMode: 'predefined' }));
-                  console.log('🔧 Switched to PREDEFINED mode');
                 }} 
-                className={`py-4 md:py-5 rounded-2xl md:rounded-3xl border-2 text-[9px] md:text-[10px] font-black transition-all active:scale-95 touch-manipulation ${!useAI ? 'bg-gradient-to-br from-green-600 to-green-700 border-green-400 text-white shadow-lg shadow-green-500/30' : 'bg-slate-800/40 border-white/10 text-slate-500 hover:border-white/20'}`}
+                className={`p-4 rounded-xl border text-center transition-all ${!useAI 
+                  ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400' 
+                  : 'bg-slate-800/40 border-slate-700 text-slate-500 hover:border-slate-600'}`}
               >
-                <i className="fa-solid fa-book mr-1 md:mr-2"></i>PRE-DEFINED<br className="md:hidden" /><span className="hidden md:inline"> </span>STORIES
+                <i className="fa-solid fa-book text-lg mb-2 block"></i>
+                <span className="text-xs font-bold block">Classic Mode</span>
+                <span className="text-[10px] text-slate-500 block mt-1">Pre-written stories</span>
               </button>
               <button 
                 onClick={() => { 
                   setUseAI(true); 
                   setShowApiSettings(true); 
                   setGameSettings(prev => ({ ...prev, storyMode: 'ai-creative' }));
-                  console.log('🤖 Switched to AI CREATIVE mode');
                 }} 
-                className={`py-4 md:py-5 rounded-2xl md:rounded-3xl border-2 text-[9px] md:text-[10px] font-black transition-all active:scale-95 touch-manipulation ${useAI ? 'bg-gradient-to-br from-purple-600 to-purple-700 border-purple-400 text-white shadow-lg shadow-purple-500/30' : 'bg-slate-800/40 border-white/10 text-slate-500 hover:border-white/20'}`}
+                className={`p-4 rounded-xl border text-center transition-all ${useAI 
+                  ? 'bg-purple-500/10 border-purple-500/40 text-purple-400' 
+                  : 'bg-slate-800/40 border-slate-700 text-slate-500 hover:border-slate-600'}`}
               >
-                <i className="fa-solid fa-robot mr-1 md:mr-2"></i>AI CREATIVE<br className="md:hidden" /><span className="hidden md:inline"> </span>MODE
+                <i className="fa-solid fa-robot text-lg mb-2 block"></i>
+                <span className="text-xs font-bold block">AI Creative</span>
+                <span className="text-[10px] text-slate-500 block mt-1">Gemini-powered</span>
               </button>
             </div>
+            
             {useAI && (
-              <div className="mt-4 space-y-3">
-                <div className="bg-purple-900/20 border border-purple-500/20 p-4 rounded-2xl text-xs">
-                  <i className="fa-solid fa-info-circle mr-2 text-purple-400"></i>
-                  <span className="text-slate-300">AI mode uses Gemini API for unlimited creative scenarios</span>
+              <div className="mt-3 p-3 bg-purple-900/10 border border-purple-500/20 rounded-xl">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <i className={`fa-solid ${apiKey ? 'fa-check-circle text-green-400' : 'fa-key text-purple-400'}`}></i>
+                    <span className="text-xs text-slate-400">{apiKey ? 'API Key configured' : 'API Key required'}</span>
+                  </div>
+                  <button onClick={() => setShowApiSettings(true)} className="text-xs text-purple-400 hover:text-purple-300 font-bold">
+                    {apiKey ? 'Change' : 'Setup'}
+                  </button>
                 </div>
-                <button onClick={() => setShowApiSettings(true)} className="w-full py-4 bg-purple-600/20 border border-purple-500/30 hover:bg-purple-600/30 rounded-2xl font-bold text-sm text-purple-300 transition-all">
-                  <i className="fa-solid fa-key mr-2"></i>{apiKey ? 'Update API Key' : 'Enter API Key'}
-                </button>
               </div>
             )}
           </div>
-
-          {/* Mobile Improvement #5: Fixed bottom button on mobile for easy thumb access */}
-          <button 
-            disabled={!character.name || character.name.length < 2 || (useAI && !apiKey)} 
-            onClick={() => setScreen('class-select')} 
-            className="w-full py-5 md:py-7 bg-gradient-to-r from-orange-600 via-red-600 to-green-600 hover:from-orange-500 hover:via-red-500 hover:to-green-500 disabled:opacity-20 disabled:grayscale rounded-2xl md:rounded-[2.5rem] font-black text-lg md:text-xl shadow-2xl text-white transition-all active:scale-95 touch-manipulation mt-6"
-          >
-            <i className="fa-solid fa-arrow-right mr-2"></i>
-            {useAI && !apiKey ? 'ENTER API KEY FIRST' : 'NEXT: PICK SOCIAL CLASS'}
-          </button>
-          
-          <button 
-            onClick={() => setScreen('start')} 
-            className="w-full mt-4 text-slate-500 hover:text-slate-300 font-bold text-sm transition-all active:scale-95 touch-manipulation"
-          >
-            <i className="fa-solid fa-arrow-left mr-2"></i>Back to Start
-          </button>
         </div>
+
+        {/* Continue Button */}
+        <button 
+          disabled={!character.name || character.name.length < 2 || (useAI && !apiKey)} 
+          onClick={() => setScreen('class-select')} 
+          className="w-full py-4 mt-6 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-30 disabled:grayscale rounded-xl font-bold text-white shadow-xl transition-all flex items-center justify-center gap-2"
+        >
+          Continue <i className="fa-solid fa-arrow-right"></i>
+        </button>
+        
+        {useAI && !apiKey && (
+          <p className="text-xs text-center text-slate-500 mt-3">
+            <i className="fa-solid fa-info-circle mr-1"></i>Enter API key to continue with AI mode
+          </p>
+        )}
+      </div>
+
+      {/* Step Indicator */}
+      <div className="mt-6 flex items-center gap-2 relative z-10">
+        <div className="w-8 h-1 bg-cyan-500 rounded-full"></div>
+        <div className="w-8 h-1 bg-slate-700 rounded-full"></div>
+        <div className="w-8 h-1 bg-slate-700 rounded-full"></div>
+        <span className="ml-3 text-xs text-slate-600">Step 1 of 3</span>
       </div>
 
       {/* API Settings Modal */}
@@ -1527,24 +1718,44 @@ const App: React.FC = () => {
                 <i className="fa-solid fa-shield-halved mr-1"></i>Privacy Notice
               </button>
             </div>
-            <div className="flex gap-3 mt-6">
-              <button onClick={() => { setShowApiSettings(false); if (!apiKey) setUseAI(false); }} className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl font-bold">
-                Cancel
-              </button>
-              <button 
-                onClick={() => {
-                  if (apiKey.trim()) {
-                    localStorage.setItem('mlife_gemini_key', apiKey.trim());
-                    setGameSettings(prev => ({ ...prev, storyMode: 'ai-creative', geminiApiKey: apiKey.trim() }));
-                    setShowApiSettings(false);
-                    console.log('💾 API key saved, AI mode activated');
-                  }
-                }} 
-                disabled={!apiKey.trim()}
-                className="flex-1 py-3 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 rounded-xl font-bold text-white"
-              >
-                Save Key
-              </button>
+            <div className="flex flex-col gap-3 mt-6">
+              {/* Delete API Key Button */}
+              {apiKey && (
+                <button 
+                  onClick={() => {
+                    if (confirm('Delete your API key from this browser? You can re-enter it anytime.')) {
+                      localStorage.removeItem('mlife_gemini_key');
+                      setApiKey('');
+                      setUseAI(false);
+                      setGameSettings(prev => ({ ...prev, storyMode: 'predefined', geminiApiKey: undefined }));
+                      setShowApiSettings(false);
+                      console.log('🗑️ API key deleted');
+                    }
+                  }}
+                  className="w-full py-3 bg-red-900/30 hover:bg-red-800/50 border border-red-500/30 hover:border-red-400/50 rounded-xl font-bold text-red-400 hover:text-red-300 transition-all flex items-center justify-center gap-2"
+                >
+                  <i className="fa-solid fa-trash"></i> Delete API Key from Browser
+                </button>
+              )}
+              <div className="flex gap-3">
+                <button onClick={() => { setShowApiSettings(false); if (!apiKey) setUseAI(false); }} className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl font-bold">
+                  Cancel
+                </button>
+                <button 
+                  onClick={() => {
+                    if (apiKey.trim()) {
+                      localStorage.setItem('mlife_gemini_key', apiKey.trim());
+                      setGameSettings(prev => ({ ...prev, storyMode: 'ai-creative', geminiApiKey: apiKey.trim() }));
+                      setShowApiSettings(false);
+                      console.log('💾 API key saved, AI mode activated');
+                    }
+                  }} 
+                  disabled={!apiKey.trim()}
+                  className="flex-1 py-3 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 rounded-xl font-bold text-white"
+                >
+                  Save Key
+                </button>
+              </div>
             </div>
           </div>
         </div>
