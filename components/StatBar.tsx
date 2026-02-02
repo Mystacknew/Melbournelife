@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 
 interface StatBarProps {
   label: string;
@@ -12,6 +12,7 @@ interface StatBarProps {
 }
 
 export const StatBar: React.FC<StatBarProps> = ({ label, value, max, icon, color, showEmoji = true, size = 'md' }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
   
   const isEnergy = label.includes('පණ') || label.includes('Energy');
@@ -56,7 +57,7 @@ export const StatBar: React.FC<StatBarProps> = ({ label, value, max, icon, color
     return 'from-blue-600 via-blue-500 to-cyan-400';
   };
 
-  // Get status emoji
+  // Get status emoji with more variety
   const getStatusEmoji = () => {
     if (!showEmoji) return null;
     if (isMoney) return value > 5000 ? '💰' : value > 1000 ? '💵' : value < 200 ? '😰' : '💸';
@@ -67,44 +68,77 @@ export const StatBar: React.FC<StatBarProps> = ({ label, value, max, icon, color
     return null;
   };
 
+  // Get tooltip text
+  const getTooltipText = () => {
+    if (isMoney) return `${value > 5000 ? 'Great savings!' : value > 1000 ? 'Manageable funds' : 'Low on cash - find work!'}`;
+    if (isEnergy) return `${isCritical ? 'Critical! Rest immediately!' : isGood ? 'Full of energy!' : 'Moderate energy levels'}`;
+    if (isStress) return `${isCritical ? 'Danger! Take a break!' : isGood ? 'Calm and relaxed' : 'Some stress, manageable'}`;
+    if (isHealth) return `${isCritical ? 'See a doctor ASAP!' : isGood ? 'Healthy and strong!' : 'Health is okay'}`;
+    if (isHappiness) return `${isCritical ? 'Very unhappy - do something fun!' : isGood ? 'Living the dream!' : 'Content but could be better'}`;
+    return '';
+  };
+
   const sizeClasses = {
-    sm: { container: 'p-2', bar: 'h-1.5', text: 'text-[9px]', value: 'text-sm', icon: 'text-xs' },
-    md: { container: 'p-3', bar: 'h-2.5', text: 'text-[10px]', value: 'text-lg', icon: 'text-sm' },
-    lg: { container: 'p-4', bar: 'h-3.5', text: 'text-xs', value: 'text-2xl', icon: 'text-base' }
+    sm: { container: 'p-2', bar: 'h-1.5', text: 'text-[9px]', value: 'text-sm', icon: 'text-xs', iconBox: 'w-6 h-6' },
+    md: { container: 'p-3', bar: 'h-2.5', text: 'text-[10px]', value: 'text-lg', icon: 'text-sm', iconBox: 'w-8 h-8' },
+    lg: { container: 'p-4', bar: 'h-3.5', text: 'text-xs', value: 'text-2xl', icon: 'text-base', iconBox: 'w-10 h-10' }
   };
   
   const s = sizeClasses[size];
 
   return (
-    <div className={`relative ${s.container} rounded-2xl transition-all duration-300 ${
-      isCritical ? 'bg-gradient-to-br from-red-950/80 to-red-900/60 border-2 border-red-500/40 animate-pulse shadow-lg shadow-red-500/20' : 
-      isGood ? 'bg-gradient-to-br from-slate-800/90 to-slate-700/70 border-2 border-emerald-500/30 shadow-lg shadow-emerald-500/10' :
-      'bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-white/10 hover:border-white/20'
-    }`}>
+    <div 
+      className={`relative ${s.container} rounded-2xl transition-all duration-500 cursor-default group ${
+        isCritical 
+          ? 'bg-gradient-to-br from-red-950/80 to-red-900/60 border-2 border-red-500/40 shadow-lg shadow-red-500/20' 
+          : isGood 
+            ? 'bg-gradient-to-br from-slate-800/90 to-slate-700/70 border-2 border-emerald-500/30 shadow-lg shadow-emerald-500/10' 
+            : 'bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-blue-500/5'
+      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* Glow effect for critical/good states */}
       {(isCritical || isGood) && (
-        <div className={`absolute inset-0 rounded-2xl opacity-20 blur-md ${isCritical ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
+        <div className={`absolute inset-0 rounded-2xl opacity-20 blur-md transition-opacity duration-300 ${
+          isCritical ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'
+        }`}></div>
       )}
+
+      {/* Hover glow effect */}
+      <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 blur-md transition-opacity duration-300 bg-blue-500`}></div>
+      
+      {/* Tooltip on hover */}
+      <div className={`absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-2 bg-slate-900 border border-white/20 rounded-xl text-xs text-white font-medium whitespace-nowrap z-50 shadow-xl transition-all duration-300 ${
+        isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
+      }`}>
+        {getTooltipText()}
+        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+      </div>
       
       <div className="relative z-10">
         {/* Header with icon and label */}
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-              isCritical ? 'bg-red-500/30 text-red-400' : 
-              isGood ? 'bg-emerald-500/30 text-emerald-400' :
-              'bg-slate-700/50'
+            <div className={`${s.iconBox} rounded-xl flex items-center justify-center transition-all duration-300 ${
+              isCritical 
+                ? 'bg-red-500/30 text-red-400 animate-pulse' 
+                : isGood 
+                  ? 'bg-emerald-500/30 text-emerald-400' 
+                  : 'bg-slate-700/50 group-hover:bg-slate-600/50'
             } ${color}`}>
-              <i className={`${icon} ${s.icon}`}></i>
+              <i className={`${icon} ${s.icon} transition-transform duration-300 group-hover:scale-110`}></i>
             </div>
-            <span className={`${s.text} uppercase font-black tracking-widest sinhala ${
-              isCritical ? 'text-red-400' : 'text-slate-400'
+            <span className={`${s.text} uppercase font-black tracking-widest sinhala transition-colors duration-300 ${
+              isCritical ? 'text-red-400' : 'text-slate-400 group-hover:text-slate-300'
             }`}>
               {label}
             </span>
           </div>
           {showEmoji && (
-            <span className="text-lg animate-bounce" style={{ animationDuration: '2s' }}>
+            <span className={`text-lg transition-transform duration-300 ${
+              isCritical ? 'animate-bounce' : 'group-hover:scale-125 group-hover:-rotate-12'
+            }`} style={{ animationDuration: '1s' }}>
               {getStatusEmoji()}
             </span>
           )}
@@ -112,50 +146,56 @@ export const StatBar: React.FC<StatBarProps> = ({ label, value, max, icon, color
         
         {/* Value display */}
         <div className="flex items-end justify-between mb-2">
-          <span className={`${s.value} font-black ${
+          <span className={`${s.value} font-black transition-all duration-500 ${
             isCritical ? 'text-red-400' : isGood ? 'text-emerald-400' : 'text-white'
           }`}>
             {isMoney ? `$${Math.round(value).toLocaleString()}` : Math.round(value)}
           </span>
           {!isMoney && (
-            <span className={`${s.text} text-slate-500 font-bold`}>/ {max}</span>
+            <span className={`${s.text} text-slate-500 font-bold transition-colors duration-300 group-hover:text-slate-400`}>/ {max}</span>
           )}
         </div>
         
-        {/* Progress bar */}
-        <div className={`${s.bar} w-full bg-slate-900/80 rounded-full overflow-hidden border ${
-          isCritical ? 'border-red-500/50' : 'border-slate-700/50'
-        } shadow-inner`}>
+        {/* Progress bar container */}
+        <div className={`${s.bar} w-full bg-slate-900/80 rounded-full overflow-hidden border transition-all duration-300 ${
+          isCritical ? 'border-red-500/50 shadow-inner shadow-red-500/20' : 'border-slate-700/50 group-hover:border-slate-600/50'
+        }`}>
+          {/* Progress bar fill */}
           <div 
-            className={`h-full transition-all duration-700 ease-out bg-gradient-to-r ${getBarGradient()} relative`}
+            className={`h-full transition-all duration-700 ease-out bg-gradient-to-r ${getBarGradient()} relative ${
+              isCritical ? 'animate-pulse' : ''
+            }`}
             style={{ width: `${percentage}%` }}
           >
             {/* Animated shine effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+            
+            {/* Right edge glow */}
+            <div className="absolute right-0 top-0 bottom-0 w-2 bg-gradient-to-r from-transparent to-white/30 blur-sm"></div>
           </div>
         </div>
         
-        {/* Warning messages */}
+        {/* Warning messages with enhanced animation */}
         {isEnergy && isCritical && (
-          <div className="mt-2 flex items-center gap-1 text-red-400">
+          <div className="mt-2 flex items-center gap-1 text-red-400 animate-fade-in-up">
             <i className="fa-solid fa-triangle-exclamation text-xs animate-pulse"></i>
             <span className="text-[10px] font-black sinhala">පණ නෑ මචං! Rest needed!</span>
           </div>
         )}
         {isStress && isCritical && (
-          <div className="mt-2 flex items-center gap-1 text-orange-400">
+          <div className="mt-2 flex items-center gap-1 text-orange-400 animate-fade-in-up">
             <i className="fa-solid fa-brain text-xs animate-pulse"></i>
             <span className="text-[10px] font-black sinhala">මොලේ කුරුවල්! Take a break!</span>
           </div>
         )}
         {isHealth && isCritical && (
-          <div className="mt-2 flex items-center gap-1 text-red-400">
+          <div className="mt-2 flex items-center gap-1 text-red-400 animate-fade-in-up">
             <i className="fa-solid fa-heart-crack text-xs animate-pulse"></i>
             <span className="text-[10px] font-black">Health critical! See a doctor!</span>
           </div>
         )}
         {isHappiness && isCritical && (
-          <div className="mt-2 flex items-center gap-1 text-blue-400">
+          <div className="mt-2 flex items-center gap-1 text-blue-400 animate-fade-in-up">
             <i className="fa-solid fa-face-sad-tear text-xs animate-pulse"></i>
             <span className="text-[10px] font-black sinhala">දුක වැඩියි! Need fun activities!</span>
           </div>
@@ -173,13 +213,15 @@ export const CompactStat: React.FC<{
   color: string;
   isCritical?: boolean;
 }> = ({ label, value, icon, color, isCritical }) => (
-  <div className={`flex items-center gap-2 px-3 py-2 rounded-xl ${
-    isCritical ? 'bg-red-500/20 border border-red-500/40 animate-pulse' : 'bg-slate-800/50 border border-white/5'
+  <div className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 group cursor-default ${
+    isCritical 
+      ? 'bg-red-500/20 border border-red-500/40 animate-pulse shadow-lg shadow-red-500/10' 
+      : 'bg-slate-800/50 border border-white/5 hover:bg-slate-700/50 hover:border-white/10 hover:shadow-lg hover:shadow-blue-500/5'
   }`}>
-    <i className={`${icon} ${isCritical ? 'text-red-400' : color}`}></i>
+    <i className={`${icon} ${isCritical ? 'text-red-400' : color} transition-transform duration-300 group-hover:scale-110`}></i>
     <div className="flex flex-col">
-      <span className="text-[8px] text-slate-500 uppercase font-black leading-none">{label}</span>
-      <span className={`text-sm font-black leading-none ${isCritical ? 'text-red-400' : 'text-white'}`}>{value}</span>
+      <span className="text-[8px] text-slate-500 uppercase font-black leading-none transition-colors duration-300 group-hover:text-slate-400">{label}</span>
+      <span className={`text-sm font-black leading-none transition-colors duration-300 ${isCritical ? 'text-red-400' : 'text-white'}`}>{value}</span>
     </div>
   </div>
 );
