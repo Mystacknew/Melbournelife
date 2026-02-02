@@ -1211,24 +1211,25 @@ const App: React.FC = () => {
       {/* Main Content */}
       <div className="w-full max-w-2xl relative z-10 flex-grow flex flex-col">
         
-        {/* 25 CHAPTERS - 5 PHASES Breakdown */}
+        {/* 25 CHAPTERS - 5 PHASES Breakdown - SINHALA SLANG VERSION 🇱🇰 */}
         <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl border border-white/10 p-6 mb-6 shadow-2xl">
-          <h3 className="text-lg font-black text-white mb-5 flex items-center justify-center gap-2">
-            <i className="fa-solid fa-book text-amber-400"></i> 25 CHAPTERS • 5 PHASES
+          <h3 className="text-lg font-black text-white mb-5 flex items-center justify-center gap-2 sinhala">
+            <i className="fa-solid fa-book text-amber-400"></i> චැප්ටර් 25ක් • Phase 5ක්
           </h3>
+          <p className="text-slate-500 text-xs text-center mb-4">"Melbourne Dream" කියලා හීන මවන්නේ ඇයි? 🤡</p>
           
-          {/* Phase Cards */}
+          {/* Phase Cards - Sinhala Slang */}
           <div className="space-y-3 mb-6">
             {/* Phase 1 */}
             <div className="bg-gradient-to-r from-orange-500/10 to-orange-600/5 rounded-xl p-3 border border-orange-500/20">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">✈️</span>
                 <div>
-                  <span className="text-orange-400 font-black text-sm">PHASE 1: ARRIVAL</span>
-                  <span className="text-slate-500 text-xs ml-2">(Days 1-7 • Ch 1-3)</span>
+                  <span className="text-orange-400 font-black text-sm sinhala">PHASE 1: ලෑන්ඩ් වෙනවා</span>
+                  <span className="text-slate-500 text-xs ml-2">(දවස් 1-7 • Ch 1-3)</span>
                 </div>
               </div>
-              <p className="text-slate-400 text-xs">Airport landing, first night struggles, reality check on prices 💸</p>
+              <p className="text-slate-400 text-xs sinhala">Airport එකේ බැග් හොයනවා, පළවෙනි රෑ කොහෙ නිදාගන්නද? 💸 මේ rate මොකක්ද? 😱</p>
             </div>
             
             {/* Phase 2 */}
@@ -1236,11 +1237,11 @@ const App: React.FC = () => {
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🚨</span>
                 <div>
-                  <span className="text-red-400 font-black text-sm">PHASE 2: SURVIVAL MODE</span>
-                  <span className="text-slate-500 text-xs ml-2">(Days 8-21 • Ch 4-8)</span>
+                  <span className="text-red-400 font-black text-sm sinhala">PHASE 2: කට්ට කන කාලේ</span>
+                  <span className="text-slate-500 text-xs ml-2">(දවස් 8-21 • Ch 4-8)</span>
                 </div>
               </div>
-              <p className="text-slate-400 text-xs">Accommodation hunt, contractor scams, visa agent tricks, first paycheck 💰</p>
+              <p className="text-slate-400 text-xs sinhala">ගෙයක් හොයනවා (ලොකු ජෝක්), Contractor scam 🕵️, Visa agent උඹලා regional යන්න 😤, පළමු pay එක 💰</p>
             </div>
             
             {/* Phase 3 */}
@@ -1248,11 +1249,11 @@ const App: React.FC = () => {
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">💼</span>
                 <div>
-                  <span className="text-amber-400 font-black text-sm">PHASE 3: THE GRIND</span>
-                  <span className="text-slate-500 text-xs ml-2">(Days 22-42 • Ch 9-14)</span>
+                  <span className="text-amber-400 font-black text-sm sinhala">PHASE 3: ගේම දෙනවා</span>
+                  <span className="text-slate-500 text-xs ml-2">(දවස් 22-42 • Ch 9-14)</span>
                 </div>
               </div>
-              <p className="text-slate-400 text-xs">Cleaning scam, car scam, love traps, job brokers, COE cancellation ⚠️</p>
+              <p className="text-slate-400 text-xs sinhala">Cleaning contractor pay නැහැ 🧹, Dandenong car scam 🚗, Gold Digger GF/BF 💔, Job broker $500 ගහනවා 🤝</p>
             </div>
             
             {/* Phase 4 */}
@@ -1260,11 +1261,11 @@ const App: React.FC = () => {
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🏗️</span>
                 <div>
-                  <span className="text-blue-400 font-black text-sm">PHASE 4: BUILDING ROOTS</span>
-                  <span className="text-slate-500 text-xs ml-2">(Days 43-63 • Ch 15-19)</span>
+                  <span className="text-blue-400 font-black text-sm sinhala">PHASE 4: ටිකක් හදා ගන්නවා</span>
+                  <span className="text-slate-500 text-xs ml-2">(දවස් 43-63 • Ch 15-19)</span>
                 </div>
               </div>
-              <p className="text-slate-400 text-xs">Real friends, savings game, visa extension, skill recognition, tax time 📊</p>
+              <p className="text-slate-400 text-xs sinhala">Real යාළුවො vs Fake යාළුවො 👥, සල්ලි ගොඩ දාමු 🏦, Visa extend, Skill Assessment, Tax return 📊</p>
             </div>
             
             {/* Phase 5 */}
@@ -1272,51 +1273,51 @@ const App: React.FC = () => {
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-2xl">🏆</span>
                 <div>
-                  <span className="text-green-400 font-black text-sm">PHASE 5: PATH TO PR</span>
-                  <span className="text-slate-500 text-xs ml-2">(Days 64-90 • Ch 20-25)</span>
+                  <span className="text-green-400 font-black text-sm sinhala">PHASE 5: PR ගේමට</span>
+                  <span className="text-slate-500 text-xs ml-2">(දවස් 64-90 • Ch 20-25)</span>
                 </div>
               </div>
-              <p className="text-slate-400 text-xs">Points check, health check, police clearance, EOI, ITA, PR GRANTED! 🎉</p>
+              <p className="text-slate-400 text-xs sinhala">Points ඇතිද? ✅ Medical test 🏥, Police clearance 👮, EOI දානවා ⏳, ITA එනවා 📨, PR ජය! 🎉</p>
             </div>
           </div>
         </div>
 
-        {/* Quick Tips - No Spoilers */}
+        {/* Quick Tips - SINHALA SLANG VERSION 🔥 */}
         <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl border border-white/10 p-6 mb-6 shadow-2xl">
-          <h3 className="text-lg font-black text-white mb-4 flex items-center justify-center gap-2">
-            <i className="fa-solid fa-lightbulb text-yellow-400"></i> SURVIVAL TIPS
+          <h3 className="text-lg font-black text-white mb-4 flex items-center justify-center gap-2 sinhala">
+            <i className="fa-solid fa-lightbulb text-yellow-400"></i> බේරෙන්න Tips
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-white/5">
               <span className="text-2xl">🎯</span>
-              <p className="text-white font-bold text-xs mt-2">Every choice matters</p>
+              <p className="text-white font-bold text-xs mt-2 sinhala">හොඳට බලලා click කරන්න</p>
             </div>
             <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-white/5">
-              <span className="text-2xl">⚠️</span>
-              <p className="text-white font-bold text-xs mt-2">Not everyone is helpful</p>
+              <span className="text-2xl">🐍</span>
+              <p className="text-white font-bold text-xs mt-2 sinhala">හැමෝම "අයියා" නෙවේ</p>
             </div>
             <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-white/5">
-              <span className="text-2xl">⚖️</span>
-              <p className="text-white font-bold text-xs mt-2">Balance is key</p>
+              <span className="text-2xl">💸</span>
+              <p className="text-white font-bold text-xs mt-2 sinhala">සල්ලි නැතුව මැරෙනවා</p>
             </div>
             <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-white/5">
               <span className="text-2xl">🧠</span>
-              <p className="text-white font-bold text-xs mt-2">Think before acting</p>
+              <p className="text-white font-bold text-xs mt-2 sinhala">හිතලා action එකක් ගන්න</p>
             </div>
           </div>
         </div>
 
-        {/* Stats to Manage */}
+        {/* Stats to Manage - SINHALA */}
         <div className="bg-slate-900/40 backdrop-blur-sm rounded-2xl border border-white/5 p-4 mb-6">
-          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-3">⚡ Manage These Stats to Survive</p>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-3 sinhala">⚡ මේවා balance කරන්න ඕනේ - නැත්තං මැරෙනවා</p>
           <div className="flex flex-wrap justify-center gap-2">
-            <span className="px-3 py-1.5 bg-green-500/10 text-green-400 rounded-full text-xs font-bold">💵 Money ≥$8000</span>
-            <span className="px-3 py-1.5 bg-red-500/10 text-red-400 rounded-full text-xs font-bold">😰 Stress &lt;80</span>
-            <span className="px-3 py-1.5 bg-yellow-500/10 text-yellow-400 rounded-full text-xs font-bold">⚡ Energy &gt;0</span>
-            <span className="px-3 py-1.5 bg-pink-500/10 text-pink-400 rounded-full text-xs font-bold">❤️ Health ≥40</span>
-            <span className="px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold">📅 90 Days</span>
+            <span className="px-3 py-1.5 bg-green-500/10 text-green-400 rounded-full text-xs font-bold sinhala">💵 සල්ලි ≥$8000</span>
+            <span className="px-3 py-1.5 bg-red-500/10 text-red-400 rounded-full text-xs font-bold sinhala">😰 Stress &lt;80</span>
+            <span className="px-3 py-1.5 bg-yellow-500/10 text-yellow-400 rounded-full text-xs font-bold sinhala">⚡ Energy &gt;0</span>
+            <span className="px-3 py-1.5 bg-pink-500/10 text-pink-400 rounded-full text-xs font-bold sinhala">❤️ Health ≥40</span>
+            <span className="px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold sinhala">📅 දවස් 90</span>
           </div>
-          <p className="text-center text-slate-600 text-[10px] mt-3">⚠️ PR requires: Day 90 + $8000 savings + &lt;80 stress + 40+ health</p>
+          <p className="text-center text-slate-600 text-[10px] mt-3 sinhala">⚠️ PR ගන්න: දවස් 90 + $8000 savings + Stress &lt;80 + Health 40+</p>
         </div>
 
         {/* Action Buttons */}
@@ -1348,20 +1349,36 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="mt-6 flex flex-col items-center gap-3">
-        {session && <button onClick={handleLogout} className="text-slate-600 hover:text-red-500 font-bold text-xs uppercase tracking-wider transition-colors">Logout</button>}
-        {!session && (
+      {/* Footer - BACK TO LOGIN FIX */}
+      <div className="mt-6 flex flex-col items-center gap-4">
+        {session && (
           <button 
-            onClick={() => {
-              console.log('Back to Login clicked');
-              setScreen('auth');
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleLogout();
             }} 
-            className="px-6 py-3 bg-slate-800/80 hover:bg-slate-700 text-cyan-400 hover:text-cyan-300 font-bold text-sm uppercase tracking-wider transition-all rounded-xl flex items-center gap-2 border border-cyan-500/30 hover:border-cyan-400/50"
+            className="px-8 py-4 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black text-sm uppercase tracking-wider transition-all rounded-2xl flex items-center gap-3 shadow-xl hover:shadow-red-500/30 hover:scale-105 active:scale-95"
           >
-            <i className="fa-solid fa-arrow-left"></i> Back to Login
+            <i className="fa-solid fa-right-from-bracket"></i> Logout කරමු
           </button>
         )}
+        {!session && (
+          <button 
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('🔙 Back to Login button clicked!');
+              setScreen('auth');
+            }} 
+            className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-black text-sm uppercase tracking-wider transition-all rounded-2xl flex items-center gap-3 shadow-xl hover:shadow-cyan-500/30 hover:scale-105 active:scale-95 border-2 border-cyan-400/50"
+          >
+            <i className="fa-solid fa-arrow-left"></i> 🔐 Login Page එකට
+          </button>
+        )}
+        <p className="text-slate-600 text-[10px] sinhala">Guest mode එකේ save local only - Login කරලා cloud sync කරගන්න 👆</p>
       </div>
     </div>
   );
@@ -1985,8 +2002,8 @@ const App: React.FC = () => {
       {screen === 'register' && renderRegister()}
       {screen === 'class-select' && (
          <div className="flex flex-col items-center justify-center min-h-screen p-6 animate-in slide-in-from-right duration-500 bg-slate-950">
-          <h2 className="text-4xl font-black mb-2 sinhala text-center tracking-tight">Choose Your Suffering Level</h2>
-          <p className="text-slate-400 mb-8 text-center text-sm">How badly do you want to struggle in Melbourne? 🔥</p>
+          <h2 className="text-4xl font-black mb-2 sinhala text-center tracking-tight bg-gradient-to-r from-orange-400 via-red-500 to-green-500 bg-clip-text text-transparent">කොච්චර කට්ට කන්නද? 🔥</h2>
+          <p className="text-slate-400 mb-8 text-center text-sm sinhala">Melbourne වල struggle කරන level එක select කරන්න මචං 💀</p>
           <div className="grid gap-4 w-full max-w-md">
             {(Object.keys(INITIAL_STATS) as ProfileClass[]).map(p => (
               <button key={p} onClick={() => startGame(p)} className="p-5 bg-slate-900/60 border border-white/10 rounded-2xl hover:border-blue-500/60 transition-all text-left group hover:scale-[1.02] shadow-2xl relative overflow-hidden backdrop-blur-xl">
