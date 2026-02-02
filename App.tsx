@@ -93,6 +93,7 @@ const App: React.FC = () => {
     geminiApiKey: undefined
   });
   
+  // Force predefined mode as default - IMPORTANT for showing local images!
   const [useAI, setUseAI] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [showApiSettings, setShowApiSettings] = useState(false);
@@ -485,13 +486,20 @@ const App: React.FC = () => {
 
       <div className="flex-grow p-4 space-y-6 pb-28 overflow-y-auto custom-scrollbar relative z-10">
         <div className="relative w-full aspect-video bg-slate-900 rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl group">
+          {/* DEBUG: Show which mode is active */}
+          <div className={`absolute top-2 left-2 z-30 px-3 py-1 rounded-lg font-black text-xs ${gameSettings.storyMode === 'predefined' ? 'bg-green-500/90 text-white' : 'bg-purple-500/90 text-white'}`}>
+            {gameSettings.storyMode === 'predefined' ? '📚 LOCAL IMAGES' : '🤖 AI MODE'}
+          </div>
+          
           {sceneImage ? (
             <img 
               src={sceneImage} 
               alt="Scene illustration" 
               className={`w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 ${stats.stress > 80 ? 'saturate-[1.5] contrast-[1.2]' : ''}`}
               loading="lazy"
+              onLoad={() => console.log('✅ Image loaded:', sceneImage)}
               onError={(e) => {
+                console.error('❌ Image failed to load:', sceneImage);
                 // Fallback to a default Melbourne image if comic generation fails
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=1024&h=768&fit=crop';
               }}
