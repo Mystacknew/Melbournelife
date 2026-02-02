@@ -2,6 +2,7 @@
 export type ProfileClass = "ඇමති පුතා" | "Business Family" | "Middle Class" | "Lower Class";
 export type Gender = "Male" | "Female";
 export type RelationshipStatus = "Single" | "Couple" | "With Kids";
+export type StoryMode = "predefined" | "ai-creative";
 
 export interface CharacterProfile {
   name: string;
@@ -9,6 +10,11 @@ export interface CharacterProfile {
   gender: Gender;
   status: RelationshipStatus;
   class: ProfileClass;
+}
+
+export interface GameSettings {
+  storyMode: StoryMode;
+  geminiApiKey?: string; // Only needed for AI creative mode
 }
 
 export interface GameStats {
@@ -56,4 +62,5 @@ export interface GameState {
   inventory: string[];
   history: StoryLog[];
   currentScene?: GameResponse | null;
+  settings: GameSettings; // Added game settings
 }

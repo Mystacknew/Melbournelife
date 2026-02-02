@@ -1,6 +1,7 @@
-import { GameResponse, CharacterProfile, StoryLog } from "./types";
+import { GameResponse, CharacterProfile, StoryLog, StoryMode } from "./types";
 import { SCENARIOS, getInitialScenario, getRandomScenario } from "./gameScenarios";
 import { getScenarioImage, getImageByKeywords } from "./imageMapper";
+import { generateImageWithGemini } from "./geminiImageService";
 
 // This replaces geminiService.ts - no AI needed!
 export const getNextStep = async (
@@ -171,11 +172,27 @@ const SCENE_IMAGES: Record<string, string> = {
   default: 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=800&h=600&fit=crop'
 };
 
-// Generate scene image using pre-organized local images instead of AI
-export const generateSceneImage = async (imagePrompt: string, scenarioId?: string): Promise<string> => {
+// Generate scene image - supports both predefined and AI creative modes
+export const generateSceneImage = async (
+  imagePrompt: string, 
+  scenarioId?: string,
+  storyMode: StoryMode = 'predefined',
+  geminiApiKey?: string
+): Promise<string> => {
   // Simulate small loading delay for smooth UX
   await new Promise(resolve => setTimeout(resolve, 100));
   
+  // AI Creative Mode - Generate with Gemini
+  if (storyMode === 'ai-creative' && geminiApiKey) {
+    try {
+      return await generateImageWithGemini(imagePrompt, geminiApiKey);
+    } catch (error) {
+      console.error('AI image generation failed, falling back to predefined:', error);
+      // Fall through to predefined mode on error
+    }
+  }
+  
+  // Predefined Mode - Use organized local images
   // First try to get image by scenario ID if provided
   if (scenarioId) {
     const scenarioImage = getScenarioImage(scenarioId);

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { getNextStep, generateSceneImage } from './scenarioEngine';
 import { generateScene } from './geminiService';
-import { ProfileClass, GameStats, GameResponse, Choice, StoryLog, CharacterProfile, Gender, RelationshipStatus, GameState } from './types';
+import { ProfileClass, GameStats, GameResponse, Choice, StoryLog, CharacterProfile, Gender, RelationshipStatus, GameState, StoryMode, GameSettings } from './types';
 import { StatBar } from './components/StatBar';
 
 // Supabase Initialization - No more API keys needed!
@@ -72,7 +72,7 @@ const TypewriterText: React.FC<{ text: string; speed?: number }> = ({ text, spee
 
 const App: React.FC = () => {
   const [session, setSession] = useState<any>(null);
-  const [screen, setScreen] = useState<'auth' | 'start' | 'register' | 'class-select' | 'loading' | 'game' | 'gameover'>('auth');
+  const [screen, setScreen] = useState<'auth' | 'start' | 'register' | 'mode-select' | 'class-select' | 'loading' | 'game' | 'gameover'>('auth');
   const [character, setCharacter] = useState<Partial<CharacterProfile>>({
     name: '', age: 22, gender: 'Male', status: 'Single'
   });
@@ -86,6 +86,13 @@ const App: React.FC = () => {
   const [showInventory, setShowInventory] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasExistingSave, setHasExistingSave] = useState(false);
+  
+  // Game Settings
+  const [gameSettings, setGameSettings] = useState<GameSettings>({
+    storyMode: 'predefined',
+    geminiApiKey: undefined
+  });
+  
   const [useAI, setUseAI] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [showApiSettings, setShowApiSettings] = useState(false);
@@ -150,7 +157,8 @@ const App: React.FC = () => {
       profile: { ...character, class: profileClass! } as CharacterProfile,
       inventory: updatedInventory,
       history: updatedHistory,
-      currentScene: updatedScene
+      currentScene: updatedScene,
+      settings: gameSettings // Save game settings
     };
 
     if (session) {
@@ -183,9 +191,19 @@ const App: React.FC = () => {
       setHistory(savedState.history);
       setCurrentScene(savedState.currentScene);
       
+      // Load game settings
+      if (savedState.settings) {
+        setGameSettings(savedState.settings);
+      }
+      
       setScreen('loading');
       if (savedState.currentScene) {
-        const img = await generateSceneImage(savedState.currentScene.image_prompt, savedState.currentScene.id);
+        const img = await generateSceneImage(
+          savedState.currentScene.image_prompt, 
+          savedState.currentScene.id,
+          savedState.settings?.storyMode || 'predefined',
+          savedState.settings?.geminiApiKey
+        );
         setSceneImage(img);
         setScreen('game');
       } else {
@@ -208,6 +226,13 @@ const App: React.FC = () => {
   };
 
   const startGame = async (selectedClass: ProfileClass) => {
+    // Update game settings based on mode selection
+    const currentSettings: GameSettings = {
+      storyMode: useAI ? 'ai-creative' : 'predefined',
+      geminiApiKey: useAI ? apiKey : undefined
+    };
+    setGameSettings(currentSettings);
+    
     const fullProfile = { ...character, class: selectedClass } as CharacterProfile;
     setProfileClass(selectedClass);
     setStats(INITIAL_STATS[selectedClass]);
@@ -218,7 +243,12 @@ const App: React.FC = () => {
     try {
       const initialScene = await getNextStep(fullProfile, "Arrival at Melbourne Airport", [], []);
       setCurrentScene(initialScene);
-      const img = await generateSceneImage(initialScene.image_prompt, initialScene.id);
+      const img = await generateSceneImage(
+        initialScene.image_prompt, 
+        initialScene.id,
+        currentSettings.storyMode,
+        currentSettings.geminiApiKey
+      );
       setSceneImage(img);
       setScreen('game');
       // Initial save
@@ -332,7 +362,12 @@ const App: React.FC = () => {
 
       setCurrentScene(nextScene);
       setSceneImage(null);
-      const img = await generateSceneImage(nextScene.image_prompt, nextScene.id);
+      const img = await generateSceneImage(
+        nextScene.image_prompt, 
+        nextScene.id,
+        gameSettings.storyMode,
+        gameSettings.geminiApiKey
+      );
       setSceneImage(img);
 
       // Auto-save after every move
@@ -409,6 +444,9 @@ const App: React.FC = () => {
               <div className="flex items-center gap-2">
                 <p className="text-[10px] uppercase text-slate-400 font-black tracking-widest leading-none">{character.name}</p>
                 {isSaving && <span className="text-[8px] font-bold text-emerald-500 animate-pulse uppercase">Saving...</span>}
+                <span className={`text-[7px] font-bold uppercase px-1.5 py-0.5 rounded ${gameSettings.storyMode === 'ai-creative' ? 'bg-purple-500/20 text-purple-300' : 'bg-green-500/20 text-green-300'}`}>
+                  {gameSettings.storyMode === 'ai-creative' ? 'AI' : 'Story'}
+                </span>
               </div>
               <p className="text-base font-black text-white leading-tight uppercase tracking-tight">{profileClass}</p>
             </div>
