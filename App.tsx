@@ -3,8 +3,10 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { getNextStep, generateSceneImage } from './scenarioEngine';
 import { generateScene } from './geminiService';
-import { ProfileClass, GameStats, GameResponse, Choice, StoryLog, CharacterProfile, Gender, RelationshipStatus, GameState, StoryMode, GameSettings } from './types';
+import { ProfileClass, GameStats, GameResponse, Choice, StoryLog, CharacterProfile, Gender, RelationshipStatus, GameState, StoryMode, GameSettings, RandomEvent, Achievement } from './types';
 import { StatBar } from './components/StatBar';
+import { checkForRandomEvent } from './randomEvents';
+import { checkAchievements, ACHIEVEMENTS, getAchievementProgress } from './achievements';
 
 // Supabase Initialization - No more API keys needed!
 const supabaseUrl = 'https://mggcjyfnagjttezrqdwx.supabase.co';
@@ -12,10 +14,10 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const INITIAL_STATS: Record<ProfileClass, GameStats> = {
-  "ඇමති පුතා": { money: 25000, stress: 0, energy: 100, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 0, lastRentDay: 1, consecutiveWorkDays: 0 },
-  "Business Family": { money: 8000, stress: 10, energy: 100, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 300, lastRentDay: 1, consecutiveWorkDays: 0 },
-  "Middle Class": { money: 3000, stress: 30, energy: 90, day: 1, health: 90, visaDaysLeft: 90, weeklyRent: 200, lastRentDay: 1, consecutiveWorkDays: 0 },
-  "Lower Class": { money: 1000, stress: 60, energy: 80, day: 1, health: 80, visaDaysLeft: 90, weeklyRent: 150, lastRentDay: 1, consecutiveWorkDays: 0 }
+  "ඇමති පුතා": { money: 25000, stress: 0, energy: 100, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 0, lastRentDay: 1, consecutiveWorkDays: 0, happiness: 70 },
+  "Business Family": { money: 8000, stress: 10, energy: 100, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 300, lastRentDay: 1, consecutiveWorkDays: 0, happiness: 60 },
+  "Middle Class": { money: 3000, stress: 30, energy: 90, day: 1, health: 90, visaDaysLeft: 90, weeklyRent: 200, lastRentDay: 1, consecutiveWorkDays: 0, happiness: 50 },
+  "Lower Class": { money: 1000, stress: 60, energy: 80, day: 1, health: 80, visaDaysLeft: 90, weeklyRent: 150, lastRentDay: 1, consecutiveWorkDays: 0, happiness: 40 }
 };
 
 interface ItemData {
@@ -77,7 +79,7 @@ const App: React.FC = () => {
     name: '', age: 22, gender: 'Male', status: 'Single'
   });
   const [profileClass, setProfileClass] = useState<ProfileClass | null>(null);
-  const [stats, setStats] = useState<GameStats>({ money: 0, stress: 0, energy: 0, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 0, lastRentDay: 1, consecutiveWorkDays: 0 });
+  const [stats, setStats] = useState<GameStats>({ money: 0, stress: 0, energy: 0, day: 1, health: 100, visaDaysLeft: 90, weeklyRent: 0, lastRentDay: 1, consecutiveWorkDays: 0, happiness: 50 });
   const [inventory, setInventory] = useState<string[]>([]);
   const [currentScene, setCurrentScene] = useState<GameResponse | null>(null);
   const [sceneImage, setSceneImage] = useState<string | null>(null);
@@ -86,6 +88,14 @@ const App: React.FC = () => {
   const [showInventory, setShowInventory] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasExistingSave, setHasExistingSave] = useState(false);
+  
+  // New: Achievements & Events
+  const [achievements, setAchievements] = useState<string[]>([]);
+  const [triggeredEvents, setTriggeredEvents] = useState<string[]>([]);
+  const [unlockedBranches, setUnlockedBranches] = useState<string[]>([]);
+  const [lockedBranches, setLockedBranches] = useState<string[]>([]);
+  const [showAchievement, setShowAchievement] = useState<Achievement | null>(null);
+  const [currentEvent, setCurrentEvent] = useState<RandomEvent | null>(null);
   
   // Game Settings
   const [gameSettings, setGameSettings] = useState<GameSettings>({
@@ -337,7 +347,8 @@ const App: React.FC = () => {
         visaDaysLeft: Math.max(stats.visaDaysLeft - day_change, 0),
         weeklyRent: stats.weeklyRent,
         lastRentDay: newLastRentDay,
-        consecutiveWorkDays: newConsecutiveWorkDays
+        consecutiveWorkDays: newConsecutiveWorkDays,
+        happiness: Math.min(Math.max((stats.happiness || 50) + (nextScene.stats_update.happiness_change || 0), 0), 100)
       };
       
       setStats(newStats);
@@ -346,6 +357,46 @@ const App: React.FC = () => {
       if (nextScene.new_items && nextScene.new_items.length > 0) {
         updatedInventory = Array.from(new Set([...inventory, ...nextScene.new_items!]));
         setInventory(updatedInventory);
+      }
+      
+      // Check for achievements
+      const gameState: GameState = {
+        stats: newStats,
+        profile: fullProfile,
+        inventory: updatedInventory,
+        history: updatedHistory,
+        currentScene: nextScene,
+        settings: gameSettings,
+        achievements,
+        triggeredEvents,
+        unlockedBranches,
+        lockedBranches
+      };
+      
+      const newAchievements = checkAchievements(gameState, stats);
+      if (newAchievements.length > 0) {
+        const newAchievement = newAchievements[0];
+        setAchievements(prev => [...prev, newAchievement.id]);
+        setShowAchievement(newAchievement);
+        setTimeout(() => setShowAchievement(null), 4000);
+      }
+      
+      // Check for random events (25% chance per turn)
+      if (Math.random() < 0.25) {
+        const randomEvent = checkForRandomEvent(newStats, triggeredEvents);
+        if (randomEvent) {
+          setCurrentEvent(randomEvent);
+          setTriggeredEvents(prev => [...prev, randomEvent.id]);
+          return; // Pause main story for event
+        }
+      }
+      
+      // Handle branching paths
+      if (choice.unlocksBranch) {
+        setUnlockedBranches(prev => [...prev, choice.unlocksBranch!]);
+      }
+      if (choice.locksBranch) {
+        setLockedBranches(prev => [...prev, choice.locksBranch!]);
       }
 
       // Game over conditions
@@ -383,6 +434,49 @@ const App: React.FC = () => {
       setIsProcessing(false);
     }
   };
+  
+  // Handle random event choice
+  const handleEventChoice = (choiceIndex: number) => {
+    if (!currentEvent) return;
+    
+    const choice = currentEvent.choices![choiceIndex];
+    const consequences = choice.consequences;
+    
+    const newStats = {
+      ...stats,
+      money: Math.max((stats.money || 0) + (consequences.money || 0), 0),
+      stress: Math.min(Math.max((stats.stress || 0) + (consequences.stress || 0), 0), 100),
+      energy: Math.min(Math.max((stats.energy || 0) + (consequences.energy || 0), 0), 100),
+      health: Math.min(Math.max((stats.health || 0) + (consequences.health || 0), 0), 100),
+      happiness: Math.min(Math.max((stats.happiness || 50) + (consequences.happiness || 0), 0), 100)
+    };
+    
+    setStats(newStats);
+    
+    if (consequences.newItem) {
+      setInventory(prev => [...prev, consequences.newItem!]);
+    }
+    
+    setCurrentEvent(null); // Close event and return to main story
+  };
+  
+  // Auto-resolve event (for events without choices)
+  const resolveAutoEvent = () => {
+    if (!currentEvent || !currentEvent.autoResolve) return;
+    
+    const resolve = currentEvent.autoResolve;
+    const newStats = {
+      ...stats,
+      money: Math.max((stats.money || 0) + (resolve.money || 0), 0),
+      stress: Math.min(Math.max((stats.stress || 0) + (resolve.stress || 0), 0), 100),
+      energy: Math.min(Math.max((stats.energy || 0) + (resolve.energy || 0), 0), 100),
+      health: Math.min(Math.max((stats.health || 0) + (resolve.health || 0), 0), 100),
+      happiness: Math.min(Math.max((stats.happiness || 50) + (resolve.happiness || 0), 0), 100)
+    };
+    
+    setStats(newStats);
+    setCurrentEvent(null);
+  };
 
   const resetGame = () => {
     if (!session) localStorage.removeItem('mlife_guest_save');
@@ -396,12 +490,17 @@ const App: React.FC = () => {
       visaDaysLeft: 90,
       weeklyRent: 0,
       lastRentDay: 1,
-      consecutiveWorkDays: 0
+      consecutiveWorkDays: 0,
+      happiness: 50
     });
     setInventory([]);
     setHistory([]);
     setHasExistingSave(false);
     setCharacter({ name: '', age: 22, gender: 'Male', status: 'Single' });
+    setAchievements([]);
+    setTriggeredEvents([]);
+    setUnlockedBranches([]);
+    setLockedBranches([]);
   };
 
   const processedInventory = useMemo(() => {
@@ -475,8 +574,9 @@ const App: React.FC = () => {
           <StatBar label="Stress" value={stats.stress} max={100} icon="fa-solid fa-brain" color="text-red-400" />
           <StatBar label="පණ" value={stats.energy} max={100} icon="fa-solid fa-bolt-lightning" color="text-blue-400" />
         </div>
-        <div className="grid grid-cols-2 gap-3 mt-3">
+        <div className="grid grid-cols-3 gap-3 mt-3">
           <StatBar label="Health" value={stats.health} max={100} icon="fa-solid fa-heart-pulse" color="text-pink-400" />
+          <StatBar label="Happiness" value={stats.happiness || 50} max={100} icon="fa-solid fa-face-smile" color="text-yellow-400" />
           <div className="bg-slate-800/50 px-3 py-2 rounded-xl border border-white/5 flex flex-col">
             <span className="text-[9px] text-slate-500 font-black uppercase leading-none">Visa Days</span>
             <span className={`text-sm font-black leading-none mt-1 ${stats.visaDaysLeft < 30 ? 'text-red-400 animate-pulse' : 'text-blue-400'}`}>{stats.visaDaysLeft} days</span>
@@ -1042,6 +1142,88 @@ const App: React.FC = () => {
       )}
       {screen === 'game' && renderGame()}
       {screen === 'gameover' && renderGameOver()}
+      
+      {/* Achievement Popup */}
+      {showAchievement && (
+        <div className="fixed top-20 right-4 md:right-8 z-[100] animate-in slide-in-from-right duration-500">
+          <div className={`bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white p-6 rounded-2xl shadow-2xl max-w-sm`}>
+            <div className="flex items-center gap-4">
+              <div className="text-5xl animate-bounce">{showAchievement.icon}</div>
+              <div>
+                <h3 className="font-black text-lg uppercase tracking-tight">🏆 Achievement Unlocked!</h3>
+                <p className="font-bold text-sm mt-1">{showAchievement.title}</p>
+                <p className="text-xs text-white/80 mt-1">{showAchievement.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Random Event Modal */}
+      {currentEvent && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[110] p-4 animate-in fade-in duration-300">
+          <div className="w-full max-w-2xl bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-orange-500/50 rounded-3xl shadow-2xl overflow-hidden">
+            {/* Event Header */}
+            <div className="bg-gradient-to-r from-orange-600 to-red-600 p-6 text-center">
+              <h2 className="text-3xl font-black text-white mb-2">{currentEvent.title}</h2>
+              <p className="text-white/90 text-sm">⚡ Random Event!</p>
+            </div>
+            
+            {/* Event Image */}
+            <div className="relative w-full h-64 bg-slate-900">
+              <img src={currentEvent.image} alt="Event" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+            </div>
+            
+            {/* Event Description */}
+            <div className="p-6">
+              <p className="text-white text-lg leading-relaxed mb-6 sinhala">{currentEvent.description}</p>
+              
+              {/* Auto-resolve event */}
+              {currentEvent.autoResolve && (
+                <button
+                  onClick={resolveAutoEvent}
+                  className="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-2xl font-black text-lg transition-all active:scale-95"
+                >
+                  ✓ Continue
+                </button>
+              )}
+              
+              {/* Event choices */}
+              {currentEvent.choices && (
+                <div className="space-y-3">
+                  {currentEvent.choices.map((choice, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleEventChoice(index)}
+                      className="w-full text-left p-4 bg-slate-800/60 hover:bg-slate-700/80 border-2 border-white/10 hover:border-orange-500/50 rounded-xl transition-all active:scale-98 group"
+                    >
+                      <p className="text-white font-bold sinhala">{choice.text}</p>
+                      <div className="flex gap-3 mt-2 text-xs flex-wrap">
+                        {choice.consequences.money && (
+                          <span className={choice.consequences.money > 0 ? 'text-green-400' : 'text-red-400'}>
+                            {choice.consequences.money > 0 ? '+' : ''}{choice.consequences.money}$
+                          </span>
+                        )}
+                        {choice.consequences.stress && (
+                          <span className={choice.consequences.stress > 0 ? 'text-red-400' : 'text-green-400'}>
+                            {choice.consequences.stress > 0 ? '+' : ''}{choice.consequences.stress} Stress
+                          </span>
+                        )}
+                        {choice.consequences.happiness && (
+                          <span className={choice.consequences.happiness > 0 ? 'text-blue-400' : 'text-gray-400'}>
+                            {choice.consequences.happiness > 0 ? '+' : ''}{choice.consequences.happiness} Happiness
+                          </span>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
