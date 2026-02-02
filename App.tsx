@@ -1183,47 +1183,163 @@ const App: React.FC = () => {
       {/* Main Content */}
       <div className="w-full max-w-2xl relative z-10 flex-grow flex flex-col">
         
-        {/* How to Play - Clean Card */}
+        {/* 25 CHAPTERS - 5 PHASES Breakdown */}
         <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl border border-white/10 p-6 mb-6 shadow-2xl">
           <h3 className="text-lg font-black text-white mb-5 flex items-center justify-center gap-2">
-            <i className="fa-solid fa-gamepad text-amber-400"></i> HOW TO PLAY
+            <i className="fa-solid fa-book text-amber-400"></i> 25 CHAPTERS • 5 PHASES
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-slate-800/50 rounded-2xl p-4 border border-white/5 hover:border-orange-500/30 transition-colors">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 border border-orange-500/30 flex items-center justify-center mx-auto mb-3">
-                <i className="fa-solid fa-user text-orange-400 text-lg"></i>
+          
+          {/* Phase Cards */}
+          <div className="space-y-3 mb-6">
+            {/* Phase 1 */}
+            <div className="bg-gradient-to-r from-orange-500/10 to-orange-600/5 rounded-xl p-3 border border-orange-500/20">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-2xl">✈️</span>
+                <div>
+                  <span className="text-orange-400 font-black text-sm">PHASE 1: ARRIVAL</span>
+                  <span className="text-slate-500 text-xs ml-2">(Days 1-7 • Ch 1-3)</span>
+                </div>
               </div>
-              <p className="text-white font-bold text-sm mb-1">1. Create Profile</p>
-              <p className="text-slate-500 text-xs">Choose name, age & immigrant class</p>
+              <p className="text-slate-400 text-xs">Airport landing, first night struggles, reality check on prices 💸</p>
             </div>
-            <div className="bg-slate-800/50 rounded-2xl p-4 border border-white/5 hover:border-red-500/30 transition-colors">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 flex items-center justify-center mx-auto mb-3">
-                <i className="fa-solid fa-book-open text-red-400 text-lg"></i>
+            
+            {/* Phase 2 */}
+            <div className="bg-gradient-to-r from-red-500/10 to-red-600/5 rounded-xl p-3 border border-red-500/20">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-2xl">🚨</span>
+                <div>
+                  <span className="text-red-400 font-black text-sm">PHASE 2: SURVIVAL MODE</span>
+                  <span className="text-slate-500 text-xs ml-2">(Days 8-21 • Ch 4-8)</span>
+                </div>
               </div>
-              <p className="text-white font-bold text-sm mb-1">2. Make Choices</p>
-              <p className="text-slate-500 text-xs">Navigate scenarios & manage resources</p>
+              <p className="text-slate-400 text-xs">Accommodation hunt, contractor scams, visa agent tricks, first paycheck 💰</p>
             </div>
-            <div className="bg-slate-800/50 rounded-2xl p-4 border border-white/5 hover:border-green-500/30 transition-colors">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/30 flex items-center justify-center mx-auto mb-3">
-                <i className="fa-solid fa-trophy text-green-400 text-lg"></i>
+            
+            {/* Phase 3 */}
+            <div className="bg-gradient-to-r from-amber-500/10 to-amber-600/5 rounded-xl p-3 border border-amber-500/20">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-2xl">💼</span>
+                <div>
+                  <span className="text-amber-400 font-black text-sm">PHASE 3: THE GRIND</span>
+                  <span className="text-slate-500 text-xs ml-2">(Days 22-42 • Ch 9-14)</span>
+                </div>
               </div>
-              <p className="text-white font-bold text-sm mb-1">3. Achieve Goals</p>
-              <p className="text-slate-500 text-xs">Survive 90 days to win PR!</p>
+              <p className="text-slate-400 text-xs">Cleaning scam, car scam, love traps, job brokers, COE cancellation ⚠️</p>
+            </div>
+            
+            {/* Phase 4 */}
+            <div className="bg-gradient-to-r from-blue-500/10 to-blue-600/5 rounded-xl p-3 border border-blue-500/20">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-2xl">🏗️</span>
+                <div>
+                  <span className="text-blue-400 font-black text-sm">PHASE 4: BUILDING ROOTS</span>
+                  <span className="text-slate-500 text-xs ml-2">(Days 43-63 • Ch 15-19)</span>
+                </div>
+              </div>
+              <p className="text-slate-400 text-xs">Real friends, savings game, visa extension, skill recognition, tax time 📊</p>
+            </div>
+            
+            {/* Phase 5 */}
+            <div className="bg-gradient-to-r from-green-500/10 to-green-600/5 rounded-xl p-3 border border-green-500/20">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-2xl">🏆</span>
+                <div>
+                  <span className="text-green-400 font-black text-sm">PHASE 5: PATH TO PR</span>
+                  <span className="text-slate-500 text-xs ml-2">(Days 64-90 • Ch 20-25)</span>
+                </div>
+              </div>
+              <p className="text-slate-400 text-xs">Points check, health check, police clearance, EOI, ITA, PR GRANTED! 🎉</p>
+            </div>
+          </div>
+        </div>
+
+        {/* How Choices Affect Your Future */}
+        <div className="bg-slate-900/60 backdrop-blur-xl rounded-3xl border border-white/10 p-6 mb-6 shadow-2xl">
+          <h3 className="text-lg font-black text-white mb-5 flex items-center justify-center gap-2">
+            <i className="fa-solid fa-route text-cyan-400"></i> YOUR CHOICES MATTER
+          </h3>
+          <p className="text-slate-400 text-xs text-center mb-4">Every decision ripples through your journey. Same choices, different outcomes! 🎭</p>
+          
+          <div className="space-y-4">
+            {/* Example 1: Work vs Study */}
+            <div className="bg-slate-800/50 rounded-xl p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">💼</span>
+                <span className="text-white font-bold text-sm">Work More vs Study Balance</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="bg-red-500/10 rounded-lg p-2 border border-red-500/20">
+                  <p className="text-red-400 font-bold mb-1">❌ Work Overtime</p>
+                  <p className="text-slate-500">→ Miss uni classes</p>
+                  <p className="text-slate-500">→ Attendance drops</p>
+                  <p className="text-red-400 font-bold">→ COE CANCELLED Ch.13!</p>
+                </div>
+                <div className="bg-green-500/10 rounded-lg p-2 border border-green-500/20">
+                  <p className="text-green-400 font-bold mb-1">✅ Balance Both</p>
+                  <p className="text-slate-500">→ Pass all subjects</p>
+                  <p className="text-slate-500">→ Build skills</p>
+                  <p className="text-green-400 font-bold">→ Job offers Ch.15!</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Example 2: Trust Issues */}
+            <div className="bg-slate-800/50 rounded-xl p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">🤝</span>
+                <span className="text-white font-bold text-sm">Trust "Aiya" Connections</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="bg-red-500/10 rounded-lg p-2 border border-red-500/20">
+                  <p className="text-red-400 font-bold mb-1">❌ Trust Blindly</p>
+                  <p className="text-slate-500">→ "Job 100% confirm"</p>
+                  <p className="text-slate-500">→ Pay $500-$3500</p>
+                  <p className="text-red-400 font-bold">→ SCAMMED! Lost $$</p>
+                </div>
+                <div className="bg-green-500/10 rounded-lg p-2 border border-green-500/20">
+                  <p className="text-green-400 font-bold mb-1">✅ Verify First</p>
+                  <p className="text-slate-500">→ Check ABN/MARA</p>
+                  <p className="text-slate-500">→ Research reviews</p>
+                  <p className="text-green-400 font-bold">→ Safe & secure!</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Example 3: Health vs Money */}
+            <div className="bg-slate-800/50 rounded-xl p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">💪</span>
+                <span className="text-white font-bold text-sm">Health vs Money Grind</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="bg-red-500/10 rounded-lg p-2 border border-red-500/20">
+                  <p className="text-red-400 font-bold mb-1">❌ Ignore Health</p>
+                  <p className="text-slate-500">→ No sleep, junk food</p>
+                  <p className="text-slate-500">→ Stress 100%</p>
+                  <p className="text-red-400 font-bold">→ BURNOUT Ch.14!</p>
+                </div>
+                <div className="bg-green-500/10 rounded-lg p-2 border border-green-500/20">
+                  <p className="text-green-400 font-bold mb-1">✅ Stay Healthy</p>
+                  <p className="text-slate-500">→ Rest, cook at home</p>
+                  <p className="text-slate-500">→ Exercise sometimes</p>
+                  <p className="text-green-400 font-bold">→ Energy for PR!</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Stats to Manage */}
         <div className="bg-slate-900/40 backdrop-blur-sm rounded-2xl border border-white/5 p-4 mb-6">
-          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-3">⚡ Manage These Stats</p>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-3">⚡ Manage These Stats to Survive</p>
           <div className="flex flex-wrap justify-center gap-2">
-            <span className="px-3 py-1.5 bg-green-500/10 text-green-400 rounded-full text-xs font-bold">💵 Money</span>
-            <span className="px-3 py-1.5 bg-red-500/10 text-red-400 rounded-full text-xs font-bold">😰 Stress</span>
-            <span className="px-3 py-1.5 bg-yellow-500/10 text-yellow-400 rounded-full text-xs font-bold">⚡ Energy</span>
-            <span className="px-3 py-1.5 bg-pink-500/10 text-pink-400 rounded-full text-xs font-bold">❤️ Health</span>
-            <span className="px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold">🏠 Housing</span>
-            <span className="px-3 py-1.5 bg-purple-500/10 text-purple-400 rounded-full text-xs font-bold">👥 Social</span>
+            <span className="px-3 py-1.5 bg-green-500/10 text-green-400 rounded-full text-xs font-bold">💵 Money ≥$8000</span>
+            <span className="px-3 py-1.5 bg-red-500/10 text-red-400 rounded-full text-xs font-bold">😰 Stress &lt;80</span>
+            <span className="px-3 py-1.5 bg-yellow-500/10 text-yellow-400 rounded-full text-xs font-bold">⚡ Energy &gt;0</span>
+            <span className="px-3 py-1.5 bg-pink-500/10 text-pink-400 rounded-full text-xs font-bold">❤️ Health ≥40</span>
+            <span className="px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold">📅 90 Days</span>
           </div>
+          <p className="text-center text-slate-600 text-[10px] mt-3">⚠️ PR requires: Day 90 + $8000 savings + &lt;80 stress + 40+ health</p>
         </div>
 
         {/* Action Buttons */}
