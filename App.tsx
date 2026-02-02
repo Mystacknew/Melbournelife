@@ -126,6 +126,8 @@ const App: React.FC = () => {
     if (storedKey) {
       setApiKey(storedKey);
       setUseAI(true);
+      setGameSettings(prev => ({ ...prev, storyMode: 'ai-creative', geminiApiKey: storedKey }));
+      console.log('🔑 Loaded API key from storage, AI mode enabled');
     }
   }, []);
 
@@ -291,10 +293,20 @@ const App: React.FC = () => {
       
       // Use AI mode or pre-defined scenarios
       let nextScene: GameResponse;
-      if (useAI && apiKey) {
+      console.log('🎮 Mode check:', { storyMode: gameSettings.storyMode, hasKey: !!gameSettings.geminiApiKey });
+      
+      if (gameSettings.storyMode === 'ai-creative' && gameSettings.geminiApiKey) {
+        console.log('🤖 Using AI mode to generate scene...');
         const contextSummary = updatedHistory.map(h => h.summary).join(' ');
-        nextScene = await generateScene(contextSummary, choice.text, fullProfile, stats, inventory);
+        try {
+          nextScene = await generateScene(contextSummary, choice.text, fullProfile, stats, inventory);
+          console.log('✅ AI scene generated:', nextScene.story_text.substring(0, 50) + '...');
+        } catch (aiError) {
+          console.error('❌ AI generation failed, falling back to predefined:', aiError);
+          nextScene = await getNextStep(fullProfile, choice.text, updatedHistory, inventory);
+        }
       } else {
+        console.log('📖 Using predefined scenarios');
         nextScene = await getNextStep(fullProfile, choice.text, updatedHistory, inventory);
       }
       
@@ -1260,13 +1272,23 @@ const App: React.FC = () => {
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button 
-                onClick={() => { setUseAI(false); localStorage.removeItem('mlife_gemini_key'); }} 
+                onClick={() => { 
+                  setUseAI(false); 
+                  localStorage.removeItem('mlife_gemini_key'); 
+                  setGameSettings(prev => ({ ...prev, storyMode: 'predefined' }));
+                  console.log('🔧 Switched to PREDEFINED mode');
+                }} 
                 className={`py-4 md:py-5 rounded-2xl md:rounded-3xl border-2 text-[9px] md:text-[10px] font-black transition-all active:scale-95 touch-manipulation ${!useAI ? 'bg-gradient-to-br from-green-600 to-green-700 border-green-400 text-white shadow-lg shadow-green-500/30' : 'bg-slate-800/40 border-white/10 text-slate-500 hover:border-white/20'}`}
               >
                 <i className="fa-solid fa-book mr-1 md:mr-2"></i>PRE-DEFINED<br className="md:hidden" /><span className="hidden md:inline"> </span>STORIES
               </button>
               <button 
-                onClick={() => { setUseAI(true); setShowApiSettings(true); }} 
+                onClick={() => { 
+                  setUseAI(true); 
+                  setShowApiSettings(true); 
+                  setGameSettings(prev => ({ ...prev, storyMode: 'ai-creative' }));
+                  console.log('🤖 Switched to AI CREATIVE mode');
+                }} 
                 className={`py-4 md:py-5 rounded-2xl md:rounded-3xl border-2 text-[9px] md:text-[10px] font-black transition-all active:scale-95 touch-manipulation ${useAI ? 'bg-gradient-to-br from-purple-600 to-purple-700 border-purple-400 text-white shadow-lg shadow-purple-500/30' : 'bg-slate-800/40 border-white/10 text-slate-500 hover:border-white/20'}`}
               >
                 <i className="fa-solid fa-robot mr-1 md:mr-2"></i>AI CREATIVE<br className="md:hidden" /><span className="hidden md:inline"> </span>MODE
@@ -1342,7 +1364,9 @@ const App: React.FC = () => {
                 onClick={() => {
                   if (apiKey.trim()) {
                     localStorage.setItem('mlife_gemini_key', apiKey.trim());
+                    setGameSettings(prev => ({ ...prev, storyMode: 'ai-creative', geminiApiKey: apiKey.trim() }));
                     setShowApiSettings(false);
+                    console.log('💾 API key saved, AI mode activated');
                   }
                 }} 
                 disabled={!apiKey.trim()}
