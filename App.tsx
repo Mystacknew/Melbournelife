@@ -1106,7 +1106,7 @@ const App: React.FC = () => {
       <div className="flex-grow flex flex-col items-center justify-center p-6 w-full max-w-4xl relative z-10">
 
         {/* Comic-style Logo Section */}
-        <div className="relative mb-8 animate-in zoom-in duration-700">
+        <div className="relative mb-8 animate-fade-in-scale">
           {/* Starburst background */}
           <div className="absolute -inset-16 opacity-20">
             <svg viewBox="0 0 200 200" className="w-full h-full animate-spin-slow">
@@ -1157,18 +1157,18 @@ const App: React.FC = () => {
         </div>
 
         {/* Features showcase - Comic panel style */}
-        <div className="w-full max-w-3xl mb-8 grid grid-cols-3 gap-2 md:gap-4">
-          <div className="bg-slate-900/80 border-2 border-orange-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all">
+        <div className="w-full max-w-3xl mb-8 grid grid-cols-3 gap-2 md:gap-4 animate-fade-in-up stagger-1">
+          <div className="bg-slate-900/80 border-2 border-orange-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all hover:shadow-lg hover:shadow-orange-500/20 card-hover">
             <div className="text-3xl md:text-4xl mb-2">📖</div>
             <p className="text-orange-400 font-black text-xs md:text-sm">CHAPTERS</p>
             <p className="text-slate-500 text-[10px] md:text-xs mt-1">Story-driven gameplay</p>
           </div>
-          <div className="bg-slate-900/80 border-2 border-red-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all">
+          <div className="bg-slate-900/80 border-2 border-red-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all hover:shadow-lg hover:shadow-red-500/20 card-hover">
             <div className="text-3xl md:text-4xl mb-2">🎯</div>
             <p className="text-red-400 font-black text-xs md:text-sm">CHOICES</p>
             <p className="text-slate-500 text-[10px] md:text-xs mt-1">Your decisions matter</p>
           </div>
-          <div className="bg-slate-900/80 border-2 border-green-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all">
+          <div className="bg-slate-900/80 border-2 border-green-500/30 rounded-2xl p-3 md:p-4 text-center transform hover:scale-105 transition-all hover:shadow-lg hover:shadow-green-500/20 card-hover">
             <div className="text-3xl md:text-4xl mb-2">🏆</div>
             <p className="text-green-400 font-black text-xs md:text-sm">VICTORY</p>
             <p className="text-slate-500 text-[10px] md:text-xs mt-1">Achieve your dreams</p>
@@ -1176,7 +1176,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Login Card - Comic panel style */}
-        <div className="w-full max-w-md bg-gradient-to-br from-slate-900 to-slate-800 border-4 border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+        <div className="w-full max-w-md bg-gradient-to-br from-slate-900 to-slate-800 border-4 border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden animate-fade-in-up stagger-2">
           {/* Corner decoration */}
           <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-orange-500/20 to-transparent"></div>
           <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-green-500/20 to-transparent"></div>
@@ -1186,9 +1186,9 @@ const App: React.FC = () => {
           </h2>
 
           {/* Google Login - Enhanced with glow */}
-          <button onClick={handleGoogleLogin} className="group w-full flex items-center justify-center gap-4 bg-white hover:bg-slate-100 text-slate-900 py-4 md:py-5 rounded-2xl font-black text-lg md:text-xl transition-all shadow-xl hover:shadow-white/30 hover:scale-[1.02] active:scale-[0.98] mb-4 btn-glow relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-6 h-6 md:w-7 md:h-7 relative z-10" alt="G" />
+          <button onClick={handleGoogleLogin} className="btn-enhanced group w-full flex items-center justify-center gap-4 bg-white hover:bg-slate-100 text-slate-900 py-4 md:py-5 rounded-2xl font-black text-lg md:text-xl transition-all shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] mb-4 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-200/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-6 h-6 md:w-7 md:h-7 relative z-10 transition-transform group-hover:rotate-12" alt="G" />
             <span className="relative z-10">Continue with Google</span>
           </button>
 
@@ -1200,7 +1200,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Guest Mode - Enhanced */}
-          <button onClick={() => setScreen('start')} className="w-full py-4 md:py-5 bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white rounded-2xl font-black text-base md:text-lg transition-all flex items-center justify-center gap-3 border-2 border-white/10 hover:border-white/20 group relative overflow-hidden">
+          <button onClick={() => setScreen('start')} className="btn-enhanced w-full py-4 md:py-5 bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white rounded-2xl font-black text-base md:text-lg transition-all flex items-center justify-center gap-3 border-2 border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-cyan-500/20 group relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             <i className="fa-solid fa-user-secret text-slate-400 group-hover:text-cyan-400 transition-colors relative z-10"></i>
             <span className="relative z-10">Play as Guest</span>

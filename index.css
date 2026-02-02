@@ -190,6 +190,47 @@
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
+/* Typing Effect */
+@keyframes typing {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* Page Transition - Fade Slide */
+@keyframes fade-slide-in {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-slide-out {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px); }
+}
+
+/* Icon Pulse */
+@keyframes icon-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Stat Float Indicator */
+@keyframes stat-indicator-float {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+}
+
+/* Shine Sweep */
+@keyframes shine-sweep {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* Tooltip Appear */
+@keyframes tooltip-appear {
+  0% { opacity: 0; transform: translateY(10px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* ========================================
    UTILITY CLASSES
    ======================================== */
@@ -218,6 +259,9 @@
 .stagger-3 { animation-delay: 0.3s; }
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+.stagger-7 { animation-delay: 0.7s; }
+.stagger-8 { animation-delay: 0.8s; }
 
 /* ========================================
    GLASSMORPHISM EFFECTS
@@ -251,6 +295,14 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-strong {
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* ========================================
@@ -339,6 +391,50 @@ button:active:not(:disabled) {
 
 .card-lift {
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+.card-press:active {
+  transform: scale(0.98);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   TOOLTIP STYLES
+   ======================================== */
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip-content {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 0.75rem;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-appear 0.2s ease-out forwards;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.5rem;
+}
+
+.tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(15, 23, 42, 0.95);
+}
+
 }
 
 .card-lift:hover {
@@ -572,7 +668,127 @@ button:active:not(:disabled) {
 }
 
 /* ========================================
-   REDUCED MOTION SUPPORT
+   REDUCED MOTION SUPPORT,
+              0 0 20px rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.5);
+  transition: all 0.3s ease;
+}
+
+/* Enhanced Focus Glow for Inputs */
+.input-focus-glow:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3),
+              0 0 30px rgba(59, 130, 246, 0.2),
+              0 0 60px rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.7);
+}
+
+/* ========================================
+   FLOATING PARTICLES BACKGROUND
+   ======================================== */
+
+.floating-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floating-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.6), transparent);
+  border-radius: 50%;
+  animation: float-particle 8s ease-in-out infinite;
+}
+
+.floating-particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.floating-particle:nth-child(2) { left: 30%; top: 40%; animation-delay: 1s; animation-duration: 10s; }
+.floating-particle:nth-child(3) { left: 50%; top: 60%; animation-delay: 2s; animation-duration: 12s; }
+.floating-particle:nth-child(4) { left: 70%; top: 30%; animation-delay: 3s; animation-duration: 9s; }
+.floating-particle:nth-child(5) { left: 90%; top: 50%; animation-delay: 4s; animation-duration: 11s; }
+.floating-particle:nth-child(6) { left: 20%; top: 80%; animation-delay: 1.5s; animation-duration: 10.5s; }
+.floating-particle:nth-child(7) { left: 60%; top: 10%; animation-delay: 2.5s; animation-duration: 9.5s; }
+.floating-particle:nth-child(8) { left: 85%; top: 70%; animation-delay: 3.5s; animation-duration: 11.5s; }
+
+/* ========================================
+   ENHANCED BUTTON STATES
+   ======================================== */
+
+.btn-enhanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-enhanced:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-enhanced:active {
+  transform: scale(0.95);
+}
+
+/* ========================================
+   STAT CHANGE INDICATOR
+   ======================================== */
+
+.stat-change-indicator {
+  position: absolute;
+  font-weight: bold;
+  font-size: 1.25rem;
+  pointer-events: none;
+  z-index: 100;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  animation: stat-indicator-float 1.5s ease-out forwards;
+}
+
+.stat-change-positive {
+  color: #22c55e;
+}
+
+.stat-change-negative {
+  color: #ef4444;
+}
+
+/* ========================================
+   MILESTONE MARKERS
+   ======================================== */
+
+.milestone-marker {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.milestone-marker::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  background: #3b82f6;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5)
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {

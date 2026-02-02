@@ -90,10 +90,10 @@ export const StatBar: React.FC<StatBarProps> = ({ label, value, max, icon, color
     <div 
       className={`relative ${s.container} rounded-2xl transition-all duration-500 cursor-default group ${
         isCritical 
-          ? 'bg-gradient-to-br from-red-950/80 to-red-900/60 border-2 border-red-500/40 shadow-lg shadow-red-500/20' 
+          ? 'bg-gradient-to-br from-red-950/80 to-red-900/60 border-2 border-red-500/40 shadow-lg shadow-red-500/20 hover:shadow-xl hover:shadow-red-500/30' 
           : isGood 
-            ? 'bg-gradient-to-br from-slate-800/90 to-slate-700/70 border-2 border-emerald-500/30 shadow-lg shadow-emerald-500/10' 
-            : 'bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-blue-500/5'
+            ? 'bg-gradient-to-br from-slate-800/90 to-slate-700/70 border-2 border-emerald-500/30 shadow-lg shadow-emerald-500/10 hover:shadow-xl hover:shadow-emerald-500/20' 
+            : 'bg-gradient-to-br from-slate-800/80 to-slate-900/60 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-blue-500/10 shadow-md shadow-black/20'
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -109,11 +109,11 @@ export const StatBar: React.FC<StatBarProps> = ({ label, value, max, icon, color
       <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 blur-md transition-opacity duration-300 bg-blue-500`}></div>
       
       {/* Tooltip on hover */}
-      <div className={`absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-2 bg-slate-900 border border-white/20 rounded-xl text-xs text-white font-medium whitespace-nowrap z-50 shadow-xl transition-all duration-300 ${
-        isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
-      }`}>
+      <div className={`absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-2 bg-slate-900/95 backdrop-blur-md border border-white/20 rounded-xl text-xs text-white font-medium whitespace-nowrap z-50 shadow-xl shadow-black/50 transition-all duration-200 ${
+        isHovered ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
+      }`} style={{ animation: isHovered ? 'tooltip-appear 0.2s ease-out forwards' : 'none' }}>
         {getTooltipText()}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+        <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-slate-900/95"></div>
       </div>
       
       <div className="relative z-10">
@@ -157,21 +157,24 @@ export const StatBar: React.FC<StatBarProps> = ({ label, value, max, icon, color
         </div>
         
         {/* Progress bar container */}
-        <div className={`${s.bar} w-full bg-slate-900/80 rounded-full overflow-hidden border transition-all duration-300 ${
-          isCritical ? 'border-red-500/50 shadow-inner shadow-red-500/20' : 'border-slate-700/50 group-hover:border-slate-600/50'
+        <div className={`${s.bar} w-full bg-slate-900/80 rounded-full overflow-hidden border transition-all duration-300 shadow-inner ${
+          isCritical ? 'border-red-500/50 shadow-red-500/20' : 'border-slate-700/50 group-hover:border-slate-600/50 shadow-black/30'
         }`}>
           {/* Progress bar fill */}
           <div 
-            className={`h-full transition-all duration-700 ease-out bg-gradient-to-r ${getBarGradient()} relative ${
+            className={`h-full transition-all duration-1000 ease-out bg-gradient-to-r ${getBarGradient()} relative ${
               isCritical ? 'animate-pulse' : ''
-            }`}
-            style={{ width: `${percentage}%` }}
+            } shadow-lg`}
+            style={{ 
+              width: `${percentage}%`,
+              boxShadow: isCritical ? '0 0 10px rgba(239, 68, 68, 0.5)' : '0 0 10px rgba(59, 130, 246, 0.3)'
+            }}
           >
             {/* Animated shine effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
             
             {/* Right edge glow */}
-            <div className="absolute right-0 top-0 bottom-0 w-2 bg-gradient-to-r from-transparent to-white/30 blur-sm"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-2 bg-gradient-to-r from-transparent to-white/40 blur-sm"></div>
           </div>
         </div>
         
