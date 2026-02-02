@@ -20,6 +20,34 @@ const INITIAL_STATS: Record<ProfileClass, GameStats> = {
   "Lower Class": { money: 1000, stress: 60, energy: 80, day: 1, health: 80, visaDaysLeft: 90, weeklyRent: 150, lastRentDay: 1, consecutiveWorkDays: 0, happiness: 40 }
 };
 
+// Sarcastic display names for each class - roasting mode! 🔥
+const CLASS_DISPLAY: Record<ProfileClass, { sinhala: string; english: string; subtitle: string; difficulty: string }> = {
+  "ඇමති පුතා": {
+    sinhala: "ඇමති පුතා",
+    english: "Daddy's Little Cash Cow",
+    subtitle: '"I don\'t know the price of bread" mode',
+    difficulty: "🎮 EASY - Difficulty: Non-existent"
+  },
+  "Business Family": {
+    sinhala: "සල්ලි තියෙන සුද්දා",
+    english: 'The "Privileged" Tourist',
+    subtitle: "Has a safety net, but still complains about rent",
+    difficulty: "⚖️ MODERATE - Living on a prayer & credit card"
+  },
+  "Middle Class": {
+    sinhala: "කටු කන එකා",
+    english: "Professional Struggle Artist",
+    subtitle: "Eating instant noodles is now a lifestyle choice",
+    difficulty: "🔥 HARD - One emergency away from breakdown"
+  },
+  "Lower Class": {
+    sinhala: "අනාථ Life",
+    english: "Basically Homeless",
+    subtitle: 'The "Melbourne Dream" is currently a nightmare',
+    difficulty: "💀 SURVIVAL - Good luck; breathing is free"
+  }
+};
+
 interface ItemData {
   icon: string;
   category: 'Essentials' | 'Transport' | 'Work' | 'Documents' | 'Other';
@@ -1323,9 +1351,17 @@ const App: React.FC = () => {
       {/* Footer */}
       <div className="mt-6 flex flex-col items-center gap-3">
         {session && <button onClick={handleLogout} className="text-slate-600 hover:text-red-500 font-bold text-xs uppercase tracking-wider transition-colors">Logout</button>}
-        {!session && <button onClick={() => setScreen('auth')} className="text-slate-500 hover:text-cyan-400 font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-2">
-          <i className="fa-solid fa-arrow-left"></i> Back to Login
-        </button>}
+        {!session && (
+          <button 
+            onClick={() => {
+              console.log('Back to Login clicked');
+              setScreen('auth');
+            }} 
+            className="px-6 py-3 bg-slate-800/80 hover:bg-slate-700 text-cyan-400 hover:text-cyan-300 font-bold text-sm uppercase tracking-wider transition-all rounded-xl flex items-center gap-2 border border-cyan-500/30 hover:border-cyan-400/50"
+          >
+            <i className="fa-solid fa-arrow-left"></i> Back to Login
+          </button>
+        )}
       </div>
     </div>
   );
@@ -1949,37 +1985,43 @@ const App: React.FC = () => {
       {screen === 'register' && renderRegister()}
       {screen === 'class-select' && (
          <div className="flex flex-col items-center justify-center min-h-screen p-6 animate-in slide-in-from-right duration-500 bg-slate-950">
-          <h2 className="text-4xl font-black mb-4 sinhala text-center tracking-tight">ජීවන තත්වය (Class)</h2>
-          <p className="text-slate-400 mb-14 text-center text-sm">Choose your difficulty mode 🎮</p>
-          <div className="grid gap-5 w-full max-w-sm">
+          <h2 className="text-4xl font-black mb-2 sinhala text-center tracking-tight">Choose Your Suffering Level</h2>
+          <p className="text-slate-400 mb-8 text-center text-sm">How badly do you want to struggle in Melbourne? 🔥</p>
+          <div className="grid gap-4 w-full max-w-md">
             {(Object.keys(INITIAL_STATS) as ProfileClass[]).map(p => (
-              <button key={p} onClick={() => startGame(p)} className="p-8 bg-slate-900/60 border border-white/10 rounded-[2.5rem] hover:border-blue-500/60 transition-all text-left group hover:scale-[1.03] shadow-2xl relative overflow-hidden backdrop-blur-xl">
+              <button key={p} onClick={() => startGame(p)} className="p-5 bg-slate-900/60 border border-white/10 rounded-2xl hover:border-blue-500/60 transition-all text-left group hover:scale-[1.02] shadow-2xl relative overflow-hidden backdrop-blur-xl">
                 <div className="absolute right-[-20px] bottom-[-20px] text-8xl opacity-5 text-white transition-all duration-700">
-                   <i className={`fa-solid ${p === 'ඇමති පුතා' ? 'fa-crown' : p === 'Business Family' ? 'fa-building' : p === 'Middle Class' ? 'fa-graduation-cap' : 'fa-handshake'}`}></i>
+                   <i className={`fa-solid ${p === 'ඇමති පුතා' ? 'fa-crown' : p === 'Business Family' ? 'fa-building' : p === 'Middle Class' ? 'fa-utensils' : 'fa-skull'}`}></i>
                 </div>
-                <div className="flex justify-between items-center relative z-10">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-black text-2xl text-white group-hover:text-blue-400 uppercase tracking-tight">{p}</span>
-                      <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider ${
-                        p === 'ඇමති පුතා' ? 'bg-green-900/50 text-green-400 border border-green-500/30' :
-                        p === 'Business Family' ? 'bg-blue-900/50 text-blue-400 border border-blue-500/30' :
-                        p === 'Middle Class' ? 'bg-orange-900/50 text-orange-400 border border-orange-500/30' :
-                        'bg-red-900/50 text-red-400 border border-red-500/30'
-                      }`}>
-                        {p === 'ඇමති පුතා' ? '🎮 EASY' : p === 'Business Family' ? '⚖️ MODERATE' : p === 'Middle Class' ? '🔥 HARD' : '💀 SURVIVAL'}
-                      </span>
+                <div className="relative z-10">
+                  {/* Title Row */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="font-black text-lg text-white group-hover:text-blue-400 sinhala">{CLASS_DISPLAY[p].sinhala}</span>
+                      <span className="text-slate-500 text-xs">|</span>
+                      <span className="font-bold text-sm text-slate-300">{CLASS_DISPLAY[p].english}</span>
                     </div>
-                    <span className="text-[11px] text-slate-500 sinhala font-black uppercase tracking-widest flex items-center gap-2">
-                       <i className="fa-solid fa-wallet text-slate-600"></i> Starting with ${INITIAL_STATS[p].money}
-                    </span>
+                    <span className="text-green-400 font-black text-sm">${INITIAL_STATS[p].money}</span>
                   </div>
-                  <div className="w-12 h-12 rounded-full bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all"><i className="fa-solid fa-arrow-right"></i></div>
+                  {/* Subtitle - Roasting */}
+                  <p className="text-slate-500 text-xs italic mb-2">"{CLASS_DISPLAY[p].subtitle}"</p>
+                  {/* Difficulty Badge */}
+                  <div className="flex items-center justify-between">
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-black ${
+                      p === 'ඇමති පුතා' ? 'bg-green-900/50 text-green-400 border border-green-500/30' :
+                      p === 'Business Family' ? 'bg-blue-900/50 text-blue-400 border border-blue-500/30' :
+                      p === 'Middle Class' ? 'bg-orange-900/50 text-orange-400 border border-orange-500/30' :
+                      'bg-red-900/50 text-red-400 border border-red-500/30'
+                    }`}>
+                      {CLASS_DISPLAY[p].difficulty}
+                    </span>
+                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all text-sm"><i className="fa-solid fa-play"></i></div>
+                  </div>
                 </div>
               </button>
             ))}
           </div>
-          <button onClick={() => setScreen('start')} className="mt-14 text-slate-600 font-black hover:text-slate-400 uppercase tracking-widest text-[10px] flex items-center gap-3"><i className="fa-solid fa-arrow-left"></i> BACK</button>
+          <button onClick={() => setScreen('start')} className="mt-10 text-slate-600 font-black hover:text-slate-400 uppercase tracking-widest text-[10px] flex items-center gap-3"><i className="fa-solid fa-arrow-left"></i> BACK TO MENU</button>
         </div>
       )}
       {screen === 'loading' && (
