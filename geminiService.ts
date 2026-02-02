@@ -34,7 +34,7 @@ export async function generateScene(
   }
 
   const genAI = new window.aistudio.GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
   const prompt = `
 You are a storytelling engine for "Melbourne Life" - a narrative game about Sri Lankan immigrants in Melbourne.

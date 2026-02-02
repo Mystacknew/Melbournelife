@@ -3,18 +3,20 @@
 
 export const generateImageWithGemini = async (prompt: string, apiKey: string): Promise<string> => {
   try {
-    // Use Pollinations AI as fallback (free, no API key needed)
-    // For actual Gemini integration, you would use Google's Imagen API
+    // Using Pollinations AI for image generation (free, works without API key)
+    // Gemini's Imagen API requires separate setup and billing
     
-    // Enhanced prompt for better image generation
+    // Enhanced prompt for better story-relevant images
     const enhancedPrompt = enhancePromptForStory(prompt);
     
-    // Using Pollinations AI (works without API key)
+    // Pollinations AI with flux model for better quality
     const encodedPrompt = encodeURIComponent(enhancedPrompt);
     const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=768&nologo=true&enhance=true&model=flux`;
     
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log('🎨 Generating AI image:', enhancedPrompt.substring(0, 60) + '...');
+    
+    // Simulate API call delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 800));
     
     return imageUrl;
     
