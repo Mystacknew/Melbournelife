@@ -1437,22 +1437,22 @@ const App: React.FC = () => {
   );
 
   const renderGameOver = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gradient-to-br from-slate-950 via-red-950/30 to-slate-950 animate-in fade-in duration-1000 relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gradient-to-br from-slate-950 via-red-950/30 to-slate-950 animate-fade-in-scale relative overflow-hidden">
       <div className="absolute inset-0 bg-red-950/20 animate-pulse"></div>
-      <div className="w-36 h-36 bg-red-600/10 border-4 border-red-600/40 rounded-full flex items-center justify-center text-7xl text-red-600 mb-10 animate-bounce relative z-10"><i className="fa-solid fa-face-dizzy"></i></div>
-      <h1 className="text-6xl font-black mb-4 sinhala uppercase tracking-tighter text-white relative z-10">ගේම ඉවරයි මචං</h1>
+      <div className="w-36 h-36 bg-red-600/10 border-4 border-red-600/40 rounded-full flex items-center justify-center text-7xl text-red-600 mb-10 animate-bounce relative z-10 shadow-2xl shadow-red-600/30"><i className="fa-solid fa-face-dizzy"></i></div>
+      <h1 className="text-6xl font-black mb-4 sinhala uppercase tracking-tighter text-white relative z-10 drop-shadow-2xl">ගේම ඉවරයි මචං</h1>
       <p className="text-slate-400 text-xl mb-4 font-medium relative z-10">{winReason || 'මෙල්බර්න් වල කට්ට කන්න අමාරුයි වගේ...'}</p>
-      <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-8 relative z-10 max-w-md">
+      <div className="glass-strong rounded-2xl p-6 mb-8 relative z-10 max-w-md shadow-2xl animate-fade-in-up stagger-1">
         <h3 className="text-white font-bold mb-3">Your Journey Stats:</h3>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="bg-slate-800/50 p-3 rounded-xl"><span className="text-slate-400">Days Survived:</span> <span className="text-white font-bold">{stats.day}</span></div>
-          <div className="bg-slate-800/50 p-3 rounded-xl"><span className="text-slate-400">Money:</span> <span className="text-green-400 font-bold">${stats.money}</span></div>
-          <div className="bg-slate-800/50 p-3 rounded-xl"><span className="text-slate-400">Achievements:</span> <span className="text-yellow-400 font-bold">{achievements.length}</span></div>
-          <div className="bg-slate-800/50 p-3 rounded-xl"><span className="text-slate-400">Progress:</span> <span className="text-blue-400 font-bold">{Math.round((stats.day / 90) * 100)}%</span></div>
+          <div className="bg-slate-800/50 p-3 rounded-xl hover:bg-slate-700/50 transition-all card-hover"><span className="text-slate-400">Days Survived:</span> <span className="text-white font-bold">{stats.day}</span></div>
+          <div className="bg-slate-800/50 p-3 rounded-xl hover:bg-slate-700/50 transition-all card-hover"><span className="text-slate-400">Money:</span> <span className="text-green-400 font-bold">${stats.money}</span></div>
+          <div className="bg-slate-800/50 p-3 rounded-xl hover:bg-slate-700/50 transition-all card-hover"><span className="text-slate-400">Achievements:</span> <span className="text-yellow-400 font-bold">{achievements.length}</span></div>
+          <div className="bg-slate-800/50 p-3 rounded-xl hover:bg-slate-700/50 transition-all card-hover"><span className="text-slate-400">Progress:</span> <span className="text-blue-400 font-bold">{Math.round((stats.day / 90) * 100)}%</span></div>
         </div>
       </div>
       <p className="text-slate-500 text-lg mb-8 sinhala font-medium relative z-10">ආයෙත් ට්‍රයි එකක් දාමුද?</p>
-      <button onClick={resetGame} className="px-14 py-7 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 text-white rounded-[2.5rem] font-black text-2xl hover:scale-110 shadow-2xl flex items-center gap-5 relative z-10 transition-all"><i className="fa-solid fa-rotate-right"></i> ආයෙත් ගේමට</button>
+      <button onClick={resetGame} className="btn-enhanced px-14 py-7 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 text-white rounded-[2.5rem] font-black text-2xl hover:scale-110 shadow-2xl hover:shadow-orange-500/30 flex items-center gap-5 relative z-10 transition-all"><i className="fa-solid fa-rotate-right"></i> ආයෙත් ගේමට</button>
     </div>
   );
 
@@ -1572,12 +1572,20 @@ const App: React.FC = () => {
   };
 
   const renderVictory = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gradient-to-br from-slate-950 via-green-950/30 to-slate-950 animate-in fade-in duration-1000 relative overflow-hidden">
-      {/* Celebration Background */}
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gradient-to-br from-slate-950 via-green-950/30 to-slate-950 animate-fade-in-scale relative overflow-hidden">
+      {/* Enhanced Celebration Background with particles */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-amber-600 to-orange-500 blur-3xl animate-pulse"></div>
         <div className="absolute top-1/3 left-0 w-full h-1/3 bg-gradient-to-r from-green-600 to-emerald-500 blur-3xl animate-pulse" style={{ animationDelay: '500ms' }}></div>
         <div className="absolute top-2/3 left-0 w-full h-1/3 bg-gradient-to-r from-blue-600 to-purple-500 blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }}></div>
+        {/* Confetti-like particles */}
+        <div className="floating-particles">
+          <div className="floating-particle" style={{ left: '10%', top: '20%', background: 'radial-gradient(circle, rgba(251, 191, 36, 0.8), transparent)' }}></div>
+          <div className="floating-particle" style={{ left: '30%', top: '50%', animationDelay: '1s', background: 'radial-gradient(circle, rgba(34, 197, 94, 0.8), transparent)' }}></div>
+          <div className="floating-particle" style={{ left: '50%', top: '80%', animationDelay: '2s', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8), transparent)' }}></div>
+          <div className="floating-particle" style={{ left: '70%', top: '30%', animationDelay: '1.5s', background: 'radial-gradient(circle, rgba(249, 115, 22, 0.8), transparent)' }}></div>
+          <div className="floating-particle" style={{ left: '90%', top: '60%', animationDelay: '2.5s', background: 'radial-gradient(circle, rgba(168, 85, 247, 0.8), transparent)' }}></div>
+        </div>
       </div>
 
       {/* Victory Icon */}
@@ -1598,28 +1606,28 @@ const App: React.FC = () => {
         {winReason}
       </p>
 
-      {/* Stats Card */}
-      <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border-2 border-yellow-500/30 rounded-3xl p-8 mb-8 relative z-10 max-w-2xl w-full shadow-2xl">
+      {/* Stats Card - Enhanced glassmorphism */}
+      <div className="glass-strong rounded-3xl p-8 mb-8 relative z-10 max-w-2xl w-full shadow-2xl border-2 border-yellow-500/30 animate-fade-in-up stagger-1">
         <h3 className="text-yellow-400 font-black text-2xl mb-6 flex items-center justify-center gap-3">
           <i className="fa-solid fa-chart-line"></i> Your Success Story
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-gradient-to-br from-green-900/50 to-green-800/30 p-4 rounded-2xl border border-green-500/30">
+          <div className="bg-gradient-to-br from-green-900/50 to-green-800/30 p-4 rounded-2xl border border-green-500/30 card-hover">
             <div className="text-3xl mb-2">📅</div>
             <div className="text-green-400 text-sm font-bold">Days</div>
             <div className="text-white text-2xl font-black">{stats.day}</div>
           </div>
-          <div className="bg-gradient-to-br from-emerald-900/50 to-emerald-800/30 p-4 rounded-2xl border border-emerald-500/30">
+          <div className="bg-gradient-to-br from-emerald-900/50 to-emerald-800/30 p-4 rounded-2xl border border-emerald-500/30 card-hover">
             <div className="text-3xl mb-2">💰</div>
             <div className="text-emerald-400 text-sm font-bold">Money</div>
             <div className="text-white text-2xl font-black">${stats.money}</div>
           </div>
-          <div className="bg-gradient-to-br from-yellow-900/50 to-yellow-800/30 p-4 rounded-2xl border border-yellow-500/30">
+          <div className="bg-gradient-to-br from-yellow-900/50 to-yellow-800/30 p-4 rounded-2xl border border-yellow-500/30 card-hover">
             <div className="text-3xl mb-2">🏆</div>
             <div className="text-yellow-400 text-sm font-bold">Achievements</div>
             <div className="text-white text-2xl font-black">{achievements.length}</div>
           </div>
-          <div className="bg-gradient-to-br from-blue-900/50 to-blue-800/30 p-4 rounded-2xl border border-blue-500/30">
+          <div className="bg-gradient-to-br from-blue-900/50 to-blue-800/30 p-4 rounded-2xl border border-blue-500/30 card-hover">
             <div className="text-3xl mb-2">😊</div>
             <div className="text-blue-400 text-sm font-bold">Happiness</div>
             <div className="text-white text-2xl font-black">{stats.happiness || 50}</div>
@@ -1628,15 +1636,15 @@ const App: React.FC = () => {
 
         {/* Final Stats */}
         <div className="grid grid-cols-3 gap-3 text-sm">
-          <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5">
+          <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5 card-hover">
             <div className="text-slate-400 mb-1">Health</div>
             <div className={`font-bold ${stats.health > 70 ? 'text-green-400' : stats.health > 40 ? 'text-yellow-400' : 'text-red-400'}`}>{stats.health}/100</div>
           </div>
-          <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5">
+          <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5 card-hover">
             <div className="text-slate-400 mb-1">Energy</div>
             <div className={`font-bold ${stats.energy > 70 ? 'text-blue-400' : stats.energy > 40 ? 'text-yellow-400' : 'text-red-400'}`}>{stats.energy}/100</div>
           </div>
-          <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5">
+          <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5 card-hover">
             <div className="text-slate-400 mb-1">Stress</div>
             <div className={`font-bold ${stats.stress < 30 ? 'text-green-400' : stats.stress < 70 ? 'text-yellow-400' : 'text-red-400'}`}>{stats.stress}/100</div>
           </div>
