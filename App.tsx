@@ -757,27 +757,93 @@ const App: React.FC = () => {
   );
 
   const renderRegister = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 animate-in zoom-in duration-500 bg-slate-950">
-      <div className="w-full max-w-md bg-slate-900/40 border border-white/10 p-12 rounded-[3.5rem] shadow-2xl relative backdrop-blur-xl">
-        <div className="absolute -top-14 left-1/2 -translate-x-1/2 w-28 h-28 bg-blue-600 rounded-full border-8 border-slate-950 flex items-center justify-center text-5xl shadow-2xl text-white"><i className="fa-solid fa-passport"></i></div>
-        <h2 className="text-4xl font-black mb-10 sinhala text-center pt-10 tracking-tight">ප්‍රොෆයිල් එක (Profile)</h2>
-        <div className="space-y-8">
-          <div><label className="block text-[11px] uppercase text-slate-500 font-black mb-3 tracking-widest sinhala">නම (First Name)</label><input type="text" value={character.name} onChange={e => setCharacter({...character, name: e.target.value})} className="w-full bg-slate-800/40 border border-white/10 p-6 rounded-3xl focus:outline-none focus:border-blue-500 font-black text-lg placeholder:text-slate-700" placeholder="Ex: Pathum" /></div>
-          <div className="grid grid-cols-2 gap-6">
-            <div><label className="block text-[11px] uppercase text-slate-500 font-black mb-3 tracking-widest sinhala">වයස (Age)</label><input type="number" value={character.age} onChange={e => setCharacter({...character, age: parseInt(e.target.value) || 0})} className="w-full bg-slate-800/40 border border-white/10 p-6 rounded-3xl focus:outline-none focus:border-blue-500 font-black text-lg" /></div>
-            <div><label className="block text-[11px] uppercase text-slate-500 font-black mb-3 tracking-widest sinhala">Gender</label><select value={character.gender} onChange={e => setCharacter({...character, gender: e.target.value as Gender})} className="w-full bg-slate-800/40 border border-white/10 p-6 rounded-3xl focus:outline-none focus:border-blue-500 font-black text-lg appearance-none cursor-pointer"><option value="Male">Male</option><option value="Female">Female</option></select></div>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-6 animate-in zoom-in duration-500 bg-gradient-to-br from-slate-950 via-red-950/20 to-slate-950 relative overflow-hidden">
+      {/* Sri Lankan Flag Colors Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-amber-600 to-orange-500 blur-3xl"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1/3 bg-gradient-to-r from-red-900 to-red-700 blur-3xl"></div>
+        <div className="absolute top-2/3 left-0 w-full h-1/3 bg-gradient-to-r from-green-800 to-green-600 blur-3xl"></div>
+      </div>
+
+      <div className="w-full max-w-md bg-gradient-to-br from-slate-900/80 to-slate-800/80 border border-white/10 p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] shadow-2xl relative backdrop-blur-xl z-10 touch-manipulation">
+        {/* Mobile Improvement #1: Larger touch-friendly icon */}
+        <div className="absolute -top-12 md:-top-14 left-1/2 -translate-x-1/2 w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-orange-500 via-red-600 to-green-600 rounded-full border-4 md:border-8 border-slate-950 flex items-center justify-center text-4xl md:text-5xl shadow-2xl text-white animate-bounce" style={{animationDuration: '2s'}}><i className="fa-solid fa-passport"></i></div>
+        <h2 className="text-3xl md:text-4xl font-black mb-6 md:mb-10 sinhala text-center pt-8 md:pt-10 tracking-tight bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">ප්‍රොෆයිල් එක (Profile)</h2>
+        {/* Mobile Improvement #2: Optimized spacing and touch targets (min 44px) */}
+        <div className="space-y-5 md:space-y-8">
+          <div>
+            <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest sinhala flex items-center gap-2">
+              <i className="fa-solid fa-user text-orange-500"></i>නම (First Name)
+            </label>
+            <input 
+              type="text" 
+              value={character.name} 
+              onChange={e => setCharacter({...character, name: e.target.value})} 
+              className="w-full bg-slate-800/60 border-2 border-white/10 p-4 md:p-6 rounded-2xl md:rounded-3xl focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 font-black text-base md:text-lg placeholder:text-slate-600 transition-all touch-manipulation" 
+              placeholder="Ex: Pathum" 
+            />
           </div>
-          <div><label className="block text-[11px] uppercase text-slate-500 font-black mb-3 tracking-widest sinhala">Status</label><div className="grid grid-cols-3 gap-3">{(['Single', 'Couple', 'With Kids'] as RelationshipStatus[]).map(s => (<button key={s} onClick={() => setCharacter({...character, status: s})} className={`py-5 rounded-3xl border text-[10px] font-black transition-all ${character.status === s ? 'bg-blue-600 border-blue-400 text-white shadow-md' : 'bg-slate-800/30 border-white/5 text-slate-500'}`}>{s.toUpperCase()}</button>))}</div></div>
+          <div className="grid grid-cols-2 gap-4 md:gap-6">
+            <div>
+              <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest sinhala flex items-center gap-2">
+                <i className="fa-solid fa-calendar text-red-500"></i>වයස (Age)
+              </label>
+              <input 
+                type="number" 
+                value={character.age} 
+                onChange={e => setCharacter({...character, age: parseInt(e.target.value) || 0})} 
+                className="w-full bg-slate-800/60 border-2 border-white/10 p-4 md:p-6 rounded-2xl md:rounded-3xl focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 font-black text-base md:text-lg transition-all touch-manipulation" 
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest sinhala flex items-center gap-2">
+                <i className="fa-solid fa-venus-mars text-green-500"></i>Gender
+              </label>
+              <select 
+                value={character.gender} 
+                onChange={e => setCharacter({...character, gender: e.target.value as Gender})} 
+                className="w-full bg-slate-800/60 border-2 border-white/10 p-4 md:p-6 rounded-2xl md:rounded-3xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 font-black text-base md:text-lg appearance-none cursor-pointer transition-all touch-manipulation"
+              >
+                <option value="Male">♂ Male</option>
+                <option value="Female">♀ Female</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest sinhala flex items-center gap-2">
+              <i className="fa-solid fa-heart text-pink-500"></i>Status
+            </label>
+            {/* Mobile Improvement #3: Larger tap targets with visual feedback */}
+            <div className="grid grid-cols-3 gap-2 md:gap-3">
+              {(['Single', 'Couple', 'With Kids'] as RelationshipStatus[]).map(s => (
+                <button 
+                  key={s} 
+                  onClick={() => setCharacter({...character, status: s})} 
+                  className={`py-4 md:py-5 rounded-2xl md:rounded-3xl border-2 text-[9px] md:text-[10px] font-black transition-all active:scale-95 touch-manipulation ${character.status === s ? 'bg-gradient-to-br from-orange-500 to-red-600 border-orange-400 text-white shadow-lg shadow-orange-500/30' : 'bg-slate-800/40 border-white/10 text-slate-500 hover:border-white/20'}`}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
           
-          {/* AI Mode Toggle */}
-          <div className="border-t border-white/10 pt-6">
-            <label className="block text-[11px] uppercase text-slate-500 font-black mb-3 tracking-widest">Game Mode</label>
+          {/* AI Mode Toggle - Mobile Improvement #4: Visual feedback on tap */}
+          <div className="border-t border-white/10 pt-5 md:pt-6">
+            <label className="block text-[11px] uppercase text-slate-400 font-black mb-3 tracking-widest flex items-center gap-2">
+              <i className="fa-solid fa-palette text-blue-500"></i>Game Mode
+            </label>
             <div className="grid grid-cols-2 gap-3">
-              <button onClick={() => { setUseAI(false); localStorage.removeItem('mlife_gemini_key'); }} className={`py-5 rounded-3xl border text-[10px] font-black transition-all ${!useAI ? 'bg-green-600 border-green-400 text-white shadow-md' : 'bg-slate-800/30 border-white/5 text-slate-500'}`}>
-                <i className="fa-solid fa-book mr-2"></i>PRE-DEFINED STORIES
+              <button 
+                onClick={() => { setUseAI(false); localStorage.removeItem('mlife_gemini_key'); }} 
+                className={`py-4 md:py-5 rounded-2xl md:rounded-3xl border-2 text-[9px] md:text-[10px] font-black transition-all active:scale-95 touch-manipulation ${!useAI ? 'bg-gradient-to-br from-green-600 to-green-700 border-green-400 text-white shadow-lg shadow-green-500/30' : 'bg-slate-800/40 border-white/10 text-slate-500 hover:border-white/20'}`}
+              >
+                <i className="fa-solid fa-book mr-1 md:mr-2"></i>PRE-DEFINED<br className="md:hidden" /><span className="hidden md:inline"> </span>STORIES
               </button>
-              <button onClick={() => { setUseAI(true); setShowApiSettings(true); }} className={`py-5 rounded-3xl border text-[10px] font-black transition-all ${useAI ? 'bg-purple-600 border-purple-400 text-white shadow-md' : 'bg-slate-800/30 border-white/5 text-slate-500'}`}>
-                <i className="fa-solid fa-robot mr-2"></i>AI CREATIVE MODE
+              <button 
+                onClick={() => { setUseAI(true); setShowApiSettings(true); }} 
+                className={`py-4 md:py-5 rounded-2xl md:rounded-3xl border-2 text-[9px] md:text-[10px] font-black transition-all active:scale-95 touch-manipulation ${useAI ? 'bg-gradient-to-br from-purple-600 to-purple-700 border-purple-400 text-white shadow-lg shadow-purple-500/30' : 'bg-slate-800/40 border-white/10 text-slate-500 hover:border-white/20'}`}
+              >
+                <i className="fa-solid fa-robot mr-1 md:mr-2"></i>AI CREATIVE<br className="md:hidden" /><span className="hidden md:inline"> </span>MODE
               </button>
             </div>
             {useAI && (
@@ -793,8 +859,21 @@ const App: React.FC = () => {
             )}
           </div>
 
-          <button disabled={!character.name || character.name.length < 2 || (useAI && !apiKey)} onClick={() => setScreen('class-select')} className="w-full py-7 bg-blue-600 hover:bg-blue-500 disabled:opacity-20 disabled:grayscale rounded-[2.5rem] font-black text-xl shadow-2xl text-white transition-all">
+          {/* Mobile Improvement #5: Fixed bottom button on mobile for easy thumb access */}
+          <button 
+            disabled={!character.name || character.name.length < 2 || (useAI && !apiKey)} 
+            onClick={() => setScreen('class-select')} 
+            className="w-full py-5 md:py-7 bg-gradient-to-r from-orange-600 via-red-600 to-green-600 hover:from-orange-500 hover:via-red-500 hover:to-green-500 disabled:opacity-20 disabled:grayscale rounded-2xl md:rounded-[2.5rem] font-black text-lg md:text-xl shadow-2xl text-white transition-all active:scale-95 touch-manipulation mt-6"
+          >
+            <i className="fa-solid fa-arrow-right mr-2"></i>
             {useAI && !apiKey ? 'ENTER API KEY FIRST' : 'NEXT: PICK SOCIAL CLASS'}
+          </button>
+          
+          <button 
+            onClick={() => setScreen('start')} 
+            className="w-full mt-4 text-slate-500 hover:text-slate-300 font-bold text-sm transition-all active:scale-95 touch-manipulation"
+          >
+            <i className="fa-solid fa-arrow-left mr-2"></i>Back to Start
           </button>
         </div>
       </div>
