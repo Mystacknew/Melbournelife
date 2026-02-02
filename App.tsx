@@ -74,7 +74,8 @@ const TypewriterText: React.FC<{ text: string; speed?: number }> = ({ text, spee
 
 const App: React.FC = () => {
   const [session, setSession] = useState<any>(null);
-  const [screen, setScreen] = useState<'auth' | 'start' | 'register' | 'mode-select' | 'class-select' | 'loading' | 'game' | 'gameover'>('auth');
+  const [screen, setScreen] = useState<'auth' | 'start' | 'register' | 'mode-select' | 'class-select' | 'loading' | 'game' | 'gameover' | 'victory'>('auth');
+  const [winReason, setWinReason] = useState<string>('');
   const [character, setCharacter] = useState<Partial<CharacterProfile>>({
     name: '', age: 22, gender: 'Male', status: 'Single'
   });
@@ -381,16 +382,6 @@ const App: React.FC = () => {
         setTimeout(() => setShowAchievement(null), 4000);
       }
       
-      // Check for random events (25% chance per turn)
-      if (Math.random() < 0.25) {
-        const randomEvent = checkForRandomEvent(newStats, triggeredEvents);
-        if (randomEvent) {
-          setCurrentEvent(randomEvent);
-          setTriggeredEvents(prev => [...prev, randomEvent.id]);
-          return; // Pause main story for event
-        }
-      }
-      
       // Handle branching paths
       if (choice.unlocksBranch) {
         setUnlockedBranches(prev => [...prev, choice.unlocksBranch!]);
@@ -399,23 +390,62 @@ const App: React.FC = () => {
         setLockedBranches(prev => [...prev, choice.locksBranch!]);
       }
 
-      // Game over conditions
-      if (newStats.energy <= 0 || newStats.stress >= 100 || newStats.health <= 0) {
+      // WIN CONDITIONS - Check before loss conditions!
+      // Victory Condition 1: Reached Day 30 with good stats (Early Success)
+      if (newStats.day >= 30 && newStats.money >= 3000 && newStats.stress < 70 && newStats.health >= 60) {
+        setWinReason('🎉 30-Day Milestone! You\'ve established a stable life in Melbourne!');
+        setScreen('victory');
+        return;
+      }
+      
+      // Victory Condition 2: Reached Day 60 (Settlement Progress)
+      if (newStats.day >= 60 && newStats.money >= 5000 && newStats.health >= 50) {
+        setWinReason('🏆 60-Day Achievement! You\'re well on your way to permanent residency!');
+        setScreen('victory');
+        return;
+      }
+      
+      // Victory Condition 3: Reached Day 90 (PR Settlement Ready!) - Ultimate Win
+      if (newStats.day >= 90) {
+        setWinReason('🇦🇺 VICTORY! 90 Days Complete - PR Pathway Unlocked! You\'ve successfully settled in Melbourne!');
+        setScreen('victory');
+        return;
+      }
+
+      // GAME OVER CONDITIONS
+      if (newStats.energy <= 0) {
+        setWinReason('Burnout! Your energy depleted completely.');
+        setScreen('gameover');
+        return;
+      }
+      
+      if (newStats.stress >= 100) {
+        setWinReason('Mental breakdown! Stress became overwhelming.');
+        setScreen('gameover');
+        return;
+      }
+      
+      if (newStats.health <= 0) {
+        setWinReason('Health crisis! You need to return home for treatment.');
         setScreen('gameover');
         return;
       }
 
-      // Visa expired
+      // Visa expired without achieving settlement
       if (newStats.visaDaysLeft <= 0) {
+        setWinReason('Visa expired! Time to go back to Sri Lanka.');
+        setScreen('gameover');
+        return;
+      }
+      
+      // Bankruptcy - can't afford rent for 2 weeks
+      if (newStats.money < 0 && newStats.weeklyRent > 0) {
+        setWinReason('Bankruptcy! Unable to afford living expenses.');
         setScreen('gameover');
         return;
       }
 
-      // Eviction if can't pay rent for 2 weeks
-      if (rentDeduction > 0 && newStats.money < stats.weeklyRent) {
-        // Trigger eviction scenario if it exists, otherwise continue
-      }
-
+      // Update scene and image
       setCurrentScene(nextScene);
       setSceneImage(null);
       const img = await generateSceneImage(
@@ -428,6 +458,16 @@ const App: React.FC = () => {
 
       // Auto-save after every move
       saveGame(newStats, updatedInventory, updatedHistory, nextScene);
+      
+      // Check for random events AFTER updating the scene (15% chance to not block too much)
+      if (Math.random() < 0.15) {
+        const randomEvent = checkForRandomEvent(newStats, triggeredEvents);
+        if (randomEvent) {
+          setCurrentEvent(randomEvent);
+          setTriggeredEvents(prev => [...prev, randomEvent.id]);
+          // Don't return - event shows on top of current scene
+        }
+      }
     } catch (e: any) { 
       console.error("Error processing choice:", e);
     } finally {
@@ -847,12 +887,141 @@ const App: React.FC = () => {
   );
 
   const renderGameOver = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-slate-950 animate-in fade-in duration-1000 relative">
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gradient-to-br from-slate-950 via-red-950/30 to-slate-950 animate-in fade-in duration-1000 relative overflow-hidden">
        <div className="absolute inset-0 bg-red-950/20 animate-pulse"></div>
        <div className="w-36 h-36 bg-red-600/10 border-4 border-red-600/40 rounded-full flex items-center justify-center text-7xl text-red-600 mb-10 animate-bounce relative z-10"><i className="fa-solid fa-face-dizzy"></i></div>
        <h1 className="text-6xl font-black mb-4 sinhala uppercase tracking-tighter text-white relative z-10">ගේම ඉවරයි මචං</h1>
-       <p className="text-slate-500 text-2xl mb-14 sinhala font-medium relative z-10 leading-relaxed">මෙල්බර්න් වල කට්ට කන්න අමාරුයි වගේ...<br/>ආයෙත් ට්‍රයි එකක් දාමුද?</p>
-       <button onClick={resetGame} className="px-14 py-7 bg-white text-slate-950 rounded-[2.5rem] font-black text-2xl hover:scale-110 shadow-2xl flex items-center gap-5 relative z-10"><i className="fa-solid fa-rotate-right"></i> ආයෙත් ගේමට</button>
+       <p className="text-slate-400 text-xl mb-4 font-medium relative z-10">{winReason || 'මෙල්බර්න් වල කට්ට කන්න අමාරුයි වගේ...'}</p>
+       <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-8 relative z-10 max-w-md">
+         <h3 className="text-white font-bold mb-3">Your Journey Stats:</h3>
+         <div className="grid grid-cols-2 gap-3 text-sm">
+           <div className="bg-slate-800/50 p-3 rounded-xl"><span className="text-slate-400">Days Survived:</span> <span className="text-white font-bold">{stats.day}</span></div>
+           <div className="bg-slate-800/50 p-3 rounded-xl"><span className="text-slate-400">Money:</span> <span className="text-green-400 font-bold">${stats.money}</span></div>
+           <div className="bg-slate-800/50 p-3 rounded-xl"><span className="text-slate-400">Achievements:</span> <span className="text-yellow-400 font-bold">{achievements.length}</span></div>
+           <div className="bg-slate-800/50 p-3 rounded-xl"><span className="text-slate-400">Progress:</span> <span className="text-blue-400 font-bold">{Math.round((stats.day / 90) * 100)}%</span></div>
+         </div>
+       </div>
+       <p className="text-slate-500 text-lg mb-8 sinhala font-medium relative z-10">ආයෙත් ට්‍රයි එකක් දාමුද?</p>
+       <button onClick={resetGame} className="px-14 py-7 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 text-white rounded-[2.5rem] font-black text-2xl hover:scale-110 shadow-2xl flex items-center gap-5 relative z-10 transition-all"><i className="fa-solid fa-rotate-right"></i> ආයෙත් ගේමට</button>
+    </div>
+  );
+  
+  const renderVictory = () => (
+    <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gradient-to-br from-slate-950 via-green-950/30 to-slate-950 animate-in fade-in duration-1000 relative overflow-hidden">
+       {/* Celebration Background */}
+       <div className="absolute inset-0 opacity-20">
+         <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-r from-amber-600 to-orange-500 blur-3xl animate-pulse"></div>
+         <div className="absolute top-1/3 left-0 w-full h-1/3 bg-gradient-to-r from-green-600 to-emerald-500 blur-3xl animate-pulse" style={{animationDelay: '500ms'}}></div>
+         <div className="absolute top-2/3 left-0 w-full h-1/3 bg-gradient-to-r from-blue-600 to-purple-500 blur-3xl animate-pulse" style={{animationDelay: '1000ms'}}></div>
+       </div>
+       
+       {/* Victory Icon */}
+       <div className="w-40 h-40 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-8xl mb-8 relative z-10 animate-bounce shadow-2xl shadow-yellow-500/50">
+         <i className="fa-solid fa-trophy text-white"></i>
+       </div>
+       
+       {/* Victory Title */}
+       <h1 className="text-6xl md:text-7xl font-black mb-4 uppercase tracking-tighter bg-gradient-to-r from-yellow-400 via-orange-500 to-green-500 bg-clip-text text-transparent relative z-10 drop-shadow-2xl">
+         VICTORY!
+       </h1>
+       <p className="text-5xl sinhala font-black bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent relative z-10 mb-6">
+         ජයග්‍රහණය! 🇱🇰 → 🇦🇺
+       </p>
+       
+       {/* Win Reason */}
+       <p className="text-white text-2xl mb-8 font-bold relative z-10 max-w-2xl leading-relaxed">
+         {winReason}
+       </p>
+       
+       {/* Stats Card */}
+       <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border-2 border-yellow-500/30 rounded-3xl p-8 mb-8 relative z-10 max-w-2xl w-full shadow-2xl">
+         <h3 className="text-yellow-400 font-black text-2xl mb-6 flex items-center justify-center gap-3">
+           <i className="fa-solid fa-chart-line"></i> Your Success Story
+         </h3>
+         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+           <div className="bg-gradient-to-br from-green-900/50 to-green-800/30 p-4 rounded-2xl border border-green-500/30">
+             <div className="text-3xl mb-2">📅</div>
+             <div className="text-green-400 text-sm font-bold">Days</div>
+             <div className="text-white text-2xl font-black">{stats.day}</div>
+           </div>
+           <div className="bg-gradient-to-br from-emerald-900/50 to-emerald-800/30 p-4 rounded-2xl border border-emerald-500/30">
+             <div className="text-3xl mb-2">💰</div>
+             <div className="text-emerald-400 text-sm font-bold">Money</div>
+             <div className="text-white text-2xl font-black">${stats.money}</div>
+           </div>
+           <div className="bg-gradient-to-br from-yellow-900/50 to-yellow-800/30 p-4 rounded-2xl border border-yellow-500/30">
+             <div className="text-3xl mb-2">🏆</div>
+             <div className="text-yellow-400 text-sm font-bold">Achievements</div>
+             <div className="text-white text-2xl font-black">{achievements.length}</div>
+           </div>
+           <div className="bg-gradient-to-br from-blue-900/50 to-blue-800/30 p-4 rounded-2xl border border-blue-500/30">
+             <div className="text-3xl mb-2">😊</div>
+             <div className="text-blue-400 text-sm font-bold">Happiness</div>
+             <div className="text-white text-2xl font-black">{stats.happiness || 50}</div>
+           </div>
+         </div>
+         
+         {/* Final Stats */}
+         <div className="grid grid-cols-3 gap-3 text-sm">
+           <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5">
+             <div className="text-slate-400 mb-1">Health</div>
+             <div className={`font-bold ${stats.health > 70 ? 'text-green-400' : stats.health > 40 ? 'text-yellow-400' : 'text-red-400'}`}>{stats.health}/100</div>
+           </div>
+           <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5">
+             <div className="text-slate-400 mb-1">Energy</div>
+             <div className={`font-bold ${stats.energy > 70 ? 'text-blue-400' : stats.energy > 40 ? 'text-yellow-400' : 'text-red-400'}`}>{stats.energy}/100</div>
+           </div>
+           <div className="bg-slate-800/50 p-3 rounded-xl border border-white/5">
+             <div className="text-slate-400 mb-1">Stress</div>
+             <div className={`font-bold ${stats.stress < 30 ? 'text-green-400' : stats.stress < 70 ? 'text-yellow-400' : 'text-red-400'}`}>{stats.stress}/100</div>
+           </div>
+         </div>
+       </div>
+       
+       {/* Unlocked Achievements */}
+       {achievements.length > 0 && (
+         <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-8 relative z-10 max-w-2xl w-full">
+           <h3 className="text-orange-400 font-black text-xl mb-4 flex items-center justify-center gap-2">
+             <i className="fa-solid fa-award"></i> Achievements Unlocked ({achievements.length})
+           </h3>
+           <div className="flex flex-wrap gap-2 justify-center">
+             {achievements.slice(0, 10).map(achId => {
+               const ach = ACHIEVEMENTS.find(a => a.id === achId);
+               return ach ? (
+                 <div key={achId} className="bg-slate-800/50 px-3 py-2 rounded-lg border border-yellow-500/20 text-sm">
+                   <span className="mr-1">{ach.icon}</span>
+                   <span className="text-white font-bold">{ach.title}</span>
+                 </div>
+               ) : null;
+             })}\n             {achievements.length > 10 && (
+               <div className="bg-slate-800/50 px-3 py-2 rounded-lg border border-white/10 text-sm text-slate-400">
+                 +{achievements.length - 10} more...
+               </div>
+             )}
+           </div>
+         </div>
+       )}
+       
+       {/* Action Buttons */}
+       <div className="flex flex-col md:flex-row gap-4 relative z-10">
+         <button 
+           onClick={resetGame} 
+           className="px-12 py-6 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 text-white rounded-[2.5rem] font-black text-xl hover:scale-105 shadow-2xl flex items-center gap-4 transition-all"
+         >
+           <i className="fa-solid fa-repeat"></i> Play Again
+         </button>
+         <button 
+           onClick={() => setScreen('start')} 
+           className="px-12 py-6 bg-slate-800 hover:bg-slate-700 text-white rounded-[2.5rem] font-black text-xl hover:scale-105 shadow-2xl flex items-center gap-4 transition-all border border-white/10"
+         >
+           <i className="fa-solid fa-home"></i> Main Menu
+         </button>
+       </div>
+       
+       {/* Share Message */}
+       <p className="text-slate-500 text-sm mt-8 relative z-10">
+         🎉 Congratulations! You've successfully navigated the Melbourne immigration journey!
+       </p>
     </div>
   );
 
@@ -1142,6 +1311,7 @@ const App: React.FC = () => {
       )}
       {screen === 'game' && renderGame()}
       {screen === 'gameover' && renderGameOver()}
+      {screen === 'victory' && renderVictory()}
       
       {/* Achievement Popup */}
       {showAchievement && (
