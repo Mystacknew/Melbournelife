@@ -74,8 +74,9 @@ const TypewriterText: React.FC<{ text: string; speed?: number }> = ({ text, spee
 
 const App: React.FC = () => {
   const [session, setSession] = useState<any>(null);
-  const [screen, setScreen] = useState<'auth' | 'start' | 'register' | 'mode-select' | 'class-select' | 'loading' | 'game' | 'gameover' | 'victory'>('auth');
+  const [screen, setScreen] = useState<'auth' | 'start' | 'register' | 'mode-select' | 'class-select' | 'loading' | 'game' | 'gameover' | 'victory' | 'ending'>('auth');
   const [winReason, setWinReason] = useState<string>('');
+  const [endingChoice, setEndingChoice] = useState<'house' | 'srilanka' | 'citizen' | null>(null);
   const [character, setCharacter] = useState<Partial<CharacterProfile>>({
     name: '', age: 22, gender: 'Male', status: 'Single'
   });
@@ -906,6 +907,121 @@ const App: React.FC = () => {
     </div>
   );
   
+  const renderEnding = () => {
+    const endings = {
+      house: {
+        emoji: '🏠',
+        title: 'MORTGAGE WARS',
+        sinhalaTitle: 'නිවාස ණය යුද්ධය',
+        description: 'You\'ve bought your dream house in Melbourne! Now begins the 30-year mortgage journey. Welcome to the Australian dream of paying off a house that costs 12 times your annual salary. Every weekend you\'ll be at Bunnings, every month stressing about interest rates, but hey... you own a piece of Australia! 🏡',
+        gradient: 'from-blue-900 via-indigo-900 to-purple-900',
+        icon: '💰🏦📈',
+        stats: [
+          { label: 'Mortgage', value: '$850,000', icon: '💸' },
+          { label: 'Interest Rate', value: '6.5%', icon: '📊' },
+          { label: 'Weekly Bunnings Trips', value: '∞', icon: '🔨' },
+          { label: 'Years to Pay Off', value: '30', icon: '⏰' }
+        ]
+      },
+      srilanka: {
+        emoji: '🇱🇰',
+        title: 'ANURA HADAI RATA',
+        sinhalaTitle: 'අනුර හදයි රට',
+        description: 'You\'ve decided to return to Sri Lanka under Anura\'s new vision! With your Melbourne savings and experience, you\'re ready to contribute to building the nation. No more tram rides, no more overpriced coffee - just good hoppers, friendly faces, and the satisfaction of being home. ආයුබෝවන් වෙලා! 🌴',
+        gradient: 'from-orange-900 via-red-900 to-maroon-950',
+        icon: '🏝️☕🥥',
+        stats: [
+          { label: 'Savings Brought Back', value: `$${stats.money}`, icon: '💰' },
+          { label: 'Hoppers Eaten', value: 'Unlimited', icon: '🥘' },
+          { label: 'Beach Visits', value: 'Every Weekend', icon: '🏖️' },
+          { label: 'Stress Level', value: '0', icon: '😌' }
+        ]
+      },
+      citizen: {
+        emoji: '🛂',
+        title: 'AUSTRALIAN PASSPORT & TRAVEL',
+        sinhalaTitle: 'ඕස්ට්‍රේලියානු විදේශ ගමන් බලපත්‍රය',
+        description: 'Congratulations, mate! You\'re now an Australian citizen with one of the world\'s most powerful passports. Time to explore the globe without visa hassles. From Bali getaways to European adventures, the world is your oyster. Plus, you can now complain about the government like a true Aussie! 🌏✈️',
+        gradient: 'from-green-900 via-emerald-900 to-teal-900',
+        icon: '✈️🌍🗺️',
+        stats: [
+          { label: 'Visa-Free Countries', value: '185+', icon: '🌏' },
+          { label: 'Passport Power Rank', value: '#6', icon: '🏆' },
+          { label: 'Bali Trips Planned', value: '5', icon: '🏝️' },
+          { label: 'Pride Level', value: '100%', icon: '🦘' }
+        ]
+      }
+    };
+
+    const ending = endings[endingChoice!];
+
+    return (
+      <div className={`flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gradient-to-br ${ending.gradient} animate-in fade-in duration-1000 relative overflow-hidden`}>
+        {/* Background Effects */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent animate-pulse"></div>
+        </div>
+        
+        {/* Main Emoji */}
+        <div className="text-9xl mb-8 relative z-10 animate-bounce">{ending.emoji}</div>
+        
+        {/* Title */}
+        <h1 className="text-6xl md:text-7xl font-black mb-4 uppercase tracking-tighter text-white relative z-10 drop-shadow-2xl">
+          {ending.title}
+        </h1>
+        <p className="text-4xl sinhala font-black text-yellow-400 relative z-10 mb-8">
+          {ending.sinhalaTitle}
+        </p>
+        
+        {/* Description */}
+        <div className="bg-black/30 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 mb-8 relative z-10 max-w-3xl">
+          <p className="text-white text-xl leading-relaxed">
+            {ending.description}
+          </p>
+        </div>
+        
+        {/* Icon Row */}
+        <div className="text-6xl mb-8 relative z-10 flex gap-6">
+          {ending.icon.split('').map((emoji, i) => (
+            <span key={i} className="animate-bounce" style={{animationDelay: `${i * 200}ms`}}>{emoji}</span>
+          ))}
+        </div>
+        
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 relative z-10 max-w-4xl w-full">
+          {ending.stats.map((stat, i) => (
+            <div key={i} className="bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+              <div className="text-4xl mb-2">{stat.icon}</div>
+              <div className="text-white/70 text-sm mb-1">{stat.label}</div>
+              <div className="text-white text-2xl font-black">{stat.value}</div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Action Buttons */}
+        <div className="flex flex-col md:flex-row gap-4 relative z-10">
+          <button 
+            onClick={resetGame} 
+            className="px-12 py-6 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 text-white rounded-[2.5rem] font-black text-xl hover:scale-105 shadow-2xl transition-all"
+          >
+            <i className="fa-solid fa-repeat"></i> New Journey
+          </button>
+          <button 
+            onClick={() => setScreen('start')} 
+            className="px-12 py-6 bg-white/10 hover:bg-white/20 text-white rounded-[2.5rem] font-black text-xl hover:scale-105 shadow-2xl transition-all border-2 border-white/30"
+          >
+            <i className="fa-solid fa-home"></i> Main Menu
+          </button>
+        </div>
+        
+        {/* Footer */}
+        <p className="text-white/50 text-sm mt-8 relative z-10">
+          Thanks for playing Melbourne Life! 🇱🇰 → 🇦🇺
+        </p>
+      </div>
+    );
+  };
+  
   const renderVictory = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-gradient-to-br from-slate-950 via-green-950/30 to-slate-950 animate-in fade-in duration-1000 relative overflow-hidden">
        {/* Celebration Background */}
@@ -1002,26 +1118,67 @@ const App: React.FC = () => {
          </div>
        )}
        
-       {/* Action Buttons */}
+       {/* Congratulations Message */}
+       <p className="text-white text-2xl font-bold mb-8 relative z-10 sinhala">
+         🎉 Congratulations on your Australian journey! 🇦🇺
+       </p>
+       
+       {/* Post-Victory Choices */}
+       <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border-2 border-yellow-500/30 rounded-3xl p-8 mb-8 relative z-10 max-w-3xl w-full">
+         <h3 className="text-yellow-400 font-black text-2xl mb-6 text-center">
+           What's Your Next Chapter? 🌟
+         </h3>
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+           {/* Option 1: Buy a House */}
+           <button
+             onClick={() => { setEndingChoice('house'); setScreen('ending'); }}
+             className="group relative bg-gradient-to-br from-blue-900/50 to-blue-800/30 hover:from-blue-800/70 hover:to-blue-700/50 border-2 border-blue-500/30 hover:border-blue-400/60 rounded-2xl p-6 transition-all hover:scale-105 active:scale-95"
+           >
+             <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">🏠</div>
+             <h4 className="text-white font-black text-lg mb-2">Buy a House</h4>
+             <p className="text-blue-300 text-sm sinhala font-bold">ගෙයක් ගන්න</p>
+             <div className="mt-3 text-xs text-blue-400 opacity-70">Start the mortgage journey</div>
+           </button>
+           
+           {/* Option 2: Go Back to Sri Lanka */}
+           <button
+             onClick={() => { setEndingChoice('srilanka'); setScreen('ending'); }}
+             className="group relative bg-gradient-to-br from-orange-900/50 to-red-800/30 hover:from-orange-800/70 hover:to-red-700/50 border-2 border-orange-500/30 hover:border-orange-400/60 rounded-2xl p-6 transition-all hover:scale-105 active:scale-95"
+           >
+             <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">🇱🇰</div>
+             <h4 className="text-white font-black text-lg mb-2">Return Home</h4>
+             <p className="text-orange-300 text-sm sinhala font-bold">ආපහු ලංකාවට</p>
+             <div className="mt-3 text-xs text-orange-400 opacity-70">Go back to Sri Lanka</div>
+           </button>
+           
+           {/* Option 3: Become a Citizen */}
+           <button
+             onClick={() => { setEndingChoice('citizen'); setScreen('ending'); }}
+             className="group relative bg-gradient-to-br from-green-900/50 to-emerald-800/30 hover:from-green-800/70 hover:to-emerald-700/50 border-2 border-green-500/30 hover:border-green-400/60 rounded-2xl p-6 transition-all hover:scale-105 active:scale-95"
+           >
+             <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">🛂</div>
+             <h4 className="text-white font-black text-lg mb-2">Citizenship</h4>
+             <p className="text-green-300 text-sm sinhala font-bold">පුරවැසියෙක් වෙන්න</p>
+             <div className="mt-3 text-xs text-green-400 opacity-70">Get Australian passport</div>
+           </button>
+         </div>
+       </div>
+       
+       {/* Alternative Actions */}
        <div className="flex flex-col md:flex-row gap-4 relative z-10">
          <button 
            onClick={resetGame} 
-           className="px-12 py-6 bg-gradient-to-r from-orange-500 via-red-600 to-green-600 text-white rounded-[2.5rem] font-black text-xl hover:scale-105 shadow-2xl flex items-center gap-4 transition-all"
+           className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl font-bold text-sm hover:scale-105 shadow-xl transition-all border border-white/10"
          >
            <i className="fa-solid fa-repeat"></i> Play Again
          </button>
          <button 
            onClick={() => setScreen('start')} 
-           className="px-12 py-6 bg-slate-800 hover:bg-slate-700 text-white rounded-[2.5rem] font-black text-xl hover:scale-105 shadow-2xl flex items-center gap-4 transition-all border border-white/10"
+           className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl font-bold text-sm hover:scale-105 shadow-xl transition-all border border-white/10"
          >
            <i className="fa-solid fa-home"></i> Main Menu
          </button>
        </div>
-       
-       {/* Share Message */}
-       <p className="text-slate-500 text-sm mt-8 relative z-10">
-         🎉 Congratulations! You've successfully navigated the Melbourne immigration journey!
-       </p>
     </div>
   );
 
@@ -1312,6 +1469,7 @@ const App: React.FC = () => {
       {screen === 'game' && renderGame()}
       {screen === 'gameover' && renderGameOver()}
       {screen === 'victory' && renderVictory()}
+      {screen === 'ending' && renderEnding()}
       
       {/* Achievement Popup */}
       {showAchievement && (
