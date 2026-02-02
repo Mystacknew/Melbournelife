@@ -1,6 +1,96 @@
 import { RandomEvent, GameStats } from './types';
 
 export const RANDOM_EVENTS: RandomEvent[] = [
+  // ===== NEW GAMEPLAY CHALLENGES =====
+  {
+    id: 'visa-roulette',
+    trigger: { minDay: 30, maxDay: 70, chance: 0.12 },
+    title: '📋 Visa Interview Summons!',
+    description: 'Immigration Department has randomly selected you for a document verification interview. This could delay OR speed up your visa process depending on how you handle it! තියන සියලුම documents හොයන්න වෙනවා! 😰',
+    image: '/images/story/student/01-enrollment.jpg',
+    choices: [
+      {
+        text: 'Hire migration agent ($500, professional help)',
+        consequences: { money: -500, stress: -20, visaDaysLeft: 15, happiness: 10 }
+      },
+      {
+        text: 'Prepare yourself (Free, risky)',
+        consequences: { stress: 30, visaDaysLeft: Math.random() > 0.5 ? 10 : -5, energy: -20 }
+      },
+      {
+        text: 'Bring Lankan uncle who knows everyone ($200)',
+        consequences: { money: -200, stress: -10, visaDaysLeft: 20, happiness: 5 }
+      }
+    ]
+  },
+  {
+    id: 'melbourne-winter-survival',
+    trigger: { minDay: 15, maxDay: 40, minMoney: 500, chance: 0.18 },
+    title: '🥶 First Melbourne Winter Challenge!',
+    description: 'Winter has arrived and it\'s BRUTAL! Your thin jacket from Sri Lanka is useless. You need proper winter gear, heating, and warm food. Budget කරන්න ඕනේ properly! ❄️',
+    image: '/images/story/transport/01-tram.jpg',
+    choices: [
+      {
+        text: 'Buy everything new ($400, proper gear)',
+        consequences: { money: -400, health: 20, energy: 10, stress: -15, happiness: 15 }
+      },
+      {
+        text: 'Thrift shops + budgeting ($150, smart choice)',
+        consequences: { money: -150, health: 10, stress: -10, happiness: 10 }
+      },
+      {
+        text: 'Tough it out (Free, risky)',
+        consequences: { health: -25, energy: -20, stress: 20, happiness: -15 }
+      }
+    ]
+  },
+  {
+    id: 'career-crossroads',
+    trigger: { minDay: 25, chance: 0.14 },
+    title: '💼 Two Job Offers - Big Decision!',
+    description: 'You got TWO job offers same day! Offer 1: Safe retail job ($25/hr, guaranteed hours). Offer 2: Commission sales ($15/hr + commission, could earn $40/hr or $10/hr). මොකක්ද කරන්නේ? 🤔',
+    image: '/images/story/career/01-interview.jpg',
+    choices: [
+      {
+        text: 'Safe retail job (stable income)',
+        consequences: { money: 400, stress: -10, energy: -15, happiness: 5 }
+      },
+      {
+        text: 'Commission sales (high risk, high reward)',
+        consequences: { money: Math.random() > 0.4 ? 700 : 150, stress: 25, energy: -25, happiness: Math.random() > 0.4 ? 20 : -10 }
+      },
+      {
+        text: 'Decline both, keep searching',
+        consequences: { stress: 15, energy: -10, happiness: -5 }
+      }
+    ]
+  },
+  {
+    id: 'unexpected-friendship',
+    trigger: { minDay: 10, chance: 0.15 },
+    title: '🤝 Random Encounter at Train Station',
+    description: 'A friendly Lankan person approached you at Flinders Street. "Ayye, just landed? I can help you settle in!" Could be genuine help OR a scam. Trust කරන්නද? 🎭',
+    image: '/images/story/social/01-friends-park.jpg',
+    choices: [
+      {
+        text: 'Trust them fully (could be scam)',
+        consequences: { 
+          money: Math.random() > 0.6 ? 100 : -300, 
+          stress: Math.random() > 0.6 ? -20 : 40,
+          happiness: Math.random() > 0.6 ? 25 : -20
+        }
+      },
+      {
+        text: 'Accept help cautiously (small favor)',
+        consequences: { money: -50, stress: -10, happiness: 10 }
+      },
+      {
+        text: 'Politely decline (play safe)',
+        consequences: { stress: 5, happiness: -5 }
+      }
+    ]
+  },
+  // ===== ORIGINAL EVENTS =====
   {
     id: 'unexpected-phone-bill',
     trigger: { minDay: 10, maxDay: 30, chance: 0.15 },

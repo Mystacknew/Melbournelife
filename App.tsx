@@ -1437,16 +1437,27 @@ const App: React.FC = () => {
       {screen === 'register' && renderRegister()}
       {screen === 'class-select' && (
          <div className="flex flex-col items-center justify-center min-h-screen p-6 animate-in slide-in-from-right duration-500 bg-slate-950">
-          <h2 className="text-4xl font-black mb-14 sinhala text-center tracking-tight">ජීවන තත්වය (Class)</h2>
+          <h2 className="text-4xl font-black mb-4 sinhala text-center tracking-tight">ජීවන තත්වය (Class)</h2>
+          <p className="text-slate-400 mb-14 text-center text-sm">Choose your difficulty mode 🎮</p>
           <div className="grid gap-5 w-full max-w-sm">
-            {(Object.keys(INITIAL_STATS) as ProfileClass[]).map(p => (
+            {(Object.keys(INITIAL_STATS) as ProfileClass[]).map(p => {
               <button key={p} onClick={() => startGame(p)} className="p-8 bg-slate-900/60 border border-white/10 rounded-[2.5rem] hover:border-blue-500/60 transition-all text-left group hover:scale-[1.03] shadow-2xl relative overflow-hidden backdrop-blur-xl">
                 <div className="absolute right-[-20px] bottom-[-20px] text-8xl opacity-5 text-white transition-all duration-700">
                    <i className={`fa-solid ${p === 'ඇමති පුතා' ? 'fa-crown' : p === 'Business Family' ? 'fa-building' : p === 'Middle Class' ? 'fa-graduation-cap' : 'fa-handshake'}`}></i>
                 </div>
                 <div className="flex justify-between items-center relative z-10">
                   <div>
-                    <span className="font-black text-2xl block mb-2 text-white group-hover:text-blue-400 uppercase tracking-tight">{p}</span>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="font-black text-2xl text-white group-hover:text-blue-400 uppercase tracking-tight">{p}</span>
+                      <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider ${
+                        p === 'ඇමති පුතා' ? 'bg-green-900/50 text-green-400 border border-green-500/30' :
+                        p === 'Business Family' ? 'bg-blue-900/50 text-blue-400 border border-blue-500/30' :
+                        p === 'Middle Class' ? 'bg-orange-900/50 text-orange-400 border border-orange-500/30' :
+                        'bg-red-900/50 text-red-400 border border-red-500/30'
+                      }`}>
+                        {p === 'ඇමති පුතා' ? '🎮 EASY' : p === 'Business Family' ? '⚖️ MODERATE' : p === 'Middle Class' ? '🔥 HARD' : '💀 SURVIVAL'}
+                      </span>
+                    </div>
                     <span className="text-[11px] text-slate-500 sinhala font-black uppercase tracking-widest flex items-center gap-2">
                        <i className="fa-solid fa-wallet text-slate-600"></i> Starting with ${INITIAL_STATS[p].money}
                     </span>
